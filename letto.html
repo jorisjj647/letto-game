@@ -1,0 +1,272 @@
+
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LETTO — The Letter Lotto | ALPHAZARD</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:radial-gradient(circle,#1b1b2f,#0b0d12);
+  color:white;
+  text-align:center;
+}
+
+.wrap{max-width:950px;margin:auto;padding:20px}
+
+h1{
+  font-size:48px;
+  color:gold;
+  text-shadow:0 0 25px gold;
+  margin-bottom:5px;
+}
+
+.sub{opacity:.85;margin-bottom:15px}
+
+.top{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:15px;
+}
+
+.pill{
+  background:#111;
+  padding:10px 18px;
+  border-radius:30px;
+  border:1px solid gold;
+  box-shadow:0 0 10px gold inset;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(6,72px);
+  justify-content:center;
+  gap:12px;
+  margin:20px 0;
+}
+
+.slot{
+  height:72px;
+  line-height:72px;
+  font-size:36px;
+  font-weight:bold;
+  background:#000;
+  border:2px solid gold;
+  border-radius:14px;
+  box-shadow:0 0 12px gold inset;
+}
+
+.spin{animation:spin .1s linear infinite}
+
+@keyframes spin{
+  0%{transform:translateY(-5px)}
+  50%{transform:translateY(5px)}
+  100%{transform:translateY(-5px)}
+}
+
+.win{
+  background:#1cff5c;
+  color:black;
+  box-shadow:0 0 25px #1cff5c;
+}
+
+.jackpot{
+  animation:flash .5s infinite alternate;
+}
+
+@keyframes flash{
+  from{box-shadow:0 0 25px gold}
+  to{box-shadow:0 0 70px gold}
+}
+
+button{
+  padding:16px 45px;
+  font-size:24px;
+  border-radius:12px;
+  border:none;
+  background:gold;
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 0 25px gold;
+}
+
+#message{font-size:22px;margin-top:12px;min-height:28px}
+
+.panel{
+  margin-top:25px;
+  background:#111;
+  border:1px solid gold;
+  border-radius:14px;
+  padding:15px;
+  text-align:left;
+}
+
+.panel h3{margin-top:0;color:gold}
+
+.history{
+  white-space:pre-line;
+  font-family:monospace;
+  font-size:14px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="wrap">
+
+<h1>LETTO 🎰</h1>
+<div class="sub">Ultra Casino Edition</div>
+
+<div class="top">
+  <div class="pill">Score : <span id="score">0</span></div>
+  <div class="pill">Parties : <span id="plays">0</span></div>
+  <div class="pill">Meilleur : <span id="best">0</span></div>
+</div>
+
+<div id="grid" class="grid">
+  <div class="slot">?</div><div class="slot">?</div>
+  <div class="slot">?</div><div class="slot">?</div>
+  <div class="slot">?</div><div class="slot">?</div>
+</div>
+
+<button id="playBtn">PLAY / REPLAY</button>
+
+<div id="message">Clique SPIN</div>
+
+<div class="panel">
+<h3>📜 RÈGLES LETTO</h3>
+<ul>
+<li>💎 6 lettres identiques → JACKPOT +500</li>
+<li>🔥 Palindrome → +100</li>
+<li>⚡ Suite alphabétique (3+) → +5</li>
+<li>✨ Double lettre consécutive → +2</li>
+<li>🎯 3 voyelles / 3 consonnes → +1</li>
+<li>❌ Sinon → 0</li>
+</ul>
+</div>
+
+<div class="panel">
+<h3>📊 Historique</h3>
+<div id="history" class="history"></div>
+</div>
+
+</div>
+
+<script>
+
+const ALPHABET="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const VOWELS=["A","E","I","O","U","Y"];
+
+const slots=document.querySelectorAll(".slot");
+const playBtn=document.getElementById("playBtn");
+const message=document.getElementById("message");
+const scoreEl=document.getElementById("score");
+const playsEl=document.getElementById("plays");
+const bestEl=document.getElementById("best");
+const historyEl=document.getElementById("history");
+
+let score=0,plays=0,best=0,history=[];
+
+function rand(){return ALPHABET[Math.floor(Math.random()*26)]}
+
+function palindrome(a){
+  for(let i=0;i<3;i++) if(a[i]!==a[5-i]) return false;
+  return true;
+}
+
+function straight(a){
+  let r=1;
+  for(let i=1;i<6;i++){
+    if(ALPHABET.indexOf(a[i])===ALPHABET.indexOf(a[i-1])+1) r++;
+    else r=1;
+    if(r>=3) return true;
+  }
+  return false;
+}
+
+function double(a){
+  for(let i=0;i<5;i++) if(a[i]===a[i+1]) return true;
+  return false;
+}
+
+function balance(a){
+  let v=0;
+  for(const l of a) if(VOWELS.includes(l)) v++;
+  return v===3;
+}
+
+function evaluate(a){
+  if(a.every(l=>l===a[0])) return ["💎 JACKPOT !!!",500,true];
+  if(palindrome(a)) return ["🔥 Palindrome",100,false];
+  if(straight(a)) return ["⚡ Suite",5,false];
+  if(double(a)) return ["✨ Double",2,false];
+  if(balance(a)) return ["🎯 Équilibre",1,false];
+  return ["❌ Perdu",0,false];
+}
+
+function render(a,win,jackpot){
+  slots.forEach((s,i)=>{
+    s.textContent=a[i];
+    s.classList.remove("spin");
+    s.classList.toggle("win",win);
+    s.classList.toggle("jackpot",jackpot);
+  });
+}
+
+playBtn.onclick=function(){
+
+  playBtn.disabled=true;
+
+  slots.forEach(s=>{
+    s.classList.remove("win","jackpot");
+    s.classList.add("spin");
+  });
+
+  let spins=16;
+
+  const anim=setInterval(()=>{
+    slots.forEach(s=>s.textContent=rand());
+    spins--;
+
+    if(spins<=0){
+      clearInterval(anim);
+
+      const draw=[rand(),rand(),rand(),rand(),rand(),rand()];
+      const [txt,gain,jp]=evaluate(draw);
+
+      plays++; playsEl.textContent=plays;
+
+      if(gain>0){
+        score+=gain;
+        if(score>best) best=score;
+      }
+
+      scoreEl.textContent=score;
+      bestEl.textContent=best;
+
+      render(draw,gain>0,jp);
+
+      message.textContent=txt+"  +"+gain;
+
+      history.unshift(draw.join("")+" → "+txt+" +"+gain);
+      history=history.slice(0,10);
+      historyEl.textContent=history.join("\n");
+
+      playBtn.disabled=false;
+    }
+  },80);
+};
+
+</script>
+<div style="margin-top:30px;font-size:12px;opacity:0.7">
+  © ALPHAZARD — All rights reserved
+</div>
+</body>
+</html>
