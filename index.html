@@ -35,6 +35,15 @@ html, body {
   margin: 0 !important;
   min-height: 100% !important;
 }
+<style>
+  /* === FORCE DARK MODE PARTOUT (anti fond blanc iPhone/iPad) === */
+:root { color-scheme: dark; }
+html, body {
+  background: #000 !important;
+  color: #fff !important;
+  margin: 0 !important;
+  min-height: 100% !important;
+}
 
 /* force tous les gros conteneurs à être noirs (souvent le fond blanc vient d'ici) */
 #app, .app, .container, .wrapper, main, section, header, footer, .panel, .card {
@@ -44,7 +53,6 @@ html, body {
 
 /* évite les bandes blanches/scroll horizontal */
 body { overflow-x: hidden !important; }
-<style>
   /* ===== LETTO (6 lettres) : mobile-friendly ===== */
 /* ✅ Safe area iPhone + pas de débordement */
 /* FORCER LE MODE SOMBRE */
