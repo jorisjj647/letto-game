@@ -2,6 +2,7 @@
 <!doctype html>
 <html lang="fr">
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -23,7 +24,99 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <title>LETTO — The Letter Lotto | ALPHAZARD</title>
 
 <style>
-body{
+  /* ===== LETTO (6 lettres) : mobile-friendly ===== */
+
+/* évite le scroll horizontal sur mobile */
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ligne des 6 lettres */
+.letters-row,
+.row,
+.word-row,
+.letter-row {
+  display: flex;
+  justify-content: center;
+  gap: clamp(6px, 1.2vw, 12px);
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* case lettre */
+.letter,
+.tile,
+.cell,
+.box {
+  width: clamp(42px, 12vw, 64px);
+  height: clamp(42px, 12vw, 64px);
+  font-size: clamp(18px, 5vw, 28px);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+/* si tu as un clavier/boutons en bas */
+.keyboard,
+.controls,
+.buttons {
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* petits écrans */
+@media (max-width: 380px) {
+  .letter, .tile, .cell, .box {
+    width: clamp(36px, 13vw, 56px);
+    height: clamp(36px, 13vw, 56px);
+    font-size: clamp(16px, 6vw, 24px);
+    border-radius: 9px;
+  }
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* ligne des lettres */
+.letters-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* cases lettres */
+.letter {
+  width: clamp(42px, 12vw, 64px);
+  height: clamp(42px, 12vw, 64px);
+  font-size: clamp(18px, 5vw, 28px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+/* très petits téléphones */
+@media (max-width: 380px) {
+  .letter {
+    width: clamp(36px, 13vw, 56px);
+    height: clamp(36px, 13vw, 56px);
+    font-size: clamp(16px, 6vw, 24px);
+  }
+}
+
   margin:0;
   font-family:Arial;
   background:radial-gradient(circle,#1b1b2f,#0b0d12);
