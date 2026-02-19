@@ -72,6 +72,32 @@ html, body {
   background: #000 !important;
   color: #fff !important;
 }
+  /* ===== CENTRAGE TITRE + BOUTONS ===== */
+
+h1, h2, .title, .subtitle {
+  text-align: center;
+  width: 100%;
+}
+
+/* Centrer LETTO + logo */
+.header, .title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Centrer bouton PLAY */
+button, .play-btn {
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+}
+
+/* Centrer texte SPIN */
+.spin-text, p {
+  text-align: center;
+}
 
 /* Empêche le fond blanc sur mobile */
 body {
