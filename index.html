@@ -29,7 +29,32 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <title>LETTO — The Letter Lotto | ALPHAZARD</title>
 
 <style>
+/* ===== CENTRAGE TITRE + BOUTONS ===== */
 
+h1, h2, .title, .subtitle {
+  text-align: center;
+  width: 100%;
+}
+
+/* Centrer LETTO + logo */
+.header, .title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Centrer bouton PLAY */
+button, .play-btn {
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+}
+
+/* Centrer texte SPIN */
+.spin-text, p {
+  text-align: center;
+}
 
 
 /* force tous les gros conteneurs à être noirs (souvent le fond blanc vient d'ici) */
