@@ -30,96 +30,58 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <style>
   /* ===== LETTO (6 lettres) : mobile-friendly ===== */
-
-/* évite le scroll horizontal sur mobile */
+/* ✅ Safe area iPhone + pas de débordement */
 html, body {
   width: 100%;
   overflow-x: hidden;
 }
 
-/* ligne des 6 lettres */
-.letters-row,
-.row,
-.word-row,
-.letter-row {
-  display: flex;
-  justify-content: center;
-  gap: clamp(6px, 1.2vw, 12px);
+body{
+  margin:0;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ✅ Ligne des 6 lettres (toujours visible) */
+.letters-row{
+  width: min(420px, 100%);
+  margin: 18px auto 0;
+  padding: 0 12px;
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  justify-items: center;
+}
+
+/* ✅ Case lettre responsive (s’adapte à l’iPhone) */
+.letter{
   width: 100%;
-  padding: 0 10px;
+  aspect-ratio: 1 / 1;      /* carré parfait */
+  min-width: 40px;
+  max-width: 64px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size: clamp(18px, 4.8vw, 28px);
+  border-radius: 12px;
   box-sizing: border-box;
 }
 
-/* case lettre */
-.letter,
-.tile,
-.cell,
-.box {
-  width: clamp(42px, 12vw, 64px);
-  height: clamp(42px, 12vw, 64px);
-  font-size: clamp(18px, 5vw, 28px);
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  box-sizing: border-box;
-}
-
-/* si tu as un clavier/boutons en bas */
-.keyboard,
-.controls,
-.buttons {
-  width: 100%;
-  padding: 0 10px;
-  box-sizing: border-box;
-}
-
-/* petits écrans */
-@media (max-width: 380px) {
-  .letters-row { gap: 6px; padding: 0 6px; }
-  .letter {
-    width: clamp(34px, 12vw, 54px);
-    height: clamp(34px, 12vw, 54px);
-    font-size: clamp(16px, 5vw, 22px);
+/* ✅ Très petits écrans (iPhone SE, etc.) */
+@media (max-width: 360px){
+  .letters-row{
+    width: 100%;
+    gap: 8px;
+    padding: 0 10px;
   }
-}
-  
-
-body {
-  margin: 0;
-  overflow-x: hidden;
-}
-
-/* ligne des lettres */
-.letters-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 0 10px;
-  box-sizing: border-box;
-}
-
-/* cases lettres */
-.letter {
-  width: clamp(42px, 12vw, 64px);
-  height: clamp(42px, 12vw, 64px);
-  font-size: clamp(18px, 5vw, 28px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  box-sizing: border-box;
-}
-
-/* très petits téléphones */
-@media (max-width: 380px) {
-  .letter {
-    width: clamp(36px, 13vw, 56px);
-    height: clamp(36px, 13vw, 56px);
-    font-size: clamp(16px, 6vw, 24px);
+  .letter{
+    max-width: 56px;
+    border-radius: 10px;
   }
 }
 
