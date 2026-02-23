@@ -275,8 +275,7 @@ button{
 <link rel="apple-touch-icon" href="icon-192.png" />
 
 <script> 
-  <script src="app.js" defer></script>
-  // Service Worker (offline + app-like)
+   // Service Worker (offline + app-like)
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker.register("./sw.js").catch(() => {});
