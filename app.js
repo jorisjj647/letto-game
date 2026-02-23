@@ -1,13 +1,20 @@
-// ===== PSEUDO JOUEUR (premier lancement) =====
+// ===== PSEUDO JOUEUR (SAFE / ANTI-BUG) =====
+(function () {
+  let playerName = localStorage.getItem("lettoPlayer");
 
-let playerName = localStorage.getItem("lettoPlayer");
+  if (!playerName) {
+    playerName = prompt("Choisis ton pseudo :") || "Player";
+    playerName = playerName.trim() || "Player";
+    localStorage.setItem("lettoPlayer", playerName);
+  }
 
-if (!playerName) {
-  playerName = prompt("Choisis ton pseudo :") || "Player";
-  localStorage.setItem("lettoPlayer", playerName);
-  document.getElementById("playerDisplay").textContent =
-  "👤 " + playerName;
-}
+  // Affichage si l'élément existe
+  const el = document.getElementById("playerDisplay");
+  if (el) el.textContent = "👤 " + playerName;
+
+  // Pour vérifier sans console
+  console.log("Pseudo LETTO =", playerName);
+})();
 :root{
   --bg:#0b0d12;
   --card:#0f1320;
