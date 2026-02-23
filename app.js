@@ -5,6 +5,8 @@ let playerName = localStorage.getItem("lettoPlayer");
 if (!playerName) {
   playerName = prompt("Choisis ton pseudo :") || "Player";
   localStorage.setItem("lettoPlayer", playerName);
+  document.getElementById("playerDisplay").textContent =
+  "👤 " + playerName;
 }
 :root{
   --bg:#0b0d12;
