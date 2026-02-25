@@ -438,6 +438,88 @@ playBtn.onclick=function(){
 <div style="margin-top:30px;font-size:12px;opacity:0.7">
   © ALPHAZARD — All rights reserved
 </div>
+
+<!-- Supabase (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // 1) Mets ICI tes infos Supabase
+  const SUPABASE_URL = "COLLE_TON_PROJECT_URL_ICI";
+  const SUPABASE_ANON_KEY = "COLLE_TA_PUBLISHABLE_KEY_ICI"; // (c’est l’Anon/Public/Publishable)
+
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // 2) Nom exact de ta table
+  const TABLE = "scores";
+
+  // 3) Enregistrer un score
+  async function saveScore(player, score, games = 0) {
+    const { data, error } = await supabase
+      .from(TABLE)
+      .insert([{ player, score, games }]);
+
+    if (error) {
+      console.error("❌ saveScore error:", error.message);
+      alert("Erreur Supabase (insert): " + error.message);
+      return false;
+    }
+    return true;
+  }
+
+  // 4) Charger le classement
+  async function loadLeaderboard(limit = 10) {
+    const { data, error } = await supabase
+      .from(TABLE)
+      .select("player, score, games, created_at")
+      .order("score", { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      console.error("❌ loadLeaderboard error:", error.message);
+      alert("Erreur Supabase (select): " + error.message);
+      return [];
+    }
+    return data || [];
+  }
+
+  // 5) Afficher le classement sur la page
+  async function renderLeaderboard() {
+    let box = document.getElementById("leaderboard");
+    if (!box) {
+      box = document.createElement("div");
+      box.id = "leaderboard";
+      box.style.maxWidth = "520px";
+      box.style.margin = "20px auto";
+      box.style.padding = "12px";
+      box.style.border = "1px solid rgba(255,255,255,0.25)";
+      box.style.borderRadius = "12px";
+      box.style.color = "#fff";
+      box.innerHTML = "<b>🏆 Classement</b><div id='leaderboardList' style='margin-top:10px'></div>";
+      document.body.appendChild(box);
+    }
+
+    const list = box.querySelector("#leaderboardList");
+    const rows = await loadLeaderboard(10);
+
+    if (!rows.length) {
+      list.innerHTML = "<i>Aucun score pour l’instant</i>";
+      return;
+    }
+
+    list.innerHTML = rows
+      .map((r, i) => {
+        const p = (r.player || "Joueur").toString().slice(0, 18);
+        return `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.08)">
+          <div>#${i + 1} ${p}</div>
+          <div><b>${r.score}</b></div>
+        </div>`;
+      })
+      .join("");
+  }
+
+  // Appel au chargement
+  renderLeaderboard();
+</script>
 </body>
 
 </html>
