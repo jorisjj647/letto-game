@@ -444,12 +444,7 @@ playBtn.onclick=function(){
 </div>
 
 <!-- Supabase (CDN) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
-  // 1) Mets ICI tes infos Supabase
-  const SUPABASE_URL = "https://likxqliabwzgeuldbefi.supabase.com";
-  const SUPABASE_ANON_KEY = "sb_publishable_xUMpNA7p-KuAzKXc3-ACKg_y4fwwFon"; // (c’est l’Anon/Public/Publishable)
 
   // 2) Nom exact de ta table
   const TABLE = "scores";
@@ -518,6 +513,17 @@ playBtn.onclick=function(){
       })
       .join("");
   }
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://ikxqliabwzgeulddefi.supabase.co";
+const SUPABASE_ANON_KEY = "publishable_xUmpNA7p-KuAzKXC3-AcKg_y4fwwFon";
+
+window.client = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+</script>
 </body>
 
 </html>
