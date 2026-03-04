@@ -501,7 +501,7 @@ playBtn.onclick=function(){
       document.body.appendChild(box);
     }
 
-    const list = box.querySelector("#leaderboardList");
+    const list = document.querySelector("#leaderboardList");
     const rows = await loadLeaderboard(10);
 
     if (!rows.length) {
@@ -520,13 +520,15 @@ playBtn.onclick=function(){
       .join("");
       }
   
-     <div id="playerDisplay"></div>
+   </script>
+
+<div id="playerDisplay"></div>
 
 <script>
-       
-  renderLeaderboard();
+renderLeaderboard();
 </script>
+
 </body>
-</html>                   
+</html>            
 
 
