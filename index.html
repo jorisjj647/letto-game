@@ -461,7 +461,7 @@ playBtn.onclick=function(){
 
   // 3) Enregistrer un score
   async function saveScore(player, score, games = 0) {
-    const { data, error } = await window.client
+    const { data, error } = await supabase
       .from(TABLE)
       .insert([{ username: player, score, plays: games }]);
 
