@@ -475,7 +475,7 @@ playBtn.onclick=function(){
 
   // 4) Charger le classement
   async function loadLeaderboard(limit = 10) {
-    const { data, error } = await windows.client
+    const { data, error } = await supabase
       .from(TABLE)
       .select("username, score, plays, created_at")
       .order("score", { ascending: false })
