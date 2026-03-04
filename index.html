@@ -465,9 +465,9 @@ playBtn.onclick=function(){
 
   // 4) Charger le classement
   async function loadLeaderboard(limit = 10) {
-    const { data, error } = await supabase
+    const { data, error } = await windows.client
       .from(TABLE)
-      .select("player, score, games, created_at")
+      .select("username, score, plays, created_at")
       .order("score", { ascending: false })
       .limit(limit);
 
@@ -505,7 +505,7 @@ playBtn.onclick=function(){
 
     list.innerHTML = rows
       .map((r, i) => {
-        const p = (r.player || "Joueur").toString().slice(0, 18);
+        const p = (r.username || "Joueur").toString().slice(0, 18);
         return `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.08)">
           <div>#${i + 1} ${p}</div>
           <div><b>${r.score}</b></div>
