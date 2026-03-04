@@ -519,9 +519,11 @@ playBtn.onclick=function(){
 const SUPABASE_URL = "https://ikxqliabwzgeulddefi.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_xUMpNA7p-KuAzKXc3-ACKg_y4fwwFon";
 
-window.client = window.supabase.createClient(
+(
+  const supabase = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY
+);
 );
 </script>
 </body>
