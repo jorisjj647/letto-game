@@ -11,11 +11,7 @@
 <script>
 const SUPABASE_URL = "https://ikxqliabwzgeullddefi.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_xUmpNA7p-KuAzKXC3-AcKg_y4fwwFon";
-
-const supabase = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 </script>
 
 </head> 
@@ -458,7 +454,7 @@ playBtn.onclick=function(){
 
   // 3) Enregistrer un score
   async function saveScore(player, score, games = 0) {
-    const { data, error } = await supabase
+    const { data, error } = await sb
       .from(TABLE)
       .insert([{ username: player, score, plays: games }]);
 
@@ -520,14 +516,14 @@ playBtn.onclick=function(){
       })
       .join("");
       }
-</script>
+  </script>
   
   <div id="playerDisplay"></div>
 
   <script>
-  window.addEventListener("DOMContentloaded",()
-  renderLeaderboard();
-  });
+    window.addEventListener("DOMContentloaded",()=> {
+      renderLeaderboard();
+    });
   </script>
   
   </body>
