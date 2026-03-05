@@ -396,8 +396,8 @@ function render(a,win,jackpot){
     s.classList.toggle("jackpot",jackpot);
   });
 }
-
-playBtn.onclick=function(){
+const playBtn = document.getElementById("playBtn");
+playBtn.onclick = function(){
 
   playBtn.disabled=true;
 
