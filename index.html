@@ -395,43 +395,33 @@ function render(a,win,jackpot){
     s.classList.toggle("jackpot",jackpot);
   });
 }
-windows.addEventListener("DOMContentLoaded", () => {
-  
-function render(a,win,jackpot){
-   ...
-}
-  
+window.addEventListener("DOMContentLoaded", () => {
+
 const playBtn = document.getElementById("playBtn");
-  
+
 playBtn.onclick = function(){
 
-  playBtn.disabled=true;
+  playBtn.disabled = true;
 
   slots.forEach(s=>{
     s.classList.remove("win","jackpot");
     s.classList.add("spin");
   });
 
-  let spins=16;
+  let spins = 16;
 
-  const anim=setInterval(()=>{
+  const anim = setInterval(()=>{
     slots.forEach(s=>s.textContent=rand());
     spins--;
 
     if(spins<=0){
       clearInterval(anim);
-      ...
-    } 
-    
- },80);
-  
-};
-  
-});
+
       const draw=[rand(),rand(),rand(),rand(),rand(),rand()];
       const [txt,gain,jp]=evaluate(draw);
 
-      plays++; playsEl.textContent=plays;
+      plays++;
+      playsEl.textContent=plays;
 
       if(gain>0){
         score+=gain;
@@ -452,8 +442,10 @@ playBtn.onclick = function(){
       playBtn.disabled=false;
     }
   },80);
+
 };
 
+});
 
 <div style="margin-top:30px;font-size:12px;opacity:0.7">
   © ALPHAZARD — All rights reserved
