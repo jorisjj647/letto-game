@@ -395,7 +395,14 @@ function render(a,win,jackpot){
     s.classList.toggle("jackpot",jackpot);
   });
 }
+windows.addEventListener("DOMContentLoaded", () => {
+  
+function render(a,win,jackpot){
+   ...
+}
+  
 const playBtn = document.getElementById("playBtn");
+  
 playBtn.onclick = function(){
 
   playBtn.disabled=true;
@@ -413,7 +420,14 @@ playBtn.onclick = function(){
 
     if(spins<=0){
       clearInterval(anim);
-
+      ...
+    } 
+    
+ },80);
+  
+};
+  
+});
       const draw=[rand(),rand(),rand(),rand(),rand(),rand()];
       const [txt,gain,jp]=evaluate(draw);
 
