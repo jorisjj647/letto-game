@@ -464,7 +464,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
  <!-- Supabase (CDN) -->
  <script>
-
+const sb = window.supabase.createClient(
+  "URL_SUPABASE",
+  "sb_publishable_TA_CLE"
+);
  const TABLE = "scores";
 
  async function saveScore(player, score, games = 0) {
