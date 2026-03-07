@@ -497,8 +497,39 @@ async function loadLeaderboard(limit = 10) {
   }
 
   return data || [];
+}
+async function renderLeaderboard() {
+  let box = document.getElementById("leaderboard");
+
+  if (!box) {
+    box = document.createElement("div");
+    box.id = "leaderboard";
+    box.className = "panel";
+    box.innerHTML = `
+      <h3>🏆 Classement</h3>
+      <div id="leaderboardList"><i>Chargement...</i></div>
+    `;
+    document.body.appendChild(box);
+  }
+
+  const list = document.getElementById("leaderboardList");
+  const rows = await loadLeaderboard(10);
+
+  if (!rows.length) {
+    list.innerHTML = "<i>Aucun score pour l’instant</i>";
+    return;
+  }
+
+  list.innerHTML = rows.map((r, i) => {
+    const p = (r.username || "Joueur").toString().slice(0, 18);
+    return `
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.12)">
+        <div>#${i + 1} ${p}</div>
+        <div><b>${r.score}</b></div>
+      </div>
+    `;
+  }).join("");
 }...
-...
 </script>
   
   </body>
