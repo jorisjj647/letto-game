@@ -291,113 +291,122 @@ button{
 </script>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8FTPHS6"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+<!-- ZONE JEU LETTO -->
+<div class="title-container">
+  <h1>LETTO <span>🎰</span></h1>
+  <p>Ultra Casino Edition</p>
+</div>
 
-<div class="wrap">
-
-<h1>LETTO 🎰</h1>
-<div class="sub">Ultra Casino Edition</div>
-
-<div class="top">
+<div class="stats">
   <div class="pill">Score : <span id="score">0</span></div>
   <div class="pill">Parties : <span id="plays">0</span></div>
   <div class="pill">Meilleur : <span id="best">0</span></div>
 </div>
 
 <div id="grid" class="grid">
-  <div class="slot">?</div><div class="slot">?</div>
-  <div class="slot">?</div><div class="slot">?</div>
-  <div class="slot">?</div><div class="slot">?</div>
+  <div class="slot">?</div>
+  <div class="slot">?</div>
+  <div class="slot">?</div>
+  <div class="slot">?</div>
+  <div class="slot">?</div>
+  <div class="slot">?</div>
 </div>
 
 <button id="playBtn">PLAY / REPLAY</button>
+
 <div id="message">Clique SPIN</div>
 
 <div class="panel">
-<h3>📜 RÈGLES LETTO</h3>
-<ul>
-<li>💎 6 lettres identiques → JACKPOT +500</li>
-<li>🔥 Palindrome → +100</li>
-<li>⚡ Suite alphabétique (3+) → +5</li>
-<li>✨ Double lettre consécutive → +2</li>
-<li>🎯 3 voyelles / 3 consonnes → +1</li>
-<li>❌ Sinon → 0</li>
-</ul>
+  <h3>📜 RÈGLES LETTO</h3>
+  <ul>
+    <li>💎 6 lettres identiques → JACKPOT +500</li>
+    <li>🔥 Palindrome → +100</li>
+    <li>⚡ Suite alphabétique (3+) → +5</li>
+    <li>✨ Double lettre consécutive → +2</li>
+    <li>🎯 3 voyelles / 3 consonnes → +1</li>
+    <li>❌ Sinon → 0</li>
+  </ul>
 </div>
 
 <div class="panel">
-<h3>📊 Historique</h3>
-<div id="history" class="history"></div>
-</div>
-
+  <h3>📊 Historique</h3>
+  <pre id="history"></pre>
 </div>
 
 <script>
+window.addEventListener("DOMContentLoaded", () => {
+  const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const VOWELS = "AEIOUY";
 
-const ALPHABET="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const VOWELS=["A","E","I","O","U","Y"];
-
-const slots=document.querySelectorAll(".slot");
-const playBtn=document.getElementById("playBtn");
-const message=document.getElementById("message");
-const scoreEl=document.getElementById("score");
-const playsEl=document.getElementById("plays");
-const bestEl=document.getElementById("best");
-const historyEl=document.getElementById("history");
-
-let score=0,plays=0,best=0,history=[];
-
-function rand(){return ALPHABET[Math.floor(Math.random()*26)]}
-
-function palindrome(a){
-  for(let i=0;i<3;i++) if(a[i]!==a[5-i]) return false;
-  return true;
-}
-
-function straight(a){
-  let r=1;
-  for(let i=1;i<6;i++){
-    if(ALPHABET.indexOf(a[i])===ALPHABET.indexOf(a[i-1])+1) r++;
-    else r=1;
-    if(r>=3) return true;
-  }
-  return false;
-}
-
-function double(a){
-  for(let i=0;i<5;i++) if(a[i]===a[i+1]) return true;
-  return false;
-}
-
-function balance(a){
-  let v=0;
-  for(const l of a) if(VOWELS.includes(l)) v++;
-  return v===3;
-}
-
-function evaluate(a){
-  if(a.every(l=>l===a[0])) return ["💎 JACKPOT !!!",500,true];
-  if(palindrome(a)) return ["🔥 Palindrome",100,false];
-  if(straight(a)) return ["⚡ Suite",5,false];
-  if(double(a)) return ["✨ Double",2,false];
-  if(balance(a)) return ["🎯 Équilibre",1,false];
-  return ["❌ Perdu",0,false];
-}
-
-function render(a,win,jackpot){
-  slots.forEach((s,i)=>{
-    s.textContent=a[i];
-    s.classList.remove("spin");
-    s.classList.toggle("win",win);
-    s.classList.toggle("jackpot",jackpot);
-  });
-}
-  window.addEventListener("DOMContentLoaded", () => {
-  const playBtn = document.getElementById("playBtn");
   const slots = document.querySelectorAll(".slot");
+  const playBtn = document.getElementById("playBtn");
+  const scoreEl = document.getElementById("score");
+  const playsEl = document.getElementById("plays");
+  const bestEl = document.getElementById("best");
+  const message = document.getElementById("message");
+  const historyEl = document.getElementById("history");
+
+  let score = 0;
+  let plays = 0;
+  let best = 0;
+  let history = [];
+
+  function rand() {
+    return ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+  }
+
+  function palindrome(a) {
+    for (let i = 0; i < 3; i++) {
+      if (a[i] !== a[5 - i]) return false;
+    }
+    return true;
+  }
+
+  function straight(a) {
+    let run = 1;
+    for (let i = 1; i < 6; i++) {
+      if (ALPHABET.indexOf(a[i]) === ALPHABET.indexOf(a[i - 1]) + 1) {
+        run++;
+      } else {
+        run = 1;
+      }
+      if (run >= 3) return true;
+    }
+    return false;
+  }
+
+  function double(a) {
+    for (let i = 0; i < 5; i++) {
+      if (a[i] === a[i + 1]) return true;
+    }
+    return false;
+  }
+
+  function balance(a) {
+    let v = 0;
+    for (const l of a) {
+      if (VOWELS.includes(l)) v++;
+    }
+    return v === 3;
+  }
+
+  function evaluate(a) {
+    if (a.every(l => l === a[0])) return ["💎 JACKPOT !!!", 500, true];
+    if (palindrome(a)) return ["🔥 Palindrome", 100, false];
+    if (straight(a)) return ["⚡ Suite", 5, false];
+    if (double(a)) return ["✨ Double", 2, false];
+    if (balance(a)) return ["🎯 Équilibre", 1, false];
+    return ["❌ Perdu", 0, false];
+  }
+
+  function render(draw, win, jackpot) {
+    slots.forEach((s, i) => {
+      s.textContent = draw[i];
+      s.classList.remove("spin");
+      s.classList.toggle("win", win);
+      s.classList.toggle("jackpot", jackpot);
+    });
+  }
 
   if (!playBtn) {
     console.error("Bouton #playBtn introuvable");
@@ -437,7 +446,7 @@ function render(a,win,jackpot){
 
         render(draw, gain > 0, jp);
 
-        message.textContent = txt + "  +" + gain;
+        message.textContent = txt + " +" + gain;
 
         history.unshift(draw.join("") + " → " + txt + " +" + gain);
         history = history.slice(0, 10);
@@ -448,8 +457,7 @@ function render(a,win,jackpot){
     }, 80);
   };
 });
-
-<div style="margin-top:30px;font-size:12px;opacity:0.7">
+</script>
   © ALPHAZARD — All rights reserved
 </div>
 
