@@ -467,12 +467,21 @@ window.addEventListener("DOMContentLoaded", () => {
 
  const TABLE = "scores";
 
- async function saveScore(...)
+ async function saveScore(player, score, games = 0) {
+  const { error } = await sb
+    .from(TABLE)
+    .insert([{ username: player, score: score, plays: games }]);
+
+  if (error) {
+    console.error("saveScore error:", error.message);
+    return false;
+  }
+
+  return true;
+}
 ...
 ...
 </script>
-
-  </script>
   
   </body>
   </html>            
