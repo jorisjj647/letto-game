@@ -484,7 +484,20 @@ const sb = window.supabase.createClient(
 
   return true;
 }
-...
+async function loadLeaderboard(limit = 10) {
+  const { data, error } = await sb
+    .from(TABLE)
+    .select("username, score, plays, created_at")
+    .order("score", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("loadLeaderboard error:", error.message);
+    return [];
+  }
+
+  return data || [];
+}...
 ...
 </script>
   
