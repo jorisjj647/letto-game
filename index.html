@@ -318,14 +318,13 @@ button{
 
 <div id="message">Clique SPIN</div>
 <div class="panel">
-<h3>👤 Joueur</h3>
-<input id="playerName" placeholder="Ton pseudo">
+  <h3>👤 Joueur</h3>
+  <input id="playerName" placeholder="Ton pseudo">
 </div>
 
 <div class="panel">
 <h3>📜 RÈGLES LETTO</h3>
-...  
-  <h3>📜 RÈGLES LETTO</h3>
+
   <ul>
     <li>💎 6 lettres identiques → JACKPOT +500</li>
     <li>🔥 Palindrome → +100</li>
@@ -452,16 +451,14 @@ window.addEventListener("DOMContentLoaded", () => {
           if (score > best) best = score;
         }
 
-        scoreEl.textContent = score;
-        bestEl.textContent = best;
 scoreEl.textContent = score;
 bestEl.textContent = best;
 
 const player = document.getElementById("playerName").value || "Joueur";
 saveScore(player, score, plays);
-        render(draw, gain > 0, jp);
-
-        message.textContent = txt + " +" + gain;
+        
+render(draw, gain > 0, jp);
+message.textContent = txt + " +" + gain;
 
         history.unshift(draw.join("") + " → " + txt + " +" + gain);
         history = history.slice(0, 10);
