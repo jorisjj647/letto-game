@@ -454,11 +454,11 @@ window.addEventListener("DOMContentLoaded", () => {
 scoreEl.textContent = score;
 bestEl.textContent = best;
 
-const player = document.getElementById("playerName")?.value || "Joueur";
-saveScore(player, score, plays);
-        
 render(draw, gain > 0, jp);
 message.textContent = txt + " +" + gain;
+
+const player = document.getElementById("playerName")?.value || "Joueur";
+saveScore(player, score, plays);
 
         history.unshift(draw.join("") + " → " + txt + " +" + gain);
         history = history.slice(0, 10);
