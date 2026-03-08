@@ -454,7 +454,7 @@ window.addEventListener("DOMContentLoaded", () => {
 scoreEl.textContent = score;
 bestEl.textContent = best;
 
-const player = document.getElementById("playerName").value || "Joueur";
+const player = document.getElementById("playerName")?.value || "Joueur";
 saveScore(player, score, plays);
         
 render(draw, gain > 0, jp);
