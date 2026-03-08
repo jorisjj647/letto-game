@@ -451,24 +451,22 @@ window.addEventListener("DOMContentLoaded", () => {
           if (score > best) best = score;
         }
 
-scoreEl.textContent = score;
+<scoreEl.textContent = score;
 bestEl.textContent = best;
 
 render(draw, gain > 0, jp);
 message.textContent = txt + " +" + gain;
 
+history.unshift(draw.join("") + " → " + txt + " +" + gain);
+history = history.slice(0, 10);
+historyEl.textContent = history.join("\n");
 
-        history.unshift(draw.join("") + " → " + txt + " +" + gain);
-        history = history.slice(0, 10);
-        historyEl.textContent = history.join("\n");
-
-        playBtn.disabled = false;
-
-    
-      }
-    }, 80);
-  };
+playBtn.disabled = false;
+    }
+  }, 80);
+};
 });
+  
  </script>
 
  © ALPHAZARD — All rights reserved
