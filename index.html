@@ -446,10 +446,10 @@ window.addEventListener("DOMContentLoaded", () => {
         plays++;
         playsEl.textContent = plays;
 
-        if (gain > 0) {
-          score += gain;
-          if (score > best) best = score;
-        }
+    if (gain > 0) {
+  score += gain;
+  if (score > best) best = score;
+}
 
 scoreEl.textContent = score;
 bestEl.textContent = best;
@@ -462,8 +462,8 @@ history = history.slice(0, 10);
 historyEl.textContent = history.join("\n");
 
 playBtn.disabled = false;
-    }
-  }, 80);
+    } 
+  }, 80
 };
 });
   
