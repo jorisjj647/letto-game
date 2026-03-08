@@ -354,11 +354,14 @@ window.addEventListener("DOMContentLoaded", () => {
   const playsEl = document.getElementById("plays");
   const bestEl = document.getElementById("best");
   const playerNameEl = document.getElementById("playerName");
+
+if (playerNameEl) {
   playerNameEl.value = localStorage.getItem("lettoPlayer") || "";
 
-playerNameEl.addEventListener("input", () => {
-  localStorage.setItem("lettoPlayer", playerNameEl.value);
-});
+  playerNameEl.addEventListener("input", () => {
+    localStorage.setItem("lettoPlayer", playerNameEl.value);
+  });
+}
   const message = document.getElementById("message");
   const historyEl = document.getElementById("history");
 
