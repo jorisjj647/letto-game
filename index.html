@@ -466,12 +466,9 @@ if (streak >= 3) {
   historyEl.textContent = history.join("\n");
 
   playBtn.disabled = false;
-  localStorage.setItem("letto_best", best);
- } 
-  playBtn.disabled = false;
 localStorage.setItem("letto_best", best);
 }
-
+      
 }, 80);
 };
 });
