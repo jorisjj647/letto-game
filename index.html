@@ -309,7 +309,7 @@ button{
 </div>
 
 <button id="playBtn">PLAY / REPLAY</button>
-
+<button id="shareBtn">📤 Partager mon score</button>
 <div id="message">Clique SPIN</div>
 <div class="panel">
   <h3>👤 Joueur</h3>
@@ -467,7 +467,13 @@ if (streak >= 3) {
   playBtn.disabled = false;
   localStorage.setItem("letto_best", best);
  } 
-      
+   const shareBtn = document.getElementById("shareBtn");
+
+shareBtn.addEventListener("click", () => {
+const text = "Je joue à LETTO 🎰 ! Essaie de battre mon score : " + score;
+navigator.clipboard.writeText(text);
+alert("Score copié ! Tu peux maintenant le partager.");
+});   
  }, 80);
  };
  });
