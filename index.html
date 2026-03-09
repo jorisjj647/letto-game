@@ -431,32 +431,33 @@ window.addEventListener("DOMContentLoaded", () => {
       slots.forEach(s => s.textContent = rand());
       spins--;
 
-      if (spins <= 0) {
-        clearInterval(anim);
+if (spins <= 0) {
+  clearInterval(anim);
 
-        const draw = [rand(), rand(), rand(), rand(), rand(), rand()];
-        const [txt, gain, jp] = evaluate(draw);
+  const draw = [rand(), rand(), rand(), rand(), rand(), rand()];
+  const [txt, gain, jp] = evaluate(draw);
 
-        plays++;
-        playsEl.textContent = plays;
+  plays++;
+  playsEl.textContent = plays;
 
-    if (gain > 0) {
-  score += gain;
-  if (score > best) best = score;
-}
+  if (gain > 0) {
+    score += gain;
+    if (score > best) best = score;
+  }
 
-scoreEl.textContent = score;
-bestEl.textContent = best;
+  scoreEl.textContent = score;
+  bestEl.textContent = best;
 
-render(draw, gain > 0, jp);
-message.textContent = txt + " +" + gain;
+  render(draw, gain > 0, jp);
+  message.textContent = txt + " +" + gain;
 
-history.unshift(draw.join("") + " → " + txt + " +" + gain);
-history = history.slice(0, 10);
-historyEl.textContent = history.join("\n");
+  history.unshift(draw.join("") + " → " + txt + " +" + gain);
+  history = history.slice(0, 10);
+  historyEl.textContent = history.join("\n");
 
-playBtn.disabled = false;
-    } 
+  playBtn.disabled = false;
+ }      
+
   }, 80
 };
 });
