@@ -352,7 +352,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
   let score = 0;
   let plays = 0;
-  let best = 0;
+  let best = parseInt(localStorage.getItem("letto_best") || "0");
+  let streak = 0;
   let history = [];
 
   function rand() {
@@ -441,21 +442,30 @@ if (spins <= 0) {
   playsEl.textContent = plays;
 
   if (gain > 0) {
-    score += gain;
-    if (score > best) best = score;
-  }
+  streak++;
+  score += gain + streak;
+  if (score > best) best = score;
+} else {
+  streak = 0;
+}
 
   scoreEl.textContent = score;
   bestEl.textContent = best;
 
   render(draw, gain > 0, jp);
-  message.textContent = txt + " +" + gain;
 
+  render(draw, gain > 0, jp);
+
+if (streak >= 3) {
+  slots.forEach(s => s.classList.add("jackpot"));
+}
+  message.textContent = txt + " +" + gain + " 🔥 Série x" + streak;
   history.unshift(draw.join("") + " → " + txt + " +" + gain);
   history = history.slice(0, 10);
   historyEl.textContent = history.join("\n");
 
   playBtn.disabled = false;
+  localStorage.setItem("letto_best", best);
  } 
       
  }, 80);
