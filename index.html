@@ -230,14 +230,31 @@ h1{
 }
 
 .jackpot{
-  animation:flash .5s infinite alternate;
+  animation: jackpotFlash 0.35s infinite alternate;
+  box-shadow: 0 0 12px gold, 0 0 24px orange;
+}
+
+@keyframes jackpotFlash{
+  from{ transform: scale(1); filter: brightness(1); }
+  to{ transform: scale(1.08); filter: brightness(1.35); }
 }
 
 @keyframes flash{
   from{box-shadow:0 0 25px gold}
   to{box-shadow:0 0 70px gold}
 }
+body.jackpot-mode{
+  animation: bodyJackpot 0.35s 4 alternate;
+}
 
+@keyframes bodyJackpot{
+  from{
+    background: #111;
+  }
+  to{
+    background: linear-gradient(135deg, #3a2a00, #111, #5a3a00);
+  }
+}
 button{
   padding:16px 45px;
   font-size:24px;
@@ -341,7 +358,7 @@ button{
 window.addEventListener("DOMContentLoaded", () => {
   const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const VOWELS = "AEIOUY";
-
+  const jackpotSound = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
   const slots = document.querySelectorAll(".slot");
   const playBtn = document.getElementById("playBtn");
   const scoreEl = document.getElementById("score");
@@ -451,15 +468,19 @@ if (spins <= 0) {
 
   scoreEl.textContent = score;
   bestEl.textContent = best;
-
+  
   render(draw, gain > 0, jp);
-
-  render(draw, gain > 0, jp);
-
-if (streak >= 3) {
+if (jp || streak >= 3) {
   slots.forEach(s => s.classList.add("jackpot"));
+  jackpotSound.currentTime = 0;
+  jackpotSound.play().catch(() => {});
+
+  document.body.classList.add("jackpot-mode");
+  setTimeout(() => {
+    document.body.classList.remove("jackpot-mode");
+  }, 1500);
 }
-  message.textContent = txt + " +" + gain + " 🔥 Série x" + streak;
+  message.textContent = (jp ? "💎 JACKPOT !!! " : "") + txt + " +" + gain + " 🔥 Série x" + streak;
   history.unshift(draw.join("") + " → " + txt + " +" + gain);
   history = history.slice(0, 10);
   historyEl.textContent = history.join("\n");
