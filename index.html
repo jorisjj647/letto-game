@@ -1,3 +1,4 @@
+
 @b
 <!doctype html>
 <html lang="fr">
@@ -472,6 +473,11 @@ if (streak >= 3) {
 shareBtn.addEventListener("click", () => {
 const text = "Je joue à LETTO 🎰 ! Essaie de battre mon score : " + score;
 navigator.clipboard.writeText(text);
+  const msg = document.getElementById("shareMsg");
+msg.textContent = "Score copié ✅";
+setTimeout(() => {
+  msg.textContent = "";
+}, 2000);
 alert("Score copié ! Tu peux maintenant le partager.");
 });   
  }, 80);
