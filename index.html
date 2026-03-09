@@ -469,24 +469,14 @@ if (streak >= 3) {
   playBtn.disabled = false;
   localStorage.setItem("letto_best", best);
  } 
-   const shareBtn = document.getElementById("shareBtn");
+  playBtn.disabled = false;
+localStorage.setItem("letto_best", best);
+}
 
-shareBtn.addEventListener("click", () => {
-  
-const text = "Je joue à LETTO 🎰 ! Essaie de battre mon score : " + score;
-navigator.clipboard.writeText(text);
-  
-const msg = document.getElementById("shareMsg");
-msg.textContent = "Score copié ✅";
-  
-setTimeout(() => {
-  msg.textContent = "";
-}, 2000);
-
-});   
- };
- });
-  
+}, 80);
+};
+});
+ 
  </script>
 
  © ALPHAZARD — All rights reserved
