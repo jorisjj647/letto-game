@@ -467,11 +467,13 @@ if (streak >= 3) {
   playBtn.disabled = false;
 localStorage.setItem("letto_best", best);
   // updateLeaderboard();
+  
 }
       
 }, 80);
 };
 });
+  
   function updateLeaderboard() {
   const name = document.getElementById("playerName").value || "Anonyme";
   const score = best;
