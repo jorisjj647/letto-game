@@ -466,11 +466,31 @@ if (streak >= 3) {
 
   playBtn.disabled = false;
 localStorage.setItem("letto_best", best);
+  updateLeaderboard();
 }
       
 }, 80);
 };
 });
+  function updateLeaderboard() {
+  const name = document.getElementById("playerName").value || "Anonyme";
+  const score = best;
+
+  let leaderboard = JSON.parse(localStorage.getItem("letto_leaderboard") || "[]");
+
+  leaderboard.push({ name, score });
+
+  leaderboard.sort((a, b) => b.score - a.score);
+
+  leaderboard = leaderboard.slice(0, 5);
+
+  localStorage.setItem("letto_leaderboard", JSON.stringify(leaderboard));
+
+  const list = document.getElementById("leaderboardList");
+  list.innerHTML = leaderboard
+    .map((p, i) => `<div>${i + 1}. ${p.name} — ${p.score}</div>`)
+    .join("");
+}
  </script>
  © ALPHAZARD — All rights reserved
 </div>
