@@ -421,8 +421,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   playBtn.onclick = function () {
-    console.log("clic play");
-    playBtn.disabled = true;
+   playBtn.disabled = true;
 
     slots.forEach(s => {
       s.classList.remove("win", "jackpot");
