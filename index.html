@@ -315,7 +315,7 @@ button{
 <div id="message">Clique SPIN</div>
 <div class="panel">
   <h3>👤 Joueur</h3>
-  <input id="playerInput" placeholder="Ton pseudo">
+  <input id="playerInput" placeholder="Ton pseudo" value="">
 </div>
 
 <div class="panel">
@@ -482,8 +482,7 @@ if(!player){
   localStorage.setItem("lettoPlayer", player);
 }
 
-document.getElementById("playerName").textContent = player;
-
+document.getElementById("playerInput").value = player;
 });
  </script>
 
