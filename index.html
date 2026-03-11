@@ -473,7 +473,9 @@ if (streak >= 3) {
  }, 80);
  };
  });
-  let player = localStorage.getItem("lettoPlayer");
+ document.addEventListener("DOMContentLoaded", function(){
+
+let player = localStorage.getItem("lettoPlayer");
 
 if(!player){
   player = "Player" + Math.floor(1000 + Math.random()*9000);
@@ -481,6 +483,8 @@ if(!player){
 }
 
 document.getElementById("playerName").textContent = player;
+
+});
  </script>
 
  © ALPHAZARD — All rights reserved
