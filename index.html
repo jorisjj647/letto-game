@@ -292,23 +292,8 @@ button{
   font-size:14px;
 }
     
-@media (max-width:768px){
-.title-container{margin-top:20px;}
-.grid{transform:scale(0.9);}
-.panel{width:92%;margin:auto;}
-#playBtn{width:80%;font-size:18px;}
-}
-    
 </style>
-   
-<!-- PWA / App mobile -->
-<meta name="theme-color" content="#000000" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="LETTO" />
-<link rel="manifest" href="manifest.json" />
-<link rel="apple-touch-icon" href="icon-192.png" />
-@media (max-width: 768px) {
+  @media (max-width: 768px) {
 
 .title-container{
   margin-top:20px;
@@ -328,7 +313,15 @@ button{
   font-size:18px;
 }
 
-}
+}  
+<!-- PWA / App mobile -->
+<meta name="theme-color" content="#000000" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="LETTO" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+
 <script> 
    // Service Worker (offline + app-like)
   if ("serviceWorker" in navigator) {
@@ -539,4 +532,3 @@ document.getElementById("playerInput").value = player;
 
   </body>
   </html>            
-
