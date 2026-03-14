@@ -60,8 +60,6 @@ h1, h2, .title, .subtitle {
   width: 100%;
 }
 
-</style>
-
 <p>Ultra Casino Edition</p>
 <p id="playerName" style="text-align:center; font-size:14px; opacity:0.8;">
 <button>PLAY / REPLAY</button>
@@ -203,12 +201,14 @@ h1{
 .sub{opacity:.85;margin-bottom:15px}
 
 .top{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-bottom:15px;
+display:flex;
+justify-content:center;
+gap:12px;
+flex-wrap:wrap;
+margin-bottom:15px;
 }
+
+</style>
 
 .pill{
   background:#111;
@@ -305,8 +305,8 @@ button{
     window.addEventListener("load", () => {
       navigator.serviceWorker.register("./sw.js").catch(() => {});
     });
-  }
 </script>
+    
 <!-- ZONE JEU LETTO -->
 <div class="title-container">
   <h1>LETTO <span>🎰</span></h1>
