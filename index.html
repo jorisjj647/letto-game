@@ -1017,7 +1017,10 @@ if(!player){
   localStorage.setItem("lettoPlayer", player);
 }
 
-document.getElementById("playerInput").value = player;
+const input = document.getElementById("playerInput");
+if (input) {
+  input.value = player;
+}
 });
  </script>
 
