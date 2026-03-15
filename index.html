@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+@b
+<!doctype html>
 <html lang="fr">
 
 <head>
@@ -10,85 +11,505 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-
-body{
-background:#000;
-color:white;
-font-family:Arial, Helvetica, sans-serif;
-text-align:center;
-margin:0;
-padding:0;
-}
-
-h1{
-color:gold;
-margin-top:40px;
-}
-
-.subtitle{
-color:#ddd;
-margin-bottom:20px;
-}
-
-button{
-padding:16px 45px;
-font-size:24px;
-border-radius:12px;
-border:none;
-background:gold;
-color:black;
-font-weight:bold;
-cursor:pointer;
-box-shadow:0 0 25px gold;
-}
-
-.panel{
-margin-top:25px;
-background:#111;
-border:1px solid gold;
-border-radius:14px;
-padding:15px;
-width:300px;
-margin-left:auto;
-margin-right:auto;
-text-align:left;
-}
-
-.panel h3{
-margin-top:0;
-color:gold;
-}
-
-.history{
-white-space:pre-line;
-font-family:monospace;
-font-size:14px;
-}
-
-</style>
-
 </head>
 
 <body>
+    
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W8FTPHS6');</script>
+<!-- End Google Tag Manager -->
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PR7VQD4HS7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PR7VQD4HS7');
+</script>
 
 <h1>LETTO</h1>
-<p class="subtitle">Ultra Casino Edition</p>
+<p class="subtitle">Ultra Casino Letter Game</p>
+<p class="studio">by ALPHAZARD</p>
 
+<style>
+
+.subtitle{
+font-size:18px;
+color:#cccccc;
+margin-top:-10px;
+}
+
+.studio{
+font-size:14px;
+color:#888888;
+margin-bottom:20px;
+letter-spacing:2px;
+}
+
+h1, p{
+text-align:center;
+}
+h1, h2, .title, .subtitle {
+text-align: center;
+width: 100%;
+}
+  
+</style>
+ 
+<p>Ultra Casino Edition</p>
+  
+  <p id="playerName" style="text-align:center; font-size:14px; opacity:0.8;">Player8472</p>
+  
 <button>PLAY / REPLAY</button>
+  
+<p>Clique SPIN</p>
+ 
 
-<div class="panel">
-<h3>RÈGLES LETTO</h3>
+/* Centrer LETTO + logo */
+.header, .title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
-<ul>
-<li>6 lettres identiques = JACKPOT +500</li>
-<li>Palindrome = +100</li>
-<li>Suite alphabétique = +5</li>
-<li>Double lettre consécutive = +2</li>
-<li>3 voyelles / 3 consonnes = +1</li>
-</ul>
+/* Centrer bouton PLAY */
+button, .play-btn {
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+}
 
+/* Centrer texte SPIN */
+.spin-text, p {
+  text-align: center;
+}
+
+
+/* force tous les gros conteneurs à être noirs (souvent le fond blanc vient d'ici) */
+#app, .app, .container, .wrapper, main, section, header, footer, .panel, .card {
+  background: #000 !important;
+  color: #fff !important;
+}
+
+/* évite les bandes blanches/scroll horizontal */
+body { overflow-x: hidden !important; }
+  /* ===== LETTO (6 lettres) : mobile-friendly ===== */
+/* ✅ Safe area iPhone + pas de débordement */
+/* FORCER LE MODE SOMBRE */
+html, body {
+  background: #000 !important;
+  color: #fff !important;
+}
+  /* ===== CENTRAGE TITRE + BOUTONS ===== */
+
+h1, h2, .title, .subtitle {
+  text-align: center;
+  width: 100%;
+}
+
+/* Centrer LETTO + logo */
+.header, .title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Centrer bouton PLAY */
+button, .play-btn {
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+}
+
+/* Centrer texte SPIN */
+.spin-text, p {
+  text-align: center;
+}
+
+/* Empêche le fond blanc sur mobile */
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* Texte des règles */
+.rules, .rules * {
+  color: #fff !important;
+}
+
+/* ✅ Ligne des 6 lettres (toujours visible) */
+.letters-row{
+  width: min(420px, 100%);
+  margin: 18px auto 0;
+  padding: 0 12px;
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 4px;
+  justify-items: center;
+}
+
+/* ✅ Case lettre responsive (s’adapte à l’iPhone) */
+.letter{
+  width: 100%;
+  aspect-ratio: 1 / 1;      /* carré parfait */
+  min-width: 40px;
+  max-width: 64px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size: clamp(18px, 4.8vw, 28px);
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+/* ✅ Très petits écrans (iPhone SE, etc.) */
+@media (max-width: 360px){
+  .letters-row{
+width: 100%;
+gap: 4px;
+padding: 0 10px;
+}
+  .letter{
+    max-width: 44px;
+    border-radius: 10px;
+  }
+}
+
+  margin:0;
+  font-family:Arial;
+  background:radial-gradient(circle,#1b1b2f,#0b0d12);
+  color:white;
+  text-align:center;
+}
+
+.wrap{max-width:950px;margin:auto;padding:20px}
+
+h1{
+  font-size:48px;
+  color:gold;
+  text-shadow:0 0 25px gold;
+  margin-bottom:5px;
+}
+
+.sub{opacity:.85;margin-bottom:15px}
+
+.top{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:15px;
+}
+
+.pill{
+  background:#111;
+  padding:10px 18px;
+  border-radius:30px;
+  border:1px solid gold;
+  box-shadow:0 0 10px gold inset;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(6,72px);
+  justify-content:center;
+  gap:12px;
+  margin:20px 0;
+}
+
+.slot{
+  height:72px;
+  line-height:72px;
+  font-size:36px;
+  font-weight:bold;
+  background:#000;
+  border:2px solid gold;
+  border-radius:14px;
+  box-shadow:0 0 12px gold inset;
+}
+
+.spin{animation:spin .1s linear infinite}
+
+@keyframes spin{
+  0%{transform:translateY(-5px)}
+  50%{transform:translateY(5px)}
+  100%{transform:translateY(-5px)}
+}
+
+.win{
+  background:#1cff5c;
+  color:black;
+  box-shadow:0 0 25px #1cff5c;
+}
+
+.jackpot{
+  animation:flash .5s infinite alternate;
+}
+
+@keyframes flash{
+  from{box-shadow:0 0 25px gold}
+  to{box-shadow:0 0 70px gold}
+}
+
+button{
+  padding:16px 45px;
+  font-size:24px;
+  border-radius:12px;
+  border:none;
+  background:gold;
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 0 25px gold;
+}
+
+#message{font-size:22px;margin-top:12px;min-height:28px}
+
+.panel{
+  margin-top:25px;
+  background:#111;
+  border:1px solid gold;
+  border-radius:14px;
+  padding:15px;
+  text-align:left;
+}
+
+.panel h3{margin-top:0;color:gold}
+
+.history{
+  white-space:pre-line;
+  font-family:monospace;
+  font-size:14px;
+}
+
+<!-- PWA / App mobile -->
+<meta name="theme-color" content="#000000" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="LETTO" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+
+<script> 
+   // Service Worker (offline + app-like)
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    });
+  }
+</script>
+</head>
+<body>
+<!-- ZONE JEU LETTO -->
+<div class="title-container">
+  <h1>LETTO <span>🎰</span></h1>
+  <p>Ultra Casino Edition</p>
 </div>
 
-</body>
-</html>
+<div class="stats">
+  <div class="pill">Score : <span id="score">0</span></div>
+  <div class="pill">Parties : <span id="plays">0</span></div>
+  <div class="pill">Meilleur : <span id="best">0</span></div>
+</div>
+
+<div id="grid" class="grid">
+  <div class="slot">?</div>
+  <div class="slot">?</div>
+  <div class="slot">?</div>
+  <div class="slot">?</div>
+  <div class="slot">?</div>
+  <div class="slot">?</div>
+</div>
+
+<button id="playBtn">PLAY / REPLAY</button>
+
+<div id="message">Clique SPIN</div>
+<div class="panel">
+  <h3>👤 Joueur</h3>
+  <input id="playerInput" placeholder="Ton pseudo" value="">
+</div>
+
+<div class="panel">
+<h3>📜 RÈGLES LETTO</h3>
+
+  <ul>
+    <li>💎 6 lettres identiques → JACKPOT +500</li>
+    <li>🔥 Palindrome → +100</li>
+    <li>⚡ Suite alphabétique (3+) → +5</li>
+    <li>✨ Double lettre consécutive → +2</li>
+    <li>🎯 3 voyelles / 3 consonnes → +1</li>
+    <li>❌ Sinon → 0</li>
+  </ul>
+</div>
+
+<div class="panel">
+  <h3>📊 Historique</h3>
+  <pre id="history"></pre>
+</div>
+<div class="panel">
+  <h3>🏆 Classement</h3>
+  <div id="leaderboardList">Classement en préparation</div>
+</div>
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const VOWELS = "AEIOUY";
+
+  const slots = document.querySelectorAll(".slot");
+  const playBtn = document.getElementById("playBtn");
+  const scoreEl = document.getElementById("score");
+  const playsEl = document.getElementById("plays");
+  const bestEl = document.getElementById("best");
+  const message = document.getElementById("message");
+  const historyEl = document.getElementById("history");
+
+  let score = 0;
+  let plays = 0;
+  let best = parseInt(localStorage.getItem("letto_best") || "0");
+  let streak = 0;
+  let history = [];
+
+  function rand() {
+    return ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+  }
+
+  function palindrome(a) {
+    for (let i = 0; i < 3; i++) {
+      if (a[i] !== a[5 - i]) return false;
+    }
+    return true;
+  }
+
+  function straight(a) {
+    let run = 1;
+    for (let i = 1; i < 6; i++) {
+      if (ALPHABET.indexOf(a[i]) === ALPHABET.indexOf(a[i - 1]) + 1) {
+        run++;
+      } else {
+        run = 1;
+      }
+      if (run >= 3) return true;
+    }
+    return false;
+  }
+
+  function double(a) {
+    for (let i = 0; i < 5; i++) {
+      if (a[i] === a[i + 1]) return true;
+    }
+    return false;
+  }
+
+  function balance(a) {
+    let v = 0;
+    for (const l of a) {
+      if (VOWELS.includes(l)) v++;
+    }
+    return v === 3;
+  }
+
+  function evaluate(a) {
+    if (a.every(l => l === a[0])) return ["💎 JACKPOT !!!", 500, true];
+    if (palindrome(a)) return ["🔥 Palindrome", 100, false];
+    if (straight(a)) return ["⚡ Suite", 5, false];
+    if (double(a)) return ["✨ Double", 2, false];
+    if (balance(a)) return ["🎯 Équilibre", 1, false];
+    return ["❌ Perdu", 0, false];
+  }
+
+  function render(draw, win, jackpot) {
+    slots.forEach((s, i) => {
+      s.textContent = draw[i];
+      s.classList.remove("spin");
+      s.classList.toggle("win", win);
+      s.classList.toggle("jackpot", jackpot);
+    });
+  }
+
+  if (!playBtn) {
+    console.error("Bouton #playBtn introuvable");
+    return;
+  }
+
+  playBtn.onclick = function () {
+    playBtn.disabled = true;
+
+    slots.forEach(s => {
+      s.classList.remove("win", "jackpot");
+      s.classList.add("spin");
+    });
+
+    let spins = 16;
+
+    const anim = setInterval(() => {
+      slots.forEach(s => s.textContent = rand());
+      spins--;
+
+if (spins <= 0) {
+  clearInterval(anim);
+
+  const draw = [rand(), rand(), rand(), rand(), rand(), rand()];
+  const [txt, gain, jp] = evaluate(draw);
+
+  plays++;
+  playsEl.textContent = plays;
+
+  if (gain > 0) {
+  streak++;
+  score += gain + streak;
+  if (score > best) best = score;
+} else {
+  streak = 0;
+}
+
+  scoreEl.textContent = score;
+  bestEl.textContent = best;
+
+  render(draw, gain > 0, jp);
+
+  render(draw, gain > 0, jp);
+
+if (streak >= 3) {
+  slots.forEach(s => s.classList.add("jackpot"));
+}
+  message.textContent = txt + " +" + gain + " 🔥 Série x" + streak;
+  history.unshift(draw.join("") + " → " + txt + " +" + gain);
+  history = history.slice(0, 10);
+  historyEl.textContent = history.join("\n");
+
+  playBtn.disabled = false;
+  localStorage.setItem("letto_best", best);
+ } 
+      
+ }, 80);
+ };
+ });
+ document.addEventListener("DOMContentLoaded", function(){
+
+let player = localStorage.getItem("lettoPlayer");
+
+if(!player){
+  player = "Player" + Math.floor(1000 + Math.random()*9000);
+  localStorage.setItem("lettoPlayer", player);
+}
+
+document.getElementById("playerInput").value = player;
+});
+ </script>
+
+ © ALPHAZARD — All rights reserved
+</div>
+
+  </body>
+  </html>            
