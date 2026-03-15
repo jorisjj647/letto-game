@@ -306,12 +306,17 @@
     return {key:"lose", title:"Perdu — retente ta chance 🍀", payout:0};
   }
 
-  function render(draw, win){
-    slots.forEach((s,i)=>{
-      s.textContent = draw[i];
-      s.classList.toggle("win", win);
-    });
-  }
+ function render(draw, win){
+  slots.forEach((s,i)=>{
+    s.textContent = draw[i];
+
+    if(win){
+      s.classList.add("win");
+    }else{
+      s.classList.remove("win");
+    }
+  });
+}
 
   function pushHistory(draw, res){
     const line = `${draw.join("")}  →  ${res.key==="lose" ? "LOSE" : "+"+res.payout} (${res.key})`;
