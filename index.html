@@ -76,6 +76,7 @@
    background:linear-gradient(180deg,#ffe27a,#d7a90e);
    box-shadow:0 0 18px rgba(255,215,64,.28);
    transition:transform .15s ease, box-shadow .15s ease;
+   animation: pulseGold 1.8s infinite;
  }
 
   button:hover{
@@ -166,9 +167,25 @@
     button{font-size:18px;padding:12px 22px}
     .panel{padding:14px}
   }
-</style>
-</head>
-<body>
+  
+  @keyframes pulseGold{
+    0%{
+     box-shadow:0 0 12px rgba(255,215,64,.22);
+     transform:scale(1);
+   }
+   50%{
+     box-shadow:0 0 26px rgba(255,215,64,.48);
+     transform:scale(1.03);
+   }
+   100%{
+     box-shadow:0 0 12px rgba(255,215,64,.22);
+     transform:scale(1);
+   }
+ }
+  
+ </style>
+ </head>
+ <body>
   <div class="wrap">
     <h1>LETTO</h1>
     <div class="sub">The Letter Lotto</div>
