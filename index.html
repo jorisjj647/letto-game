@@ -264,6 +264,48 @@ text-shadow:
 0 0 40px #39ff14;
 }
 } 
+  .panel{
+  margin:22px auto 0;
+  max-width:760px;
+  text-align:left;
+  border:2px solid #ffd84d;
+  border-radius:16px;
+  padding:16px 18px;
+  background:rgba(8,10,18,0.55);
+  box-shadow:
+    0 0 12px rgba(255,215,0,0.18),
+    inset 0 0 10px rgba(255,215,0,0.05);
+}
+
+.panel h3{
+  margin:0 0 12px 0;
+  color:#ffd84d;
+  font-size:18px;
+  letter-spacing:.03em;
+  text-transform:none;
+}
+
+#history,
+#leaderboardList{
+  margin-top:8px;
+  color:#fff3b0;
+}
+
+.rules-list{
+  margin:0;
+  padding-left:18px;
+  line-height:1.8;
+  color:#fff3b0;
+}
+  @keyframes slotSpin{
+  0%{ transform:translateY(-10px); opacity:0.2; }
+  50%{ transform:translateY(6px); opacity:1; }
+  100%{ transform:translateY(-10px); opacity:0.2; }
+}
+
+.spinning{
+  animation:slotSpin 0.15s linear infinite;
+}
  </style>
  </head>
  <body>
@@ -404,7 +446,7 @@ text-shadow:
       render(temp,false);
       await new Promise(r=>setTimeout(r, 30 + t*10));
     }
-    render(finalDraw,false);
+    render(finalDraw,true);
   }
 
   playBtn.addEventListener("click", async ()=>{
