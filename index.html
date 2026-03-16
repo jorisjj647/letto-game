@@ -36,29 +36,37 @@
   }
 
   .top{
-    display:flex;
-    justify-content:center;
-    gap:12px;
-    flex-wrap:wrap;
-    margin:12px 0 24px;
-  }
+  width:100%;
+  max-width:900px;
+  margin:18px auto 22px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  align-items:stretch;
+}
 
   .pill{
-    border:1px solid #7a5c12;
-    background:linear-gradient(180deg,#1b1f2b,#0f1320);
-    border-radius:999px;
-    padding:10px 16px;
-    box-shadow:0 0 12px rgba(255,215,64,.10);
-  }
+  width:100%;
+  box-sizing:border-box;
+  border:2px solid #ffd84d;
+  border-radius:20px;
+  padding:8px 16px;
+  background:rgba(0,0,0,0.22);
+  box-shadow:
+    0 0 10px rgba(255,215,0,0.65),
+    0 0 22px rgba(255,215,0,0.28),
+    inset 0 0 10px rgba(255,215,0,0.18);
+  text-align:left;
+}
 
   .k{
-    opacity:.9;
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    color:#ffe082;
-    font-weight:bold;
-  }
+  opacity:1;
+  font-size:13px;
+  text-transform:none;
+  letter-spacing:.02em;
+  color:#fff3b0;
+  font-weight:bold;
+}
 
   .mono{
     font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
