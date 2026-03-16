@@ -465,7 +465,7 @@ text-shadow:
     if (res.payout > 0){
       score += res.payout;
       scoreEl.textContent = String(score);
-      render(draw,true);
+      render(draw,false);
       msgEl.classList.remove("muted");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout} points</span>`;
     } else {
