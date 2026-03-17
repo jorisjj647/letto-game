@@ -466,23 +466,12 @@ function render(draw, win){
 
   async function animate(finalDraw){
   const steps = 14;
-
   for (let t = 0; t < steps; t++){
-    const temp = Array.from({ length: 6 }, randLetter);
-    render(temp, false);
+    const temp = Array.from({length:6}, randLetter);
+    render(temp,false);
     await new Promise(r => setTimeout(r, 30 + t * 10));
   }
-
-  for (let i = 0; i < 6; i++){
-    const temp = [...finalDraw];
-    for (let j = i + 1; j < 6; j++){
-      temp[j] = randLetter();
-    }
-    render(temp, false);
-    await new Promise(r => setTimeout(r, 160));
-  }
-
-  render(finalDraw, false);
+  render(finalDraw,false);
 }
 
   playBtn.addEventListener("click", async ()=>{
