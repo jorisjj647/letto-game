@@ -445,22 +445,16 @@ Classement en préparation
     return {key:"lose", title:"Perdu — retente ta chance 🍀", payout:0};
   }
 
- function render(draw, win){
- slots.forEach((s,i)=>{
-  s.textContent = draw[i];
+function render(draw, win){
+  slots.forEach((s,i)=>{
+    s.textContent = draw[i];
 
-  s.classList.remove("active");
-
-  setTimeout(()=>{
-    s.classList.add("active");
-  }, i * 40);
- });
-  if(win){
-    s.classList.add("win");
-  } else {
-    s.classList.remove("win");
-  }
-});
+    if(win){
+      s.classList.add("win");
+    } else {
+      s.classList.remove("win");
+    }
+  });
 }
 
   function pushHistory(draw, res){
