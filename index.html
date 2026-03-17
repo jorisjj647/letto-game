@@ -446,9 +446,16 @@ Classement en préparation
   }
 
  function render(draw, win){
-  slots.forEach((s,i)=>{
-    s.textContent = draw[i];
+ slots.forEach((s,i)=>{
+  s.textContent = draw[i];
 
+  s.classList.remove("active");
+
+  setTimeout(()=>{
+    s.classList.add("active");
+  }, i*40);
+});
+   
     if(true){
       s.classList.add("win");
     }else{
