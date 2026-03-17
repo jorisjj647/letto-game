@@ -458,7 +458,15 @@ Classement en préparation
     const steps = 14;
     for (let t=0;t<steps;t++){
       const temp = Array.from({length:6}, randLetter);
-      render(temp,false);
+      render(temp,false);.spin-btn{
+  animation:pulseCasino 1.4s infinite;
+}
+
+@keyframes pulseCasino{
+  0%{box-shadow:0 0 10px #ffd700;}
+  50%{box-shadow:0 0 25px #ffd700;}
+  100%{box-shadow:0 0 10px #ffd700;}
+}
       await new Promise(r=>setTimeout(r, 30 + t*10));
     }
     render(finalDraw,true);
