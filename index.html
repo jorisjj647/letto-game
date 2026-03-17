@@ -453,15 +453,14 @@ Classement en préparation
 
   setTimeout(()=>{
     s.classList.add("active");
-  }, i*40);
+  }, i * 40);
+
+  if(win){
+    s.classList.add("win");
+  } else {
+    s.classList.remove("win");
+  }
 });
-   
-    if(true){
-      s.classList.add("win");
-    }else{
-      s.classList.remove("win");
-    }
-  });
 }
 
   function pushHistory(draw, res){
