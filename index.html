@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LETTO — The Letter Lotto</title>
+  .win{
+  color:#00ff88;
+  text-shadow:0 0 10px rgba(0,255,136,0.8);
+}
+
+.lose{
+  color:#ff4d4d;
+  text-shadow:0 0 10px rgba(255,77,77,0.6);
+}
 <style>
   body{
     margin:0;
@@ -527,10 +536,11 @@ function render(draw, win){
       render(draw,false);
       msgEl.classList.remove("muted");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout} points</span>`;
-    } else {
+    }else {
       render(draw,false);
       msgEl.classList.remove("muted");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique PLAY AGAIN.</span>`;
+      msgEl.className = res.payout > 0 ? "win" : "lose";
     }
 
     pushHistory(draw,res);
