@@ -398,6 +398,13 @@ Classement en préparation
   const playsEl = document.getElementById("plays");
   const bestEl = document.getElementById("best");
   const historyEl = document.getElementById("history");
+  const playerInput = document.getElementById("player");
+
+  playerInput.value = localStorage.getItem("letto_player") || "";
+
+playerInput.addEventListener("input", () => {
+  localStorage.setItem("letto_player", playerInput.value);
+});
 
   let score = 0;
   let plays = 0;
