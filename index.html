@@ -493,6 +493,7 @@ function render(draw, win){
 
     const draw = Array.from({length:6}, randLetter);
     await animate(draw);
+    render(draw, true); 
 
     const res = evaluate(draw);
 
