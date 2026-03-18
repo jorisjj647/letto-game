@@ -403,11 +403,13 @@ Classement en préparation
   const historyEl = document.getElementById("history");
   const playerInput = document.getElementById("playerInput");
 
+  if (playerInput) {
   playerInput.value = localStorage.getItem("letto_player") || "";
 
-playerInput.addEventListener("input", () => {
-  localStorage.setItem("letto_player", playerInput.value);
-});
+  playerInput.addEventListener("input", () => {
+    localStorage.setItem("letto_player", playerInput.value);
+  });
+}
 
   let score = 0;
   let plays = 0;
