@@ -396,10 +396,13 @@ Classement en préparation
   const msgEl = document.getElementById("msg");
   const scoreEl = document.getElementById("score");
   const playsEl = document.getElementById("plays");
+  const bestEl = document.getElementById("best");
   const historyEl = document.getElementById("history");
 
   let score = 0;
   let plays = 0;
+  let best = Number(localStorage.getItem("letto_best")) || 0;
+bestEl.textContent = best;
 
   const randLetter = () => ALPHABET[Math.floor(Math.random()*ALPHABET.length)];
 
@@ -490,6 +493,12 @@ function render(draw, win){
     if (res.payout > 0){
       score += res.payout;
       scoreEl.textContent = String(score);
+      
+      if(score > best){
+        best = score;
+        bestEl.textContent = String(best);
+        localStorage.setItem("letto_best", best);
+      }
       render(draw,false);
       msgEl.classList.remove("muted");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout} points</span>`;
