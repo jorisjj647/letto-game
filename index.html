@@ -352,6 +352,15 @@ text-shadow:
   color:#ff4d4d !important;
   text-shadow:0 0 10px rgba(255,77,77,0.6);
 }
+  @keyframes glowWin{
+  0%{ transform:scale(1); }
+  50%{ transform:scale(1.05); }
+  100%{ transform:scale(1); }
+}
+
+.win{
+  animation:glowWin 0.4s ease;
+}
  </style>
  </head>
  <body>
@@ -553,6 +562,7 @@ function render(draw, win){
     pushHistory(draw,res);
     playBtn.disabled=false;
     playBtn.textContent="PLAY AGAIN";
+   
    });
   })();
 </script>
