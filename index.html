@@ -497,40 +497,42 @@ function render(draw, win){
   render(finalDraw,true);
 }
 
-  playBtn.addEventListener("click", async ()=>{
-    playBtn.disabled = true;
-    msgEl.classList.add("muted");
-    msgEl.innerHTML = "Tirage en cours…";
+  playBtn.addEventListener("click", async () => {
+  playBtn.disabled = true;
+  msgEl.classList.add("muted");
+  msgEl.innerHTML = "Tirage en cours...";
 
-    const draw = Array.from({length:6}, randLetter);
-    await animate(draw);
-    render(draw, true); 
+  const draw = Array.from({ length: 6 }, randLetter);
+  await animate(draw);
 
-    const res = evaluate(draw);
+  const res = evaluate(draw);
 
-    plays++;
-    playsEl.textContent = String(plays);
+  plays++;
+  playsEl.textContent = String(plays);
 
-    if (res.payout > 0){
-      score += res.payout;
-      scoreEl.textContent = String(score);
-      
-      if(score > best){
-        best = score;
-        bestEl.textContent = String(best);
-        localStorage.setItem("letto_best", best);
-      }
-      
-     else {
-      render(draw,false);
-      msgEl.classList.remove("muted");
-      msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique PLAY AGAIN.</span>`;
+  if (res.payout > 0) {
+    score += res.payout;
+    scoreEl.textContent = String(score);
+
+    if (score > best) {
+      best = score;
+      bestEl.textContent = String(best);
+      localStorage.setItem("letto_best", best);
     }
 
-    pushHistory(draw,res);
-    playBtn.disabled=false;
-    playBtn.textContent="PLAY AGAIN";
-   });
+    render(draw, true);
+  } else {
+    render(draw, false);
+  }
+
+  msgEl.classList.remove("muted");
+  msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">${res.payout > 0 ? `+${res.payout} points` : "Clique PLAY AGAIN."}</span>`;
+
+  pushHistory(draw, res);
+
+  playBtn.disabled = false;
+  playBtn.textContent = "PLAY AGAIN";
+});
   })();
 </script>
 
