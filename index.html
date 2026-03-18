@@ -343,8 +343,12 @@ text-shadow:
   margin-top:10px;
 }
 
-#msg b{
+#msg.win b{
   color:#00ffcc;
+}
+
+#msg.lose b{
+  color:#ff4d4d;
 }
  </style>
  </head>
@@ -540,7 +544,8 @@ function render(draw, win){
       render(draw,false);
       msgEl.classList.remove("muted");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique PLAY AGAIN.</span>`;
-      msgEl.className = res.payout > 0 ? "win" : "lose";
+     msgEl.className = "";
+     msgEl.classList.add(res.payout > 0 ? "win" : "lose");
     }
 
     pushHistory(draw,res);
