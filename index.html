@@ -524,8 +524,6 @@ function render(draw, win){
      else {
       render(draw,false);
       msgEl.classList.remove("muted");
-       msgEl.classList.remove("win","lose");
-      msgEl.classList.add(res.payout > 0 ? "win" : "lose");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique PLAY AGAIN.</span>`;
     }
 
