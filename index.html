@@ -327,6 +327,22 @@ text-shadow:
 .spinning{
   animation:slotSpin 0.15s linear infinite;
 }
+  #msg{
+  font-weight:800;
+  font-size:18px;
+  text-align:center;
+  margin-top:10px;
+}
+
+.win{
+  color:#00ff88;
+  text-shadow:0 0 10px rgba(0,255,136,0.8);
+}
+
+.lose{
+  color:#ff4d4d;
+  text-shadow:0 0 10px rgba(255,77,77,0.6);
+}
  </style>
  </head>
  <body>
@@ -514,12 +530,12 @@ function render(draw, win){
         bestEl.textContent = String(best);
         localStorage.setItem("letto_best", best);
       }
+      
+     else {
       render(draw,false);
       msgEl.classList.remove("muted");
-      msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout} points</span>`;
-    } else {
-      render(draw,false);
-      msgEl.classList.remove("muted");
+       msgEl.classList.remove("win","lose");
+      msgEl.classList.add(res.payout > 0 ? "win" : "lose");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique PLAY AGAIN.</span>`;
     }
 
