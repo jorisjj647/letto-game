@@ -478,12 +478,12 @@ function render(draw, win){
   const steps = 14;
 
   for (let t = 0; t < steps; t++){
-    const temp = Array.from({ length: 6 }, randLetter);
-    render(temp, false);
-    await new Promise(r => setTimeout(r, 30 + t * 10));
+    const temp = Array.from({length:6}, randLetter);
+    render(temp,false);
+    await new Promise(r => setTimeout(r, 80 + t * 30));
   }
 
-  render(finalDraw, false);
+  render(finalDraw,false);
 }
 
   playBtn.addEventListener("click", async ()=>{
