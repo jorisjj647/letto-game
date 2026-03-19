@@ -336,29 +336,20 @@ text-shadow:
 .spinning{
   animation:slotSpin 0.15s linear infinite;
 }
- #msg{
+  #msg{
   font-weight:800;
   font-size:18px;
   text-align:center;
   margin-top:10px;
 }
 
-#msg.win{
-  color:#00ff88 !important;
-  text-shadow:0 0 10px rgba(0,255,136,0.8);
-  animation:glowWin 0.4s ease;
+#msg.win b{
+  color:#00ffcc;
 }
 
-#msg.lose{
-  color:#ff4d4d !important;
-  text-shadow:0 0 10px rgba(255,77,77,0.6);
+#msg.lose b{
+  color:#ff4d4d;
 }
-  @keyframes glowWin{
-  0%{ transform:scale(1); }
-  50%{ transform:scale(1.05); }
-  100%{ transform:scale(1); }
-}
-
  </style>
  </head>
  <body>
@@ -553,14 +544,13 @@ function render(draw, win){
       render(draw,false);
       msgEl.classList.remove("muted");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique PLAY AGAIN.</span>`;
-     msgEl.classList.remove("win","lose");
+     msgEl.className = "";
      msgEl.classList.add(res.payout > 0 ? "win" : "lose");
     }
 
     pushHistory(draw,res);
     playBtn.disabled=false;
     playBtn.textContent="PLAY AGAIN";
-   
    });
   })();
 </script>
