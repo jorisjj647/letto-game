@@ -4,7 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LETTO — The Letter Lotto</title>
- 
+  .win{
+  color:#00ff88;
+  text-shadow:0 0 10px rgba(0,255,136,0.8);
+}
+
+.lose{
+  color:#ff4d4d;
+  text-shadow:0 0 10px rgba(255,77,77,0.6);
+}
 <style>
   body{
     margin:0;
@@ -340,11 +348,9 @@ text-shadow:
   text-shadow:0 0 10px rgba(0,255,136,0.8);
   animation:glowWin 0.4s ease;
 }
-#msg{
-  color:inherit !important;
-}
+
 #msg.lose{
-  color:#00ff88 !important;
+  color:#ff4d4d !important;
   text-shadow:0 0 10px rgba(255,77,77,0.6);
 }
   @keyframes glowWin{
@@ -543,14 +549,15 @@ function render(draw, win){
       render(draw,false);
       msgEl.classList.remove("muted");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout} points</span>`;
-      
-    }
-     else {
+      msgEl.classList.remove("win","lose");
+msgEl.classList.add("win");
+    }else {
       
       render(draw,false);
       msgEl.classList.remove("muted");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique PLAY AGAIN.</span>`;
-    ƒre
+    
+    msgEl.classList.add("lose");
     pushHistory(draw,res);
     playBtn.disabled=false;
     playBtn.textContent="PLAY AGAIN";
