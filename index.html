@@ -545,7 +545,8 @@ function render(draw, win){
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout} points</span>`;
       msgEl.classList.remove("win","lose");
 msgEl.classList.add("win");
-    }else {
+    }
+     else {
       
       render(draw,false);
       msgEl.classList.remove("muted");
