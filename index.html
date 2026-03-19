@@ -343,12 +343,13 @@ text-shadow:
   margin-top:10px;
 }
 
-.win{
+#msg.win{
   color:#00ff88 !important;
   text-shadow:0 0 10px rgba(0,255,136,0.8);
+  animation:glowWin 0.4s ease;
 }
 
-.lose{
+#msg.lose{
   color:#ff4d4d !important;
   text-shadow:0 0 10px rgba(255,77,77,0.6);
 }
@@ -358,9 +359,6 @@ text-shadow:
   100%{ transform:scale(1); }
 }
 
-.win{
-  animation:glowWin 0.4s ease;
-}
  </style>
  </head>
  <body>
