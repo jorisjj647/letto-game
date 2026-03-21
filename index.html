@@ -337,16 +337,28 @@ text-shadow:
 
 #msg.win{
   color:#00ff88 !important;
-  text-shadow:0 0 10px rgba(0,255,136,0.8), 0 0 24px rgba(0,255,136,0.45);
-  font-size:24px;
+  text-shadow:
+    0 0 10px rgba(0,255,136,0.8),
+    0 0 24px rgba(0,255,136,0.55),
+    0 0 40px rgba(0,255,136,0.3);
+  font-size:26px;
   font-weight:900;
-  letter-spacing:0.02em;
+  letter-spacing:0.03em;
+  animation:winPop 0.5s ease;
 }
  #msg.win .mono{
   display:block;
-  font-size:28px;
+  font-size:34px;
   font-weight:900;
-  margin-top:4px;
+  margin-top:6px;
+  text-shadow:
+    0 0 10px rgba(0,255,136,0.8),
+    0 0 22px rgba(0,255,136,0.45);
+}
+ @keyframes winPop{
+  0%{ transform:scale(0.9); opacity:0.7; }
+  50%{ transform:scale(1.08); opacity:1; }
+  100%{ transform:scale(1); opacity:1; }
 }
 
 #msg.lose{
