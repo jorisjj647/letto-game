@@ -424,7 +424,9 @@ Classement en préparation
   const bestEl = document.getElementById("best");
   const historyEl = document.getElementById("history");
   const playerInput = document.getElementById("playerInput");
-
+  const winSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3");
+  const loseSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3");
+ 
  if (playerInput) {
   playerInput.value = localStorage.getItem("letto_player") || "";
 
@@ -530,6 +532,8 @@ function render(draw, win){
     if (res.payout > 0){
       score += res.payout;
       scoreEl.textContent = String(score);
+     loseSound.currentTime = 0;
+     loseSound.play();
       
       if(score > best){
         best = score;
@@ -542,6 +546,7 @@ function render(draw, win){
      msgEl.classList.remove("win","lose");
 msgEl.classList.add("win");
     }else {
+     loseSound.play();
       render(draw,false);
       msgEl.classList.remove("muted");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique PLAY AGAIN.</span>`;
