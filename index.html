@@ -451,6 +451,7 @@ Classement en préparation
   const playerInput = document.getElementById("playerInput");
   const winSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2769/2769-preview.mp3");
   const loseSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2958/2958-preview.mp3");
+  const spinSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3");
  if (playerInput) {
   playerInput.value = localStorage.getItem("letto_player") || "";
 
@@ -545,6 +546,8 @@ function render(draw, win){
     msgEl.innerHTML = "Tirage en cours…";
 
     const draw = Array.from({length:6}, randLetter);
+    spinSound.currentTime = 0;
+    spinSound.play();
     await animate(draw);
     render(draw, true); 
 
