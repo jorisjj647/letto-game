@@ -384,9 +384,17 @@ text-shadow:
 </div>
 
     <div class="top">
+     <div class="pill">
+  <span class="k">Pseudo</span>
+  <input id="playerName" placeholder="Ton pseudo" style="margin-left:8px;padding:4px;border-radius:6px;border:none;">
+</div>
   <div class="pill"><span class="k">Score</span> <span id="score">0</span></div>
   <div class="pill"><span class="k">Plays</span> <span id="plays">0</span></div>
   <div class="pill"><span class="k">Meilleur</span> <span id="best">0</span></div>
+</div>
+   <div class="pill">
+  <span class="k">Best</span>
+  <span id="bestScore" class="mono">0</span>
 </div>
 
     <div id="grid" class="grid">
@@ -449,6 +457,9 @@ Classement en préparation
   const bestEl = document.getElementById("best");
   const historyEl = document.getElementById("history");
   const playerInput = document.getElementById("playerInput");
+ const playerInput = document.getElementById("playerName");
+ const bestScoreEl = document.getElementById("bestScore");
+bestScoreEl.textContent = bestScore;
   const winSound = new Audio("https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3");
   const loseSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2958/2958-preview.mp3");
  loseSound.volume = 0.55;
@@ -459,9 +470,16 @@ Classement en préparation
   playerInput.addEventListener("input", () => {
     localStorage.setItem("letto_player", playerInput.value);
   });
+  let playerName = localStorage.getItem("playerName") || "";
+playerInput.value = playerName;
+
+playerInput.addEventListener("input", () => {
+  localStorage.setItem("playerName", playerInput.value);
+});
 }
 
   let score = 0;
+ let bestScore = localStorage.getItem("bestScore") || 0;
   let plays = 0;
   let best = Number(localStorage.getItem("letto_best")) || 0;
 bestEl.textContent = best;
@@ -559,6 +577,11 @@ function render(draw, win){
 
     if (res.payout > 0){
       score += res.payout;
+     if (score > bestScore) {
+  bestScore = score;
+  localStorage.setItem("bestScore", bestScore);
+      bestScoreEl.textContent = bestScore;
+}
       scoreEl.textContent = String(score);
      loseSound.currentTime = 0;
      loseSound.play();
