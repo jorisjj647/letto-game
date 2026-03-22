@@ -405,7 +405,7 @@ text-shadow:
     <button id="playBtn" class="spin-btn">PLAY</button>
     <div class="panel">
   <h3>👤 Joueur</h3>
-  <input id="playerInput" placeholder="Ton pseudo">
+  <input id="playerName" placeholder="Ton pseudo">
 </div>
 
     <div id="msg" class="msg muted">
@@ -471,12 +471,15 @@ Classement en préparation
   playerInput.addEventListener("input", () => {
     localStorage.setItem("letto_player", playerInput.value);
   });
-  let playerName = localStorage.getItem("playerName") || "";
-playerInput.value = playerName;
 
-playerInput.addEventListener("input", () => {
-  localStorage.setItem("playerName", playerInput.value);
-});
+  let playerName = localStorage.getItem("playerName") || "";
+
+if (playerInput) {
+    playerInput.value = playerName;
+
+    playerInput.addEventListener("input", () => {
+        localStorage.setItem("playerName", playerInput.value);
+    });
 }
 
   let score = 0;
