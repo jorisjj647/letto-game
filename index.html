@@ -384,17 +384,9 @@ text-shadow:
 </div>
 
     <div class="top">
-     <div class="pill">
-  <span class="k">Pseudo</span>
-  <input id="playerName" placeholder="Ton pseudo" style="margin-left:8px;padding:4px;border-radius:6px;border:none;">
-</div>
   <div class="pill"><span class="k">Score</span> <span id="score">0</span></div>
   <div class="pill"><span class="k">Plays</span> <span id="plays">0</span></div>
   <div class="pill"><span class="k">Meilleur</span> <span id="best">0</span></div>
-</div>
-   <div class="pill">
-  <span class="k">Best</span>
-  
 </div>
 
     <div id="grid" class="grid">
@@ -450,17 +442,13 @@ Classement en préparation
   };
 
   const playBtn = document.getElementById("playBtn");
-
- playBtn.addEventListener("click", async () => {
   const slots = [...document.querySelectorAll(".slot")];
   const msgEl = document.getElementById("msg");
   const scoreEl = document.getElementById("score");
   const playsEl = document.getElementById("plays");
   const bestEl = document.getElementById("best");
   const historyEl = document.getElementById("history");
- const playerInput = document.getElementById("playerInput");
-
- 
+  const playerInput = document.getElementById("playerInput");
   const winSound = new Audio("https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3");
   const loseSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2958/2958-preview.mp3");
  loseSound.volume = 0.55;
@@ -471,15 +459,6 @@ Classement en préparation
   playerInput.addEventListener("input", () => {
     localStorage.setItem("letto_player", playerInput.value);
   });
-
-  let playerName = localStorage.getItem("playerName") || "";
-
-if (playerInput) {
-    playerInput.value = playerName;
-
-    playerInput.addEventListener("input", () => {
-        localStorage.setItem("playerName", playerInput.value);
-    });
 }
 
   let score = 0;
@@ -580,11 +559,10 @@ function render(draw, win){
 
     if (res.payout > 0){
       score += res.payout;
-     winSound.currentTime = 0;
-     winSound.play();
-   
       scoreEl.textContent = String(score);
-     
+     loseSound.currentTime = 0;
+     loseSound.play();
+      
       if(score > best){
         best = score;
         bestEl.textContent = String(best);
@@ -595,11 +573,8 @@ function render(draw, win){
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout} points</span>`;
      msgEl.classList.remove("win","lose");
 msgEl.classList.add("win");
-     
     }else {
-     
-     loseSound.currentTime = 0;
-loseSound.play();
+     loseSound.play();
       render(draw,false);
       msgEl.classList.remove("muted");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique PLAY AGAIN.</span>`;
@@ -611,6 +586,7 @@ loseSound.play();
     playBtn.disabled=false;
     playBtn.textContent="PLAY AGAIN";
    });
+  })();
 </script>
 
 <div style="margin-top:14px; opacity:0.95; font-size:14px; color:#ffd84d; text-shadow:0 0 10px rgba(255,216,77,0.35);">
