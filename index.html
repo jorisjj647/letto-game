@@ -559,9 +559,23 @@ function render(draw, win){
 
     if (res.payout > 0){
       score += res.payout;
+     let ranking = JSON.parse(localStorage.getItem("letto_ranking")) || [];
+
+ranking.push({
+  name: playerInput.value || "Anonyme",
+  score: score
+});
+
+// Trier du plus grand au plus petit
+ranking.sort((a, b) => b.score - a.score);
+
+// Garder seulement top 5
+ranking = ranking.slice(0, 5);
+
+localStorage.setItem("letto_ranking", JSON.stringify(ranking));
       scoreEl.textContent = String(score);
      loseSound.currentTime = 0;
-     loseSound.play();
+     winSound.play();
       
       if(score > best){
         best = score;
