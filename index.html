@@ -456,11 +456,11 @@ Classement en préparation
   const playsEl = document.getElementById("plays");
   const bestEl = document.getElementById("best");
   const historyEl = document.getElementById("history");
-  const playerInput = document.getElementById("playerInput");
  const playerInput = document.getElementById("playerName");
  const bestScoreEl = document.getElementById("bestScore");
+ 
  let bestScore = localStorage.getItem("bestScore") || 0;
-bestScoreEl.textContent = bestScore;
+ bestScoreEl.textContent = bestScore;
   const winSound = new Audio("https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3");
   const loseSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2958/2958-preview.mp3");
  loseSound.volume = 0.55;
