@@ -577,15 +577,15 @@ function render(draw, win){
 
     if (res.payout > 0){
       score += res.payout;
-     if (score > bestScore) {
+     winSound.currentTime = 0;
+     winSound.play();
+    if (score > bestScore) {
   bestScore = score;
   localStorage.setItem("bestScore", bestScore);
       bestScoreEl.textContent = bestScore;
 }
       scoreEl.textContent = String(score);
-     loseSound.currentTime = 0;
-     loseSound.play();
-      
+     
       if(score > best){
         best = score;
         bestEl.textContent = String(best);
@@ -596,8 +596,11 @@ function render(draw, win){
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout} points</span>`;
      msgEl.classList.remove("win","lose");
 msgEl.classList.add("win");
+     
     }else {
-     loseSound.play();
+     
+     loseSound.currentTime = 0;
+loseSound.play();
       render(draw,false);
       msgEl.classList.remove("muted");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique PLAY AGAIN.</span>`;
