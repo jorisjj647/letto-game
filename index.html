@@ -394,7 +394,7 @@ text-shadow:
 </div>
    <div class="pill">
   <span class="k">Best</span>
-  <span id="bestScore" class="mono">0</span>
+  
 </div>
 
     <div id="grid" class="grid">
@@ -405,7 +405,7 @@ text-shadow:
     <button id="playBtn" class="spin-btn">PLAY</button>
     <div class="panel">
   <h3>👤 Joueur</h3>
-  <input id="playerName" placeholder="Ton pseudo">
+  <input id="playerInput" placeholder="Ton pseudo">
 </div>
 
     <div id="msg" class="msg muted">
@@ -456,8 +456,8 @@ Classement en préparation
   const playsEl = document.getElementById("plays");
   const bestEl = document.getElementById("best");
   const historyEl = document.getElementById("history");
- const playerInput = document.getElementById("playerName");
- const bestScoreEl = document.getElementById("bestScore");
+ const playerInput = document.getElementById("playerInput");
+ 
  
  let bestScore = localStorage.getItem("bestScore") || 0;
  bestScoreEl.textContent = bestScore;
@@ -484,7 +484,7 @@ if (playerInput) {
 
   let score = 0;
  let bestScore = localStorage.getItem("bestScore") || 0;
- let bestScore = Number(localStorage.getItem("bestScore") || 0);
+ 
   let plays = 0;
   let best = Number(localStorage.getItem("letto_best")) || 0;
 bestEl.textContent = best;
@@ -584,11 +584,7 @@ function render(draw, win){
       score += res.payout;
      winSound.currentTime = 0;
      winSound.play();
-    if (score > bestScore) {
-  bestScore = score;
-  localStorage.setItem("bestScore", bestScore);
-      bestScoreEl.textContent = bestScore;
-}
+   
       scoreEl.textContent = String(score);
      
       if(score > best){
