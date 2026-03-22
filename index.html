@@ -481,6 +481,7 @@ playerInput.addEventListener("input", () => {
 
   let score = 0;
  let bestScore = localStorage.getItem("bestScore") || 0;
+ let bestScore = Number(localStorage.getItem("bestScore") || 0);
   let plays = 0;
   let best = Number(localStorage.getItem("letto_best")) || 0;
 bestEl.textContent = best;
