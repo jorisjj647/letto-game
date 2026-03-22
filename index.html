@@ -421,7 +421,7 @@ text-shadow:
 
 <div class="k">🏆 Classement</div>
 <div id="leaderboardList" class="mono muted">
-Classement en préparation
+<div id="ranking">Classement en préparation</div>
 </div>
 </div>
     </div>
@@ -540,7 +540,21 @@ function render(draw, win){
 
   render(finalDraw,true);
 }
+function displayRanking() {
+  const rankingEl = document.getElementById("ranking");
+  const ranking = JSON.parse(localStorage.getItem("letto_ranking")) || [];
 
+  if (!rankingEl) return;
+
+  if (ranking.length === 0) {
+    rankingEl.innerHTML = "Classement en préparation";
+    return;
+  }
+
+  rankingEl.innerHTML = ranking
+    .map((p, i) => `<div>${i + 1}. ${p.name} — ${p.score}</div>`)
+    .join("");
+}
   playBtn.addEventListener("click", async ()=>{
     playBtn.disabled = true;
     msgEl.classList.add("muted");
@@ -597,10 +611,13 @@ msgEl.classList.add("win");
     }
 
     pushHistory(draw,res);
+   displayRanking();
+   pushHistory(draw,res);
     playBtn.disabled=false;
     playBtn.textContent="PLAY AGAIN";
    });
   })();
+ displayRanking();
 </script>
 
 <div style="margin-top:14px; opacity:0.95; font-size:14px; color:#ffd84d; text-shadow:0 0 10px rgba(255,216,77,0.35);">
