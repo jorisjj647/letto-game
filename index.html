@@ -416,6 +416,10 @@ text-shadow:
       </ol>
       <hr>
       <div class="k">📖 Historique</div>
+     <div class="panel">
+  <div class="k">Classement</div>
+  <div id="ranking" class="mono muted">Aucun score</div>
+</div>
       <div id="history" class="mono muted"></div>
       <hr>
 
@@ -590,6 +594,11 @@ ranking.sort((a, b) => b.score - a.score);
 ranking = ranking.slice(0, 5);
 
 localStorage.setItem("letto_ranking", JSON.stringify(ranking));
+    
+     const rankingEl = document.getElementById("ranking");
+if (rankingEl) {
+  rankingEl.innerHTML = ranking.map((p, i) => `${i + 1}. ${p.name} — ${p.score}`).join("<br>");
+}
       scoreEl.textContent = String(score);
      loseSound.currentTime = 0;
      winSound.play();
