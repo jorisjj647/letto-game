@@ -575,10 +575,13 @@ function displayRanking() {
       score += res.payout;
      let ranking = JSON.parse(localStorage.getItem("letto_ranking")) || [];
 
-ranking.push({
-  name: playerInput.value || "Anonyme",
-  score: score
-});
+const name = playerInput.value || "Anonyme";
+
+// supprimer ancien score du joueur
+ranking = ranking.filter(p => p.name !== name);
+
+// ajouter nouveau
+ranking.push({ name, score });
 
 // Trier du plus grand au plus petit
 ranking.sort((a, b) => b.score - a.score);
