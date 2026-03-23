@@ -571,8 +571,29 @@ function displayRanking() {
     plays++;
     playsEl.textContent = String(plays);
 
-    if (res.payout > 0){
-      score += res.payout;
+  if (res.payout > 0){
+
+  score += res.payout;
+
+  // 🎧 SON GAGNANT
+  winSound.currentTime = 0;
+  winSound.play();
+
+  // ✨ EFFET VISUEL
+  document.body.style.boxShadow = "0 0 40px gold";
+  setTimeout(() => {
+    document.body.style.boxShadow = "none";
+  }, 300);
+
+  scoreEl.textContent = String(score);
+
+  if(score > best){
+    best = score;
+    bestEl.textContent = String(best);
+    localStorage.setItem("letto_best", best);
+  }
+
+}
      let ranking = JSON.parse(localStorage.getItem("letto_ranking")) || [];
 
 const name = playerInput.value || "Anonyme";
@@ -605,7 +626,7 @@ localStorage.setItem("letto_ranking", JSON.stringify(ranking));
      msgEl.classList.remove("win","lose");
 msgEl.classList.add("win");
     }else {
-     loseSound.play();
+     winSound.play();
       render(draw,false);
       msgEl.classList.remove("muted");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique PLAY AGAIN.</span>`;
