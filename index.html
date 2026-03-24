@@ -682,6 +682,49 @@ msgEl.classList.add("win");
 <div style="margin-top:14px; opacity:0.95; font-size:14px; color:#ffd84d; text-shadow:0 0 10px rgba(255,216,77,0.35);">
 © ALPHAZARD — All rights reserved
 </div>
+  <script>
+function explodeLetters() {
+  const container = document.createElement("div");
+  container.style.position = "absolute";
+  container.style.top = "80px";
+  container.style.left = "50%";
+  container.style.transform = "translateX(-50%)";
+  container.style.pointerEvents = "none";
+  document.body.appendChild(container);
+
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+  for (let i = 0; i < 25; i++) {
+    const span = document.createElement("span");
+    span.textContent = letters[Math.floor(Math.random() * letters.length)];
+
+    span.style.position = "absolute";
+    span.style.color = "gold";
+    span.style.fontWeight = "bold";
+    span.style.fontSize = "18px";
+
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = 150 + Math.random() * 150;
+
+    span.animate([
+      { transform: "translate(0,0)", opacity: 1 },
+      { transform: `translate(${Math.cos(angle)*distance}px, ${Math.sin(angle)*distance}px)`, opacity: 0 }
+    ], {
+      duration: 1000,
+      easing: "ease-out"
+    });
+
+    container.appendChild(span);
+  }
+
+  setTimeout(() => container.remove(), 1000);
+}
+
+// déclenche au chargement
+window.onload = () => {
+  explodeLetters();
+};
+</script>
 
 </body>
 </html>
