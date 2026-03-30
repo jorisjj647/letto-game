@@ -665,7 +665,7 @@ msgEl.classList.add("win");
      loseSound.play();
       render(draw,false);
       msgEl.classList.remove("muted");
-      msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique PLAY AGAIN.</span>`;
+      msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique REJOUER.</span>`;
      msgEl.className = "";
      msgEl.classList.add(res.payout > 0 ? "win" : "lose");
     }
@@ -673,7 +673,7 @@ msgEl.classList.add("win");
     pushHistory(draw,res);
    displayRanking();
     playBtn.disabled=false;
-    playBtn.textContent="PLAY AGAIN";
+    playBtn.textContent="REJOUER";
    });
   })();
  displayRanking();
