@@ -1,1 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>ALPHAZARD - Dés</title>
 
+<style>
+body {
+    background: black;
+    color: gold;
+    font-family: Arial;
+    text-align: center;
+    padding-top: 50px;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+.dice {
+    font-size: 80px;
+    margin: 20px;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 20px;
+    background: gold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎲 ALPHAZARD DICE</h1>
+
+<div class="dice" id="voyelle">?</div>
+<div class="dice" id="consonne">?</div>
+
+<button onclick="roll()">LANCER</button>
+
+<script>
+const voyelles = ["A","E","I","O","U","Y"];
+const consonnes = [
+"B","C","D","F","G","H","J","K","L","M",
+"N","P","Q","R","S","T","V","W","X","Z"
+];
+
+function roll() {
+    let v = voyelles[Math.floor(Math.random()*voyelles.length)];
+    let c = consonnes[Math.floor(Math.random()*consonnes.length)];
+
+    document.getElementById("voyelle").innerText = v;
+    document.getElementById("consonne").innerText = c;
+}
+</script>
+
+</body>
+</html>
