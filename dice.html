@@ -28,7 +28,11 @@ h1 {
     box-shadow: 0 0 20px gold;
     transition: 0.2s;
 }
-
+#consonnes {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
 #voyelle {
     background: yellow;
     color: black;
@@ -63,7 +67,13 @@ button {
 <h1>🎲 ALPHAZARD DICE</h1>
 
 <div class="dice" id="voyelle">?</div>
-<div class="dice" id="consonne">?</div>
+
+<div id="consonnes">
+    <div class="dice c">?</div>
+    <div class="dice c">?</div>
+    <div class="dice c">?</div>
+    <div class="dice c">?</div>
+</div>
 
 <button onclick="roll()">LANCER</button>
 
@@ -76,11 +86,17 @@ const consonnes = [
 ];
 
 function roll() {
+    // voyelle
     let v = voyelles[Math.floor(Math.random()*voyelles.length)];
-    let c = consonnes[Math.floor(Math.random()*consonnes.length)];
-
     document.getElementById("voyelle").innerText = v;
-    document.getElementById("consonne").innerText = c;
+
+    // 4 consonnes
+    let cases = document.querySelectorAll(".c");
+
+    cases.forEach(el => {
+        let c = consonnes[Math.floor(Math.random()*consonnes.length)];
+        el.innerText = c;
+    });
 }
 </script>
 
