@@ -175,15 +175,26 @@ const consonnes = [
     }
 }
 function roll() {
+    
+let interval = setInterval(() => {
 
+    // voyelle aléatoire
     let v = voyelles[Math.floor(Math.random()*voyelles.length)];
     document.getElementById("voyelle").innerText = v;
 
+    // consonnes aléatoires
     let cases = document.querySelectorAll(".c");
-
     cases.forEach(el => {
         let c = consonnes[Math.floor(Math.random()*consonnes.length)];
         el.innerText = c;
+    });
+
+}, 100);
+    setTimeout(() => {
+    clearInterval(interval);
+
+    // 👉 ICI ton code actuel (celui que tu as déjà)
+}, 1000);
 
         // animation
         el.classList.remove("roll");
