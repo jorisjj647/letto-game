@@ -95,22 +95,23 @@ button {
     <div id="score">Score : 0</div>
 
 <script>
+    let score = 0;
 const voyelles = ["A","E","I","O","U","Y"];
 
 const consonnes = [
 "B","C","D","F","G","H","J","K","L","M",
 "N","P","Q","R","S","T","V","W","X","Z"
 ];
-    function verifier() {
-        let score = 0;
+   function verifier() {
+
     let mot = document.getElementById("mot").value.toUpperCase();
 
     let lettres = [];
 
-    // récupérer voyelle
+    // voyelle
     lettres.push(document.getElementById("voyelle").innerText);
 
-    // récupérer consonnes
+    // consonnes
     document.querySelectorAll(".c").forEach(el => {
         lettres.push(el.innerText);
     });
@@ -129,22 +130,18 @@ const consonnes = [
     }
 
     let res = document.getElementById("resultat");
-if (valide && mot.length > 0) {
 
-    score += mot.length; // +1 point par lettre
+    if (valide && mot.length > 0) {
 
-    document.getElementById("score").innerText = "Score : " + score;
+        score += mot.length;
 
-    res.innerText = "✅ Mot valide";
-    res.style.color = "lightgreen";
+        document.getElementById("score").innerText = "Score : " + score;
 
-} else {
-    res.innerText = "❌ Mot invalide";
-    res.style.color = "red";
-}
         res.innerText = "✅ Mot valide";
         res.style.color = "lightgreen";
+
     } else {
+
         res.innerText = "❌ Mot invalide";
         res.style.color = "red";
     }
