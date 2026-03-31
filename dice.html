@@ -175,27 +175,35 @@ const consonnes = [
     }
 }
 function roll() {
-    
-let interval = setInterval(() => {
 
-    // voyelle aléatoire
     let v = voyelles[Math.floor(Math.random()*voyelles.length)];
     document.getElementById("voyelle").innerText = v;
 
-    // consonnes aléatoires
     let cases = document.querySelectorAll(".c");
+
     cases.forEach(el => {
         let c = consonnes[Math.floor(Math.random()*consonnes.length)];
         el.innerText = c;
+
+        el.classList.remove("roll");
+        void el.offsetWidth;
+        el.classList.add("roll");
     });
 
-}, 100);
-    setTimeout(() => {
-    clearInterval(interval);
+    let vEl = document.getElementById("voyelle");
 
-    // 👉 ICI ton code actuel (celui que tu as déjà)
-}, 1000);
+    vEl.classList.remove("roll");
+    void vEl.offsetWidth;
+    vEl.classList.add("roll");
 
+    document.querySelectorAll(".dice").forEach(d => {
+        d.classList.add("active");
+
+        setTimeout(() => {
+            d.classList.remove("active");
+        }, 600);
+    });
+}
         // animation
         el.classList.remove("roll");
         void el.offsetWidth;
