@@ -102,18 +102,20 @@ const consonnes = [
 "B","C","D","F","G","H","J","K","L","M",
 "N","P","Q","R","S","T","V","W","X","Z"
 ];
-   function verifier() {
+  function verifier() {
 
     let mot = document.getElementById("mot").value.toUpperCase();
 
     let lettres = [];
 
-    // voyelle
-    lettres.push(document.getElementById("voyelle").innerText);
+    // récupérer voyelle
+    let v = document.getElementById("voyelle").innerText;
+    if (v !== "?") lettres.push(v);
 
-    // consonnes
+    // récupérer consonnes
     document.querySelectorAll(".c").forEach(el => {
-        lettres.push(el.innerText);
+        let c = el.innerText;
+        if (c !== "?") lettres.push(c);
     });
 
     let copie = [...lettres];
@@ -134,19 +136,16 @@ const consonnes = [
     if (valide && mot.length > 0) {
 
         score += mot.length;
-
         document.getElementById("score").innerText = "Score : " + score;
 
         res.innerText = "✅ Mot valide";
         res.style.color = "lightgreen";
 
     } else {
-
         res.innerText = "❌ Mot invalide";
         res.style.color = "red";
     }
 }
-
 function roll() {
 
     let v = voyelles[Math.floor(Math.random()*voyelles.length)];
