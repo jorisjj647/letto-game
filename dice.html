@@ -176,14 +176,18 @@ const consonnes = [
 }
 function roll() {
 
-    let v = voyelles[Math.floor(Math.random()*voyelles.length)];
+    let v = voyelles[Math.floor(Math.random() * voyelles.length)];
     document.getElementById("voyelle").innerText = v;
 
     let cases = document.querySelectorAll(".c");
 
     cases.forEach(el => {
-        let c = consonnes[Math.floor(Math.random()*consonnes.length)];
+        let c = consonnes[Math.floor(Math.random() * consonnes.length)];
         el.innerText = c;
+
+        el.classList.remove("pop");
+        void el.offsetWidth;
+        el.classList.add("pop");
 
         el.classList.remove("roll");
         void el.offsetWidth;
@@ -191,6 +195,10 @@ function roll() {
     });
 
     let vEl = document.getElementById("voyelle");
+
+    vEl.classList.remove("pop");
+    void vEl.offsetWidth;
+    vEl.classList.add("pop");
 
     vEl.classList.remove("roll");
     void vEl.offsetWidth;
