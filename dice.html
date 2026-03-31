@@ -123,61 +123,16 @@ button {
     <div id="score">Score : 0</div>
 
 <script>
-    alert("JS OK");
+    
     let score = 0;
+    
 const voyelles = ["A","E","I","O","U","Y"];
-
 const consonnes = [
 "B","C","D","F","G","H","J","K","L","M",
 "N","P","Q","R","S","T","V","W","X","Z"
 ];
-  function verifier() {
+    function roll() {
 
-    let mot = document.getElementById("mot").value.toUpperCase();
-
-    let lettres = [];
-
-    // récupérer voyelle
-    let v = document.getElementById("voyelle").innerText;
-    if (v !== "?") lettres.push(v);
-
-    // récupérer consonnes
-    document.querySelectorAll(".c").forEach(el => {
-        let c = el.innerText;
-        if (c !== "?") lettres.push(c);
-    });
-
-    let copie = [...lettres];
-
-    let valide = true;
-
-    for (let l of mot) {
-        let index = copie.indexOf(l);
-        if (index === -1) {
-            valide = false;
-            break;
-        }
-        copie.splice(index, 1);
-    }
-
-    let res = document.getElementById("resultat");
-
-    if (valide && mot.length > 0) {
-
-        score += mot.length;
-        document.getElementById("score").innerText = "Score : " + score;
-
-        res.innerText = "✅ Mot valide";
-        res.style.color = "lightgreen";
-
-    } else {
-        res.innerText = "❌ Mot invalide";
-        res.style.color = "red";
-    }
-}
-function roll() {
-    alert("ROLL OK");
-}
     let v = voyelles[Math.floor(Math.random() * voyelles.length)];
     document.getElementById("voyelle").innerText = v;
 
@@ -214,8 +169,45 @@ function roll() {
         }, 600);
     });
 }
+    
+ function verifier() {
+
+    let mot = document.getElementById("mot").value.toUpperCase();
+
+    let lettres = [];
+    let v = document.getElementById("voyelle").innerText;
+    if (v !== "?") lettres.push(v);
+
+    document.querySelectorAll(".c").forEach(el => {
+        let c = el.innerText;
+        if (c !== "?") lettres.push(c);
+    });
+
+    let copie = [...lettres];
+    let valide = true;
+
+    for (let l of mot) {
+        let index = copie.indexOf(l);
+        if (index === -1) {
+            valide = false;
+            break;
+        }
+        copie.splice(index, 1);
+    }
+
+    let res = document.getElementById("resultat");
+
+    if (valide && mot.length > 0) {
+        score += mot.length;
+        document.getElementById("score").innerText = "Score : " + score;
+        res.innerText = "✅ Mot valide";
+        res.style.color = "lightgreen";
+    } else {
+        res.innerText = "❌ Mot invalide";
+        res.style.color = "red";
+    }
+}
       
 </script>
-
 </body>
 </html>
