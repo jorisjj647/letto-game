@@ -86,6 +86,7 @@ button {
 </div>
 
 <button onclick="roll()">LANCER</button>
+    <button onclick="verifier()">VALIDER</button>
     <div style="margin-top:20px;">
   <input id="mot" type="text" placeholder="Tape ton mot"
          style="padding:12px; font-size:20px; border-radius:10px; border:none; text-align:center;">
@@ -99,6 +100,42 @@ const consonnes = [
 "B","C","D","F","G","H","J","K","L","M",
 "N","P","Q","R","S","T","V","W","X","Z"
 ];
+    function verifier() {
+    let mot = document.getElementById("mot").value.toUpperCase();
+
+    let lettres = [];
+
+    // récupérer voyelle
+    lettres.push(document.getElementById("voyelle").innerText);
+
+    // récupérer consonnes
+    document.querySelectorAll(".c").forEach(el => {
+        lettres.push(el.innerText);
+    });
+
+    let copie = [...lettres];
+
+    let valide = true;
+
+    for (let l of mot) {
+        let index = copie.indexOf(l);
+        if (index === -1) {
+            valide = false;
+            break;
+        }
+        copie.splice(index, 1);
+    }
+
+    let res = document.getElementById("resultat");
+
+    if (valide && mot.length > 0) {
+        res.innerText = "✅ Mot valide";
+        res.style.color = "lightgreen";
+    } else {
+        res.innerText = "❌ Mot invalide";
+        res.style.color = "red";
+    }
+}
 
 function roll() {
 
