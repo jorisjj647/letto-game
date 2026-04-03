@@ -126,7 +126,50 @@ button {
 
 document.addEventListener("DOMContentloaded",
     
-    let score = 0;
+    let score = 0
+    // Voyelles (D6)
+const voyelles = ["A", "E", "I", "O", "U", "Y"];
+
+// Consonnes (D20)
+const consonnes = [
+  "B","C","D","F","G","H","J","K","L","M",
+  "N","P","Q","R","S","T","V","W","X","Z"
+];
+
+// Tirage aléatoire
+function tirerLettre(tableau) {
+  return tableau[Math.floor(Math.random() * tableau.length)];
+}
+
+// Tirage complet
+function tirage() {
+  const voyelle = tirerLettre(voyelles);
+
+  // Exemple : 4 consonnes
+  const tirageConsonnes = [];
+  for (let i = 0; i < 4; i++) {
+    tirageConsonnes.push(tirerLettre(consonnes));
+  }
+
+  return [voyelle, ...tirageConsonnes];
+}
+
+// Exemple d'utilisation
+console.log(tirage());function tirageSansDoublon() {
+  const voyelle = tirerLettre(voyelles);
+
+  // copie du tableau pour éviter répétition
+  let pool = [...consonnes];
+  let tirageConsonnes = [];
+
+  for (let i = 0; i < 4; i++) {
+    let index = Math.floor(Math.random() * pool.length);
+    tirageConsonnes.push(pool[index]);
+    pool.splice(index, 1); // retire la lettre
+  }
+
+  return [voyelle, ...tirageConsonnes];
+}
     
 const voyelles = ["A","E","I","O","U","Y"];
 const consonnes = [
