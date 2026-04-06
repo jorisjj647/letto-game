@@ -430,7 +430,7 @@ text-shadow:
   <div class="wrap">
    <div class="title-container">
 <h1>LETTO <span>🎰</span></h1>
-<div class="sub">Ultra Casino Edition</div>
+<div class="sub">Challenge Edition</div>
 </div>
 
     <div class="top">
@@ -457,7 +457,7 @@ text-shadow:
     <div class="panel">
       <div class="k">📜 RÈGLES LETTO</div>
       <ol>
-        <li><b>6 identiques</b> — Jackpot</li>
+        <li><b>6 identiques</b> — Score max</li>
         <li><b>Palindrome</b> (ABCCBA)</li>
         <li><b>LETTO</b> (L E T T O sur les 5 premières)</li>
         <li><b>Suite 3+</b> (ABC)</li>
@@ -553,12 +553,12 @@ bestEl.textContent = best;
   };
 
   function evaluate(draw){
-    if (isAllSame(draw)) return {key:"sixSame", title:"JACKPOT — 6 lettres identiques", payout:PAYOUTS.sixSame};
-    if (isPalindrome(draw)) return {key:"palindrome", title:"GAGNÉ — Palindrome", payout:PAYOUTS.palindrome};
-    if (isLetto(draw)) return {key:"letto", title:"GAGNÉ — Combinaison LETTO", payout:PAYOUTS.letto};
-    if (hasStraight3(draw)) return {key:"straight3", title:"GAGNÉ — Suite alphabétique (3+)", payout:PAYOUTS.straight3};
-    if (hasConsecutiveDouble(draw)) return {key:"double", title:"GAGNÉ — Double lettre consécutive", payout:PAYOUTS.double};
-    if (isThreeVThreeC(draw)) return {key:"threeVThreeC", title:"GAGNÉ — 3 voyelles / 3 consonnes", payout:PAYOUTS.threeVThreeC};
+    if (isAllSame(draw)) return {key:"sixSame", title:"Score max — 6 lettres identiques", payout:PAYOUTS.sixSame};
+    if (isPalindrome(draw)) return {key:"palindrome", title:"Combo validé — Palindrome", payout:PAYOUTS.palindrome};
+    if (isLetto(draw)) return {key:"letto", title:"Combo validé — Combinaison LETTO", payout:PAYOUTS.letto};
+    if (hasStraight3(draw)) return {key:"straight3", title:"Combo validé — Suite alphabétique (3+)", payout:PAYOUTS.straight3};
+    if (hasConsecutiveDouble(draw)) return {key:"double", title:"Combo validé — Double lettre consécutive", payout:PAYOUTS.double};
+    if (isThreeVThreeC(draw)) return {key:"threeVThreeC", title:"Combo validé — 3 voyelles / 3 consonnes", payout:PAYOUTS.threeVThreeC};
     return {key:"lose", title:"Perdu — retente ta chance 🍀", payout:0};
   }
 
@@ -610,7 +610,7 @@ function displayRanking() {
   playBtn.addEventListener("click", async ()=>{
     playBtn.disabled = true;
     msgEl.classList.add("muted");
-    msgEl.innerHTML = "Tirage en cours…";
+    msgEl.innerHTML = "Analyse en cours…";
 
     const draw = Array.from({length:6}, randLetter);
     spinSound.currentTime = 0;
@@ -678,6 +678,9 @@ msgEl.classList.add("win");
   })();
  displayRanking();
 </script>
+  <div style="font-size:12px; opacity:0.7; text-align:center; margin-top:6px;">
+Jeu basé sur la logique et la rapidité
+</div>
 
 <div style="margin-top:14px; opacity:0.95; font-size:14px; color:#ffd84d; text-shadow:0 0 10px rgba(255,216,77,0.35);">
 © ALPHAZARD — All rights reserved
