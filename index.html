@@ -559,7 +559,7 @@ bestEl.textContent = best;
     if (hasStraight3(draw)) return {key:"straight3", title:"Combo validé — Suite alphabétique (3+)", payout:PAYOUTS.straight3};
     if (hasConsecutiveDouble(draw)) return {key:"double", title:"Combo validé — Double lettre consécutive", payout:PAYOUTS.double};
     if (isThreeVThreeC(draw)) return {key:"threeVThreeC", title:"Combo validé — 3 voyelles / 3 consonnes", payout:PAYOUTS.threeVThreeC};
-    return {key:"lose", title:"Perdu — retente ta chance 🍀", payout:0};
+    return {key:"lose", title:"Retente ta Chance — 🍀", payout:0};
   }
 
 function render(draw, win){
