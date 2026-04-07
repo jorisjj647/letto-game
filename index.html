@@ -652,11 +652,11 @@ function displayRanking() {
     localStorage.setItem("letto_best", best);
   }
 
-  msgEl.className = "win";
-  msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout}</span>`;
+    msgEl.className = "win";
+  msgEl.innerHTML = "<b>" + res.title + "</b><br><span class='mono'>+" + res.payout + "</span>";
 } else {
   msgEl.className = "no-combo";
-  msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique RELANCER</span>`;
+  msgEl.innerHTML = "<b>" + res.title + "</b><br><span class='muted'>Clique RELANCER</span>";
 }
 
 pushHistory(draw, res);
@@ -664,7 +664,8 @@ displayRanking();
 
 playBtn.disabled = false;
 playBtn.textContent = "RELANCER";
-});
+
+}); // fermeture event listener
 
 displayRanking();
 </script>
