@@ -642,31 +642,31 @@ function displayRanking() {
   plays++;
   playsEl.textContent = String(plays);
 
-  if (res.payout > 0) {
-    score += res.payout;
-    scoreEl.textContent = String(score);
+ if (res.payout > 0) {
+  score += res.payout;
+  scoreEl.textContent = String(score);
 
-    if (score > best) {
-      best = score;
-      bestEl.textContent = String(best);
-      localStorage.setItem("letto_best", best);
-    }
-
-    msgEl.className = "win";
-    msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout}</span>`;
-  } else {
-    msgEl.className = "no-combo";
-    msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique RELANCER</span>`;
+  if (score > best) {
+    best = score;
+    bestEl.textContent = String(best);
+    localStorage.setItem("letto_best", best);
   }
 
-  pushHistory(draw, res);
-  displayRanking();
+  msgEl.className = "win";
+  msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout}</span>`;
+} else {
+  msgEl.className = "no-combo";
+  msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique RELANCER</span>`;
+}
 
-  playBtn.disabled = false;
-  playBtn.textContent = "RELANCER";
+pushHistory(draw, res);
+displayRanking();
+
+playBtn.disabled = false;
+playBtn.textContent = "RELANCER";
 });
-  
- displayRanking();
+
+displayRanking();
 </script>
   <div style="font-size:12px; opacity:0.7; text-align:center; margin-top:6px;">
 Jeu basé sur la logique et la rapidité
