@@ -628,12 +628,8 @@ function displayRanking() {
     .map((p, i) => `<div>${i + 1}. ${p.name} — ${p.score}</div>`)
     .join("");
 }
-  playBtn.addEventListener("click", async ()=>{
-  playBtn.disabled = true;
-  msgEl.className = "muted";
-  msgEl.innerHTML = "Analyse...";
-
-  const draw = Array.from({length:6}, randLetter);
+  playBtn.addEventListener("click", () => {
+  const draw = Array.from({ length: 6 }, randLetter);
 
   render(draw, false);
 
@@ -642,30 +638,28 @@ function displayRanking() {
   plays++;
   playsEl.textContent = String(plays);
 
- if (res.payout > 0) {
-  score += res.payout;
-  scoreEl.textContent = String(score);
+  if (res.payout > 0) {
+    score += res.payout;
+    scoreEl.textContent = String(score);
 
-  if (score > best) {
-    best = score;
-    bestEl.textContent = String(best);
-    localStorage.setItem("letto_best", best);
-  }
+    if (score > best) {
+      best = score;
+      bestEl.textContent = String(best);
+      localStorage.setItem("letto_best", best);
+    }
 
     msgEl.className = "win";
-  msgEl.innerHTML = "<b>" + res.title + "</b><br><span class='mono'>+" + res.payout + "</span>";
-} else {
-  msgEl.className = "no-combo";
-  msgEl.innerHTML = "<b>" + res.title + "</b><br><span class='muted'>Clique RELANCER</span>";
-}
+    msgEl.innerHTML = "<b>" + res.title + "</b><br><span class='mono'>+" + res.payout + "</span>";
+  } else {
+    msgEl.className = "no-combo";
+    msgEl.innerHTML = "<b>" + res.title + "</b><br><span class='muted'>Clique RELANCER</span>";
+  }
 
-pushHistory(draw, res);
-displayRanking();
+  pushHistory(draw, res);
+  displayRanking();
 
-playBtn.disabled = false;
-playBtn.textContent = "RELANCER";
-
-}); // fermeture event listener
+  playBtn.textContent = "RELANCER";
+});
 
 displayRanking();
 </script>
