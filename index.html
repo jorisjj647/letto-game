@@ -404,16 +404,16 @@ text-shadow:
  </style>
  </head>
  <body>
-<div style="text-align:center; margin-bottom:20px;">
+<div style="text-align:center; margin-bottom:16px;">
   <img src="0551017B-3444-4E86-A7EF-849123482831.PNG"
        alt="ALPHAZARD LETTO"
        style="
-         max-width:220px;
-         width:60%;
+         width:280px;
+         max-width:78%;
          height:auto;
          display:block;
          margin:0 auto;
-         filter: drop-shadow(0 0 12px rgba(255,215,100,0.35));
+         filter: drop-shadow(0 0 14px rgba(255,215,100,0.45));
        ">
 </div>
 <style>
@@ -445,14 +445,14 @@ text-shadow:
       <div class="slot">?</div><div class="slot">?</div><div class="slot">?</div>
     </div>
 
-    <button id="playBtn" class="spin-btn">JOUER</button>
+    <button id="playBtn" class="spin-btn">LANCER</button>
     <div class="panel">
   <h3>👤 Joueur</h3>
   <input id="playerInput" placeholder="Ton pseudo">
 </div>
 
     <div id="msg" class="msg muted">
-      Clique <b>JOUER</b> pour tirer 6 lettres.
+      Clique <b>LANCER</b> pour tirer 6 lettres.
     </div>
 
     <div class="panel">
@@ -674,7 +674,7 @@ msgEl.classList.add("win");
     pushHistory(draw,res);
    displayRanking();
     playBtn.disabled=false;
-    playBtn.textContent="REJOUER";
+    playBtn.textContent="RELANCER";
    });
   })();
  displayRanking();
