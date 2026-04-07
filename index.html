@@ -379,7 +379,7 @@ text-shadow:
   100%{ transform:scale(1); opacity:1; }
 }
 
-#msg.Aucun combo{
+#msg.no-combo{
   color:#ff4d4d !important;
   text-shadow:0 0 10px rgba(255,77,77,0.6);
   font-size:20px;
@@ -389,7 +389,7 @@ text-shadow:
   color:#00ff88 !important;
 }
 
-#msg.Aucun combo{
+#msg.no-combo{
   color:#ff4d4d !important;
 }
  @media (max-width: 600px) {
@@ -523,8 +523,8 @@ text-shadow:
   const historyEl = document.getElementById("history");
   const playerInput = document.getElementById("playerInput");
   const winSound = new Audio("https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3");
-  const Aucun comboSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2958/2958-preview.mp3");
- Aucun comboSound.volume = 0.55;
+  const comboSound = new Audio("https://assets.mixkit.co/active_storage/sfx/...");
+comboSound.volume = 0.55;
   const spinSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3");
  if (playerInput) {
   playerInput.value = localStorage.getItem("letto_player") || "";
@@ -596,7 +596,7 @@ function render(draw, win){
 }
 
   function pushHistory(draw, res){
-    const line = `${draw.join("")}  →  ${res.key==="Aucun combo" ? "AUCUN COMBO" : "+"+res.payout} (${res.key})`;
+    const line = `${draw.join("")}  →  ${res.key==="lose" ? "AUCUN COMBO" : "+"+res.payout} (${res.key})`;
     const lines = historyEl.textContent.trim() ? historyEl.textContent.trim().split("\n") : [];
     lines.unshift(line);
     historyEl.textContent = lines.slice(0,10).join("\n");
