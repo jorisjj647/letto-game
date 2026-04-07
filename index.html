@@ -630,68 +630,41 @@ function displayRanking() {
 }
   playBtn.addEventListener("click", async ()=>{
   playBtn.disabled = true;
-  msgEl.classList.add("muted");
+  msgEl.className = "muted";
   msgEl.innerHTML = "Analyse...";
 
   const draw = Array.from({length:6}, randLetter);
+
   render(draw, false);
 
   const res = evaluate(draw);
 
-    plays++;
-    playsEl.textContent = String(plays);
+  plays++;
+  playsEl.textContent = String(plays);
 
-    if (res.payout > 0){
-      score += res.payout;
-     let ranking = JSON.parse(localStorage.getItem("letto_ranking")) || [];
+  if (res.payout > 0) {
+    score += res.payout;
+    scoreEl.textContent = String(score);
 
-const name = playerInput.value || "Anonyme";
+    if (score > best) {
+      best = score;
+      bestEl.textContent = String(best);
+      localStorage.setItem("letto_best", best);
+    }
 
-// supprimer ancien score du joueur
-ranking = ranking.filter(p => p.name !== name);
+    msgEl.className = "win";
+    msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout}</span>`;
+  } else {
+    msgEl.className = "no-combo";
+    msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique RELANCER</span>`;
+  }
 
-// ajouter nouveau
-ranking.push({ name, score });
+  pushHistory(draw, res);
+  displayRanking();
 
-// Trier du plus grand au plus petit
-ranking.sort((a, b) => b.score - a.score);
-
-// Garder seulement top 5
-ranking = ranking.slice(0, 5);
-
-localStorage.setItem("letto_ranking", JSON.stringify(ranking));
-    
-     const rankingEl = document.getElementById("ranking");
-if (rankingEl) {
-  rankingEl.innerHTML = ranking.map((p, i) => `${i + 1}. ${p.name} — ${p.score}`).join("<br>");
-}
-      scoreEl.textContent = String(score);
-     Aucun comboSound.currentTime = 0;
-     winSound.play();
-      
-      if(score > best){
-        best = score;
-        bestEl.textContent = String(best);
-        localStorage.setItem("letto_best", best);
-      }
-      render(draw,false);
-msgEl.classList.remove("muted");
-msgEl.classList.remove("win","no-combo");
-
-if (res.payout > 0){
-  msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout}</span>`;
-  msgEl.classList.add("win");
-} else {
-  loseSound.play();
-  msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique RELANCER</span>`;
-  msgEl.classList.add("no-combo");
-}
-
-    pushHistory(draw,res);
-   displayRanking();
-    playBtn.disabled=false;
-    playBtn.textContent="RELANCER";
-   });
+  playBtn.disabled = false;
+  playBtn.textContent = "RELANCER";
+});
   })();
  displayRanking();
 </script>
