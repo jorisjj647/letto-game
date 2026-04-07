@@ -452,7 +452,7 @@ text-shadow:
 </div>
 
     <div id="msg" class="msg muted">
-      Clique <b>LANCER</b> pour tirer 6 lettres.
+      Clique LANCER pour révéler 6 lettres.
     </div>
 
     <div class="panel">
@@ -666,7 +666,7 @@ msgEl.classList.add("win");
      loseSound.play();
       render(draw,false);
       msgEl.classList.remove("muted");
-      msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique REJOUER.</span>`;
+      msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique RELANCER.</span>`;
      msgEl.className = "";
      msgEl.classList.add(res.payout > 0 ? "win" : "lose");
     }
