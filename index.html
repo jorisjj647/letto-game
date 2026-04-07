@@ -629,17 +629,14 @@ function displayRanking() {
     .join("");
 }
   playBtn.addEventListener("click", async ()=>{
-    playBtn.disabled = true;
-    msgEl.classList.add("muted");
-    msgEl.innerHTML = "Analyse…";
+  playBtn.disabled = true;
+  msgEl.classList.add("muted");
+  msgEl.innerHTML = "Analyse...";
 
-    const draw = Array.from({length:6}, randLetter);
-    spinSound.currentTime = 0;
-    spinSound.play();
-    await animate(draw);
-    render(draw, true); 
+  const draw = Array.from({length:6}, randLetter);
+  render(draw, false);
 
-    const res = evaluate(draw);
+  const res = evaluate(draw);
 
     plays++;
     playsEl.textContent = String(plays);
