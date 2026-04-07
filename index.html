@@ -587,10 +587,6 @@ function render(draw, win){
   slots.forEach((s,i)=>{
     s.textContent = draw[i];
 
-    s.style.animation = 'none';
-    s.offsetHeight;
-    s.style.animation = 'revealLetter 0.25s cubic-bezier(.2,1.2,.4,1)';
-
     if(win){
       s.classList.add("win");
     } else {
