@@ -680,7 +680,7 @@ if (rankingEl) {
      msgEl.classList.remove("win","Aucun combo");
 msgEl.classList.add("win");
     }else {
-     Aucun comboSound.play();
+     loseSound.play();
       render(draw,false);
       msgEl.classList.remove("muted");
       msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique RELANCER.</span>`;
