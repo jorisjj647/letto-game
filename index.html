@@ -675,18 +675,17 @@ if (rankingEl) {
         localStorage.setItem("letto_best", best);
       }
       render(draw,false);
-      msgEl.classList.remove("muted");
-      msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout} points</span>`;
-     msgEl.classList.remove("win","Aucun combo");
-msgEl.classList.add("win");
-    }else {
-     loseSound.play();
-      render(draw,false);
-      msgEl.classList.remove("muted");
-      msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique RELANCER.</span>`;
-     msgEl.className = "";
-     msgEl.classList.add(res.payout > 0 ? "win" : "Aucun combo");
-    }
+msgEl.classList.remove("muted");
+msgEl.classList.remove("win","no-combo");
+
+if (res.payout > 0){
+  msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout}</span>`;
+  msgEl.classList.add("win");
+} else {
+  loseSound.play();
+  msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique RELANCER</span>`;
+  msgEl.classList.add("no-combo");
+}
 
     pushHistory(draw,res);
    displayRanking();
