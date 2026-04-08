@@ -1,1 +1,189 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LETTO — The Letter Lotto</title>
+<style>
+  body{background:#0b0d12;color:#eef1ff;font-family:Arial;text-align:center;margin:0}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px}
+  h1{letter-spacing:.12em;margin:6px 0}
+  .sub{opacity:.8;margin-bottom:18px}
+  .top{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:12px 0 18px}
+  .pill{border:1px solid #2a355d;background:#0f1320;border-radius:999px;padding:8px 12px}
+  .k{opacity:.75;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+  .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+  button{padding:12px 20px;font-size:18px;margin-top:12px;border:0;border-radius:12px;cursor:pointer}
+  button:disabled{opacity:.55;cursor:not-allowed}
+  .grid{display:grid;grid-template-columns:repeat(6,minmax(44px,1fr));gap:10px;margin:16px auto 10px;max-width:520px}
+  .slot{height:64px;display:grid;place-items:center;border:1px solid #2a355d;background:#0f1320;border-radius:14px;font-size:28px;font-weight:800;letter-spacing:.1em}
+  .slot.win{outline:2px solid #eef1ff;box-shadow:0 0 0 6px rgba(238,241,255,.08)}
+  .msg{margin-top:12px;line-height:1.5}
+  .muted{opacity:.78}
+  .panel{margin:18px auto 0;max-width:520px;text-align:left;border:1px solid #2a355d;background:#121624;border-radius:14px;padding:14px}
+  ol{margin:8px 0 0;padding-left:18px}
+  hr{border:0;border-top:1px solid #2a355d;margin:12px 0}
+  #history{white-space:pre-wrap;font-size:13px}
 
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>LETTO</h1>
+    <div class="sub">The Letter Lotto</div>
+
+    <div class="top">
+      <div class="pill"><span class="k">Score</span> <span id="score" class="mono">0</span></div>
+      <div class="pill"><span class="k">Plays</span> <span id="plays" class="mono">0</span></div>
+    </div>
+
+    <div id="grid" class="grid">
+      <div class="slot">?</div><div class="slot">?</div><div class="slot">?</div>
+      <div class="slot">?</div><div class="slot">?</div><div class="slot">?</div>
+    </div>
+
+    <button id="playBtn">PLAY</button>
+
+    <div id="msg" class="msg muted">
+      Clique <b>PLAY</b> pour tirer 6 lettres.
+    </div>
+
+    <div class="panel">
+      <div class="k">Combinaisons (priorité gain)</div>
+      <ol>
+        <li><b>6 identiques</b> — Jackpot</li>
+        <li><b>Palindrome</b> (ABCCBA)</li>
+        <li><b>LETTO</b> (L E T T O sur les 5 premières)</li>
+        <li><b>Suite 3+</b> (ABC)</li>
+        <li><b>Double</b> (AA consécutif)</li>
+        <li><b>3 voyelles / 3 consonnes</b></li>
+      </ol>
+      <hr>
+      <div class="k">Historique</div>
+      <div id="history" class="mono muted"></div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  const VOWELS = new Set(["A","E","I","O","U","Y"]);
+
+  const PAYOUTS = {
+    sixSame: 500,
+    palindrome: 100,
+    letto: 25,
+    straight3: 5,
+    double: 2,
+    threeVThreeC: 1
+  };
+
+  const playBtn = document.getElementById("playBtn");
+  const slots = [...document.querySelectorAll(".slot")];
+  const msgEl = document.getElementById("msg");
+  const scoreEl = document.getElementById("score");
+  const playsEl = document.getElementById("plays");
+  const historyEl = document.getElementById("history");
+
+  let score = 0;
+  let plays = 0;
+
+  const randLetter = () => ALPHABET[Math.floor(Math.random()*ALPHABET.length)];
+
+  const isAllSame = (a) => a.every(x => x === a[0]);
+
+  const isPalindrome = (a) => {
+    for (let i=0;i<3;i++) if (a[i] !== a[5-i]) return false;
+    return true;
+  };
+
+  const isLetto = (a) =>
+    a[0]==="L" && a[1]==="E" && a[2]==="T" && a[3]==="T" && a[4]==="O";
+
+  const hasConsecutiveDouble = (a) => {
+    for (let i=0;i<5;i++) if (a[i]===a[i+1]) return true;
+    return false;
+  };
+
+  const hasStraight3 = (a) => {
+    const idx = a.map(ch => ALPHABET.indexOf(ch));
+    let run = 1;
+    for (let i=1;i<idx.length;i++){
+      if (idx[i] === idx[i-1] + 1) run++;
+      else run = 1;
+      if (run >= 3) return true;
+    }
+    return false;
+  };
+
+  const isThreeVThreeC = (a) => {
+    let v = 0;
+    for (const ch of a) if (VOWELS.has(ch)) v++;
+    return v === 3;
+  };
+
+  function evaluate(draw){
+    if (isAllSame(draw)) return {key:"sixSame", title:"JACKPOT — 6 lettres identiques", payout:PAYOUTS.sixSame};
+    if (isPalindrome(draw)) return {key:"palindrome", title:"GAGNÉ — Palindrome", payout:PAYOUTS.palindrome};
+    if (isLetto(draw)) return {key:"letto", title:"GAGNÉ — Combinaison LETTO", payout:PAYOUTS.letto};
+    if (hasStraight3(draw)) return {key:"straight3", title:"GAGNÉ — Suite alphabétique (3+)", payout:PAYOUTS.straight3};
+    if (hasConsecutiveDouble(draw)) return {key:"double", title:"GAGNÉ — Double lettre consécutive", payout:PAYOUTS.double};
+    if (isThreeVThreeC(draw)) return {key:"threeVThreeC", title:"GAGNÉ — 3 voyelles / 3 consonnes", payout:PAYOUTS.threeVThreeC};
+    return {key:"lose", title:"Perdu — retente ta chance 🍀", payout:0};
+  }
+
+  function render(draw, win){
+    slots.forEach((s,i)=>{
+      s.textContent = draw[i];
+      s.classList.toggle("win", win);
+    });
+  }
+
+  function pushHistory(draw, res){
+    const line = `${draw.join("")}  →  ${res.key==="lose" ? "LOSE" : "+"+res.payout} (${res.key})`;
+    const lines = historyEl.textContent.trim() ? historyEl.textContent.trim().split("\n") : [];
+    lines.unshift(line);
+    historyEl.textContent = lines.slice(0,10).join("\n");
+  }
+
+  async function animate(finalDraw){
+    const steps = 14;
+    for (let t=0;t<steps;t++){
+      const temp = Array.from({length:6}, randLetter);
+      render(temp,false);
+      await new Promise(r=>setTimeout(r, 30 + t*10));
+    }
+    render(finalDraw,false);
+  }
+
+  playBtn.addEventListener("click", async ()=>{
+    playBtn.disabled = true;
+    msgEl.classList.add("muted");
+    msgEl.innerHTML = "Tirage en cours…";
+
+    const draw = Array.from({length:6}, randLetter);
+    await animate(draw);
+
+    const res = evaluate(draw);
+
+    plays++; playsEl.textContent = String(plays);
+
+    if (res.payout > 0){
+      score += res.payout; scoreEl.textContent = String(score);
+      render(draw,true);
+      msgEl.classList.remove("muted");
+      msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout} points</span>`;
+    } else {
+      render(draw,false);
+      msgEl.classList.remove("muted");
+      msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique PLAY AGAIN.</span>`;
+    }
+
+    pushHistory(draw,res);
+    playBtn.disabled = false;
+    playBtn.textContent = "PLAY AGAIN";
+  });
+})();
+</script>
+</body>
+</html>
