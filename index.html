@@ -1,632 +1,459 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LETTO — The Letter Lotto</title>
- 
-<style>
-  body{
-    margin:0;
-    background:
-      radial-gradient(circle at top, #1b1b1b 0%, #0b0d12 45%, #05070b 100%);
-    color:#f5e9b9;
-    font-family:Arial, sans-serif;
-    text-align:center;
-  }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LETTOGAME</title>
+  <style>
+    :root{
+      --bg:#090b10;
+      --panel:#121722;
+      --panel-2:#0f141d;
+      --gold:#ffd84d;
+      --gold-2:#f1b800;
+      --text:#f4f6fb;
+      --muted:#b7c0d1;
+      --green:#39ff14;
+      --red:#ff4d4d;
+    }
 
-  .wrap{
-  max-width:1200px;
-  margin:0 auto;
-  padding:40px 24px 80px;
-}
+    *{box-sizing:border-box}
 
-  h1{
-    margin:8px 0 6px;
-    font-size:48px;
-    letter-spacing:.14em;
-    color:#ffd84d;
-    text-shadow:0 0 10px rgba(255,216,77,.35), 0 0 24px rgba(255,216,77,.15);
-  }
+    body{
+      margin:0;
+      min-height:100vh;
+      background:radial-gradient(circle at top,#161d2b 0%,#0b0e14 45%,#05070b 100%);
+      color:var(--text);
+      font-family:Arial, Helvetica, sans-serif;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:20px;
+    }
 
-  .sub{
-    opacity:.92;
-    margin-bottom:24px;
-    color:#fff4bf;
-    font-size:18px;
-  }
+    .wrap{
+      width:100%;
+      max-width:760px;
+      background:rgba(8,10,15,.88);
+      border:1px solid rgba(255,216,77,.16);
+      border-radius:22px;
+      padding:20px;
+      box-shadow:0 0 30px rgba(0,0,0,.45), 0 0 18px rgba(255,216,77,.08);
+    }
 
-  .top{
-  width:100%;
-  max-width:900px;
-  margin:18px auto 22px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  align-items:stretch;
-}
+    .header{
+      text-align:center;
+      margin-bottom:14px;
+    }
 
-  .pill{
-  width:100%;
-  box-sizing:border-box;
-  border:2px solid #ffd84d;
-  border-radius:20px;
-  padding:8px 16px;
-  background:rgba(0,0,0,0.22);
-  box-shadow:
-    0 0 10px rgba(255,215,0,0.65),
-    0 0 22px rgba(255,215,0,0.28),
-    inset 0 0 10px rgba(255,215,0,0.18);
-  text-align:left;
-}
+    .brand{
+      font-size:12px;
+      letter-spacing:3px;
+      color:#c9a94d;
+      opacity:.85;
+      margin-bottom:6px;
+    }
 
-  .k{
-  opacity:1;
-  font-size:13px;
-  text-transform:none;
-  letter-spacing:.02em;
-  color:#fff3b0;
-  font-weight:bold;
-}
+    .title{
+      font-size:42px;
+      font-weight:900;
+      color:var(--gold);
+      text-shadow:0 0 10px rgba(255,216,77,.35);
+      letter-spacing:.08em;
+    }
 
-  .mono{
-    font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  }
+    .subtitle{
+      margin-top:6px;
+      color:#d2d7e2;
+      font-size:14px;
+      opacity:.9;
+    }
 
-  button{
-   padding:16px 34px;
-   font-size:22px;
-   font-weight:700;
-   margin-top:16px;
-   border:1px solid #b88a15;
-   border-radius:14px;
-   cursor:pointer;
-   color:#1a1a1a;
-font-weight:800;
-   background:linear-gradient(180deg,#ffe27a,#d7a90e);
-   box-shadow:0 0 18px rgba(255,215,64,.28);
-   transition:transform .15s ease, box-shadow .15s ease;
-   animation: pulseGold 1.8s infinite;
- }
+    .top{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:16px;
+      margin:18px auto;
+      max-width:620px;
+      flex-wrap:wrap;
+    }
 
-  button:hover{
-    transform:translateY(-1px);
-    box-shadow:0 0 24px rgba(255,215,64,.42);
-  }
+    .pill{
+      border:2px solid var(--gold);
+      padding:8px 14px;
+      border-radius:16px;
+      min-width:110px;
+      text-align:center;
+      box-shadow:
+        0 0 10px rgba(255,215,0,.28),
+        0 0 20px rgba(255,215,0,.12);
+      background:rgba(0,0,0,.35);
+      font-size:14px;
+    }
 
-  button:disabled{
-    opacity:.6;
-    cursor:not-allowed;
-    transform:none;
-  }
+    .pill b,
+    .pill strong{
+      display:block;
+      font-size:22px;
+      font-weight:900;
+      color:var(--gold);
+      margin-top:4px;
+      text-shadow:0 0 10px rgba(255,215,0,.18);
+    }
 
-  .grid{
-  display:grid;
-  grid-template-columns:repeat(6,minmax(70px,1fr));
-  gap:16px;
-  margin:24px auto 18px;
-  max-width:720px;
-}
+    .board{
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      gap:10px;
+      margin:18px 0 16px;
+    }
 
-  .slot{
-  height:78px;
-  display:grid;
-  place-items:center;
-  border:2px solid #a67c12;
-  background:linear-gradient(180deg,#171b26,#0d1018);
-  border-radius:16px;
-  font-size:34px;
-  font-weight:900;
-  letter-spacing:.12em;
-  color:#d8ffd8;
-  box-shadow:
-    inset 0 0 14px rgba(255,215,64,.12),
-    0 0 12px rgba(255,215,64,.14);
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-  .slot.active{
-  transform:scale(1.08);
-  box-shadow:
-    inset 0 0 14px rgba(255,215,64,.18),
-    0 0 16px rgba(255,215,64,.25),
-    0 0 28px rgba(255,215,64,.18);
-}
+    .slot{
+      height:72px;
+      display:grid;
+      place-items:center;
+      border:2px solid #a67c12;
+      background:linear-gradient(180deg,#171b26,#0d1018);
+      border-radius:16px;
+      font-size:32px;
+      font-weight:900;
+      letter-spacing:.12em;
+      color:#eef1ff;
+      box-shadow:
+        inset 0 0 12px rgba(255,215,0,.06),
+        0 0 10px rgba(255,215,0,.12);
+      transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
 
-.slot.win{
-  outline:2px solid #ffe066;
-  color:#b8ff8f;
+    .slot.spin{
+      animation:popIn .22s ease;
+    }
 
-  box-shadow:
-    0 0 18px rgba(57,255,20,.55),
-    0 0 32px rgba(255,215,64,.45),
-    inset 0 0 18px rgba(255,215,64,.25);
+    .slot.win{
+      background:linear-gradient(180deg,#171b26,#0d1018);
+      border:2px solid var(--green);
+      color:#eef1ff;
+      box-shadow:
+        inset 0 0 12px rgba(57,255,20,.12),
+        0 0 10px rgba(57,255,20,.35),
+        0 0 22px rgba(57,255,20,.18);
+    }
 
-  animation:winFlash 0.6s ease-in-out infinite alternate;
-}
-  .msg{
-    margin-top:14px;
-    line-height:1.6;
-    font-size:18px;
-    min-height:54px;
-  }
+    .slot.lose{
+      background:linear-gradient(180deg,#171b26,#0d1018);
+      border:2px solid var(--red);
+      color:#eef1ff;
+      box-shadow:
+        inset 0 0 12px rgba(255,77,77,.10),
+        0 0 10px rgba(255,77,77,.28),
+        0 0 22px rgba(255,77,77,.14);
+    }
 
-  .muted{
-    opacity:.82;
-  }
+    @keyframes popIn{
+      0%{transform:scale(.88)}
+      100%{transform:scale(1)}
+    }
 
-  .panel{
-    margin:24px auto 0;
-    max-width:560px;
-    text-align:left;
-    border:1px solid #8d6a17;
-    background:linear-gradient(180deg,#151924,#0d1018);
-    border-radius:18px;
-    padding:18px;
-    box-shadow:0 0 24px rgba(255,215,64,.08);
-  }
+    .actions{
+      text-align:center;
+      margin:14px 0;
+    }
 
-  ol{
-    margin:10px 0 0;
-    padding-left:20px;
-    line-height:1.7;
-  }
+    .spin-btn{
+      background:linear-gradient(180deg,#ffd84d,#f1b800);
+      color:#1a1a1a;
+      border:none;
+      border-radius:14px;
+      padding:14px 28px;
+      font-weight:900;
+      font-size:18px;
+      letter-spacing:.08em;
+      cursor:pointer;
+      box-shadow:
+        0 4px 14px rgba(255,215,0,.35),
+        0 0 12px rgba(255,215,0,.22);
+    }
 
-  hr{
-    border:0;
-    border-top:1px solid #7a5c12;
-    margin:14px 0;
-  }
-.spin-btn{
-  animation:pulseGold 1.4s ease-in-out infinite;
-  color:#1a1a1a;
-  font-weight:800;
-}
+    .spin-btn:active{transform:scale(.98)}
 
-@keyframes pulseCasino{
-  0%{box-shadow:0 0 10px #ffd700;}
-  50%{box-shadow:0 0 25px #ffd700;}
-  100%{box-shadow:0 0 10px #ffd700;}
-}
-  #history{
-    white-space:pre-wrap;
-    font-size:14px;
-    line-height:1.55;
-  }
+    .msg{
+      margin-top:16px;
+      line-height:1.25;
+      font-weight:800;
+      text-align:center;
+      font-size:18px;
+      min-height:54px;
+    }
 
-  @media (max-width:700px){
-    h1{font-size:34px}
-    .sub{font-size:16px}
-    .slot{height:64px;font-size:28px}
-    button{font-size:18px;padding:12px 22px}
-    .panel{padding:14px}
-  }
-  
-  @keyframes pulseGold{
-    0%{
-     box-shadow:0 0 12px rgba(255,215,64,.22);
-     transform:scale(1);
-   }
-   50%{
-     box-shadow:0 0 26px rgba(255,215,64,.48);
-     transform:scale(1.03);
-   }
-   100%{
-     box-shadow:0 0 12px rgba(255,215,64,.22);
-     transform:scale(1);
-   }
- }
- @keyframes winFlash{
-  0%{
-    transform:scale(1);
-    box-shadow:
-      0 0 12px rgba(255,215,64,.25),
-      inset 0 0 10px rgba(255,215,64,.15);
-  }
+    .msg.win{
+      color:#5cff8d;
+      text-shadow:0 0 12px rgba(92,255,141,.35);
+    }
 
-  100%{
-    transform:scale(1.08);
-    box-shadow:
-      0 0 28px rgba(255,215,64,.65),
-      inset 0 0 18px rgba(255,215,64,.25);
-  }
-}
- .title-container{
-margin-bottom:20px;
-}
+    .msg.lose{
+      color:#ff6b6b;
+      text-shadow:0 0 12px rgba(255,107,107,.28);
+    }
 
-.title-container h1{
-font-size:48px;
-letter-spacing:4px;
-color:#ffd84d;
-text-shadow:
-0 0 10px rgba(255,215,0,0.8),
-0 0 25px rgba(255,215,0,0.6),
-0 0 40px rgba(255,215,0,0.4);
-}
+    .muted{color:var(--muted)}
 
-.title-container .sub{
-font-size:16px;
-color:#ffe88a;
-margin-top:6px;
-}
+    .mono{
+      font-size:28px;
+      font-weight:900;
+    }
 
-/* STYLE CASINO POUR SCORE */
-.top{
-margin-top:20px;
-display:flex;
-justify-content:center;
-gap:20px;
-}
+    .panels{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      margin-top:18px;
+    }
 
-.pill{
-border:2px solid #ffd84d;
-padding:6px 16px;
-border-radius:20px;
-box-shadow:
-0 0 10px rgba(255,215,0,0.6),
-0 0 20px rgba(255,215,0,0.3);
-background:rgba(0,0,0,0.35);
-}
- .win{
-color:#39ff14;
-animation:winFlash 0.6s infinite alternate;
-}
+    .panel{
+      background:linear-gradient(180deg,#111723,#0d121b);
+      border:1px solid rgba(255,216,77,.16);
+      border-radius:16px;
+      padding:14px;
+      font-size:14px;
+      line-height:1.5;
+    }
 
-@keyframes winFlash{
-0%{
-text-shadow:
-0 0 5px #39ff14,
-0 0 10px #39ff14;
-}
+    .k{
+      color:var(--gold);
+      font-weight:900;
+      margin-bottom:10px;
+      letter-spacing:.04em;
+    }
 
-100%{
-text-shadow:
-0 0 10px #39ff14,
-0 0 25px #39ff14,
-0 0 40px #39ff14;
-}
-} 
-  .panel{
-  margin:22px auto 0;
-  max-width:760px;
-  text-align:left;
-  border:2px solid #ffd84d;
-  border-radius:16px;
-  padding:16px 18px;
-  background:rgba(8,10,18,0.55);
-  box-shadow:
-    0 0 12px rgba(255,215,0,0.18),
-    inset 0 0 10px rgba(255,215,0,0.05);
-}
+    ol{
+      margin:0;
+      padding-left:18px;
+    }
 
-.panel h3{
-  margin:0 0 12px 0;
-  color:#ffd84d;
-  font-size:18px;
-  letter-spacing:.03em;
-  text-transform:none;
-}
+    li{margin:5px 0}
 
-#history,
-#leaderboardList{
-  margin-top:8px;
-  color:#fff3b0;
-}
+    #historyList{
+      margin:0;
+      padding-left:18px;
+    }
 
-.rules-list{
-  margin:0;
-  padding-left:18px;
-  line-height:1.8;
-  color:#fff3b0;
-}
-  @keyframes slotSpin{
-  0%{ transform:translateY(-10px); opacity:0.2; }
-  50%{ transform:translateY(6px); opacity:1; }
-  100%{ transform:translateY(-10px); opacity:0.2; }
-}
-
-.spinning{
-  animation:slotSpin 0.15s linear infinite;
-}
-  #msg{
-  font-weight:800;
-  font-size:18px;
-  text-align:center;
-  margin-top:10px;
-}
-
-#msg.win{
-  color:#00ff88 !important;
-  text-shadow:
-    0 0 10px rgba(0,255,136,0.8),
-    0 0 24px rgba(0,255,136,0.55),
-    0 0 40px rgba(0,255,136,0.3);
-  font-size:26px;
-  font-weight:900;
-  letter-spacing:0.03em;
-  animation:winPop 0.5s ease;
-}
- #msg.win .mono{
-  display:block;
-  font-size:34px;
-  font-weight:900;
-  margin-top:6px;
-  text-shadow:
-    0 0 10px rgba(0,255,136,0.8),
-    0 0 22px rgba(0,255,136,0.45);
-}
- @keyframes winPop{
-  0%{ transform:scale(0.9); opacity:0.7; }
-  50%{ transform:scale(1.08); opacity:1; }
-  100%{ transform:scale(1); opacity:1; }
-}
-
-#msg.lose{
-  color:#ff4d4d !important;
-  text-shadow:0 0 10px rgba(255,77,77,0.6);
-  font-size:20px;
-  font-weight:800;
-}
-  #msg.win b{
-  color:#00ff88 !important;
-}
-
-#msg.lose b{
-  color:#ff4d4d !important;
-}
- </style>
- </head>
- <body>
+    @media (max-width:700px){
+      body{padding:10px}
+      .wrap{padding:14px}
+      .title{font-size:34px}
+      .board{gap:8px}
+      .slot{height:58px;font-size:24px}
+      .spin-btn{font-size:16px;padding:12px 20px}
+      .panels{grid-template-columns:1fr}
+      .pill{min-width:96px;font-size:13px}
+      .pill b,.pill strong{font-size:20px}
+    }
+  </style>
+</head>
+<body>
   <div class="wrap">
-   <div class="title-container">
-<h1>LETTO <span>🎰</span></h1>
-<div class="sub">Ultra Casino Edition</div>
-</div>
+    <div class="header">
+      <div class="brand">ALPHAZARD</div>
+      <div class="title">LETTO</div>
+      <div class="subtitle">Ultra Letter Challenge</div>
+    </div>
 
     <div class="top">
-  <div class="pill"><span class="k">Score</span> <span id="score">0</span></div>
-  <div class="pill"><span class="k">Plays</span> <span id="plays">0</span></div>
-  <div class="pill"><span class="k">Meilleur</span> <span id="best">0</span></div>
-</div>
-
-    <div id="grid" class="grid">
-      <div class="slot">?</div><div class="slot">?</div><div class="slot">?</div>
-      <div class="slot">?</div><div class="slot">?</div><div class="slot">?</div>
+      <div class="pill">SCORE<b id="scoreEl">0</b></div>
+      <div class="pill">PARTIES<b id="playsEl">0</b></div>
+      <div class="pill">MEILLEUR<b id="bestEl">0</b></div>
     </div>
 
-    <button id="playBtn" class="spin-btn">PLAY</button>
-    <div class="panel">
-  <h3>👤 Joueur</h3>
-  <input id="playerInput" placeholder="Ton pseudo">
-</div>
+    <div class="board" id="board">
+      <div class="slot">?</div>
+      <div class="slot">?</div>
+      <div class="slot">?</div>
+      <div class="slot">?</div>
+      <div class="slot">?</div>
+      <div class="slot">?</div>
+    </div>
+
+    <div class="actions">
+      <button id="playBtn" class="spin-btn">RELANCER</button>
+    </div>
 
     <div id="msg" class="msg muted">
-      Clique <b>PLAY</b> pour tirer 6 lettres.
+      Clique RELANCER
     </div>
 
-    <div class="panel">
-      <div class="k">📜 RÈGLES LETTO</div>
-      <ol>
-        <li><b>6 identiques</b> — Jackpot</li>
-        <li><b>Palindrome</b> (ABCCBA)</li>
-        <li><b>LETTO</b> (L E T T O sur les 5 premières)</li>
-        <li><b>Suite 3+</b> (ABC)</li>
-        <li><b>Double</b> (AA consécutif)</li>
-        <li><b>3 voyelles / 3 consonnes</b></li>
-      </ol>
-      <hr>
-      <div class="k">📖 Historique</div>
-      <div id="history" class="mono muted"></div>
-      <hr>
+    <div class="panels">
+      <div class="panel">
+        <div class="k">📜 RÈGLES LETTO</div>
+        <ol>
+          <li>💎 3 paires identiques → ULTRA BONUS +500</li>
+          <li>⭐ LETTO (5 lettres) → +120</li>
+          <li>🔥 Palindrome → +80</li>
+          <li>⚡ Suite (3 lettres ou +) → +10</li>
+          <li>✨ Double lettre consécutive → +2</li>
+          <li>🎯 3 voyelles / 3 consonnes → +1</li>
+          <li>🍀 Sinon → 0</li>
+        </ol>
+      </div>
 
-<div class="k">🏆 Classement</div>
-<div id="leaderboardList" class="mono muted">
-<div id="ranking">Classement en préparation</div>
-</div>
-</div>
+      <div class="panel">
+        <div class="k">🧾 HISTORIQUE</div>
+        <ol id="historyList">
+          <li>En attente...</li>
+        </ol>
+      </div>
     </div>
   </div>
 
-<script>
-(() => {
-  const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-  const VOWELS = new Set(["A","E","I","O","U","Y"]);
+  <audio id="winSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3"></audio>
+  <audio id="loseSound" src="https://assets.mixkit.co/sfx/preview/mixkit-player-losing-or-failing-2042.mp3"></audio>
 
-  const PAYOUTS = {
-    sixSame: 500,
-    palindrome: 100,
-    letto: 25,
-    straight3: 5,
-    double: 2,
-    threeVThreeC: 1
-  };
+  <script>
+    const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    const VOWELS = new Set(["A","E","I","O","U","Y"]);
 
-  const playBtn = document.getElementById("playBtn");
-  const slots = [...document.querySelectorAll(".slot")];
-  const msgEl = document.getElementById("msg");
-  const scoreEl = document.getElementById("score");
-  const playsEl = document.getElementById("plays");
-  const bestEl = document.getElementById("best");
-  const historyEl = document.getElementById("history");
-  const playerInput = document.getElementById("playerInput");
-  const winSound = new Audio("https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3");
-  const loseSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2958/2958-preview.mp3");
- loseSound.volume = 0.55;
-  const spinSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3");
- if (playerInput) {
-  playerInput.value = localStorage.getItem("letto_player") || "";
+    const slots = [...document.querySelectorAll(".slot")];
+    const playBtn = document.getElementById("playBtn");
+    const msgEl = document.getElementById("msg");
+    const scoreEl = document.getElementById("scoreEl");
+    const playsEl = document.getElementById("playsEl");
+    const bestEl = document.getElementById("bestEl");
+    const historyList = document.getElementById("historyList");
+    const winSound = document.getElementById("winSound");
+    const loseSound = document.getElementById("loseSound");
 
-  playerInput.addEventListener("input", () => {
-    localStorage.setItem("letto_player", playerInput.value);
-  });
-}
+    let score = 0;
+    let plays = 0;
+    let best = Number(localStorage.getItem("letto_best") || 0);
+    bestEl.textContent = String(best);
 
-  let score = 0;
-  let plays = 0;
-  let best = Number(localStorage.getItem("letto_best")) || 0;
-bestEl.textContent = best;
-
-  const randLetter = () => ALPHABET[Math.floor(Math.random()*ALPHABET.length)];
-
-  const isAllSame = (a) => a.every(x => x === a[0]);
-
-  const isPalindrome = (a) => {
-    for (let i=0;i<3;i++) if (a[i] !== a[5-i]) return false;
-    return true;
-  };
-
-  const isLetto = (a) =>
-    a[0]==="L" && a[1]==="E" && a[2]==="T" && a[3]==="T" && a[4]==="O";
-
-  const hasConsecutiveDouble = (a) => {
-    for (let i=0;i<5;i++) if (a[i]===a[i+1]) return true;
-    return false;
-  };
-
-  const hasStraight3 = (a) => {
-    const idx = a.map(ch => ALPHABET.indexOf(ch));
-    let run = 1;
-    for (let i=1;i<idx.length;i++){
-      if (idx[i] === idx[i-1] + 1) run++;
-      else run = 1;
-      if (run >= 3) return true;
+    function randLetter(){
+      return LETTERS[Math.floor(Math.random() * LETTERS.length)];
     }
-    return false;
-  };
 
-  const isThreeVThreeC = (a) => {
-    let v = 0;
-    for (const ch of a) if (VOWELS.has(ch)) v++;
-    return v === 3;
-  };
-
-  function evaluate(draw){
-    if (isAllSame(draw)) return {key:"sixSame", title:"JACKPOT — 6 lettres identiques", payout:PAYOUTS.sixSame};
-    if (isPalindrome(draw)) return {key:"palindrome", title:"GAGNÉ — Palindrome", payout:PAYOUTS.palindrome};
-    if (isLetto(draw)) return {key:"letto", title:"GAGNÉ — Combinaison LETTO", payout:PAYOUTS.letto};
-    if (hasStraight3(draw)) return {key:"straight3", title:"GAGNÉ — Suite alphabétique (3+)", payout:PAYOUTS.straight3};
-    if (hasConsecutiveDouble(draw)) return {key:"double", title:"GAGNÉ — Double lettre consécutive", payout:PAYOUTS.double};
-    if (isThreeVThreeC(draw)) return {key:"threeVThreeC", title:"GAGNÉ — 3 voyelles / 3 consonnes", payout:PAYOUTS.threeVThreeC};
-    return {key:"lose", title:"Perdu — retente ta chance 🍀", payout:0};
-  }
-
-function render(draw, win){
-  slots.forEach((s,i)=>{
-    s.textContent = draw[i];
-
-    if(win){
-      s.classList.add("win");
-    } else {
-      s.classList.remove("win");
+    function drawLetters(){
+      return Array.from({length:6}, randLetter);
     }
-  });
-}
 
-  function pushHistory(draw, res){
-    const line = `${draw.join("")}  →  ${res.key==="lose" ? "LOSE" : "+"+res.payout} (${res.key})`;
-    const lines = historyEl.textContent.trim() ? historyEl.textContent.trim().split("\n") : [];
-    lines.unshift(line);
-    historyEl.textContent = lines.slice(0,10).join("\n");
-  }
+    function straight(a){
+      const vals = a.map(l => l.charCodeAt(0));
+      let run = 1;
+      for(let i=1;i<vals.length;i++){
+        if(vals[i] === vals[i-1] + 1){
+          run++;
+          if(run >= 3) return true;
+        } else {
+          run = 1;
+        }
+      }
+      return false;
+    }
 
- async function animate(finalDraw){
-  const steps = 14;
+    function double(a){
+      for(let i=0;i<a.length-1;i++){
+        if(a[i] === a[i+1]) return true;
+      }
+      return false;
+    }
 
-  for (let t = 0; t < steps; t++){
-    const temp = Array.from({length:6}, randLetter);
-    render(temp,false);
-    await new Promise(r => setTimeout(r, 80 + t * 30));
-  }
+    function balance(a){
+      const v = a.filter(l => VOWELS.has(l)).length;
+      return v === 3;
+    }
 
-  render(finalDraw,true);
-}
-function displayRanking() {
-  const rankingEl = document.getElementById("ranking");
-  const ranking = JSON.parse(localStorage.getItem("letto_ranking")) || [];
+    function evaluate(a){
+      const pair1 = a[0] + a[1];
+      const pair2 = a[2] + a[3];
+      const pair3 = a[4] + a[5];
 
-  if (!rankingEl) return;
+      if(pair1 === pair2 && pair2 === pair3){
+        return ["💎 ULTRA BONUS", 500, true];
+      }
 
-  if (ranking.length === 0) {
-    rankingEl.innerHTML = "Classement en préparation";
-    return;
-  }
+      const first5 = a.slice(0,5).join("");
+      if(first5 === "LETTO"){
+        return ["⭐ LETTO", 120, true];
+      }
 
-  rankingEl.innerHTML = ranking
-    .map((p, i) => `<div>${i + 1}. ${p.name} — ${p.score}</div>`)
-    .join("");
-}
-  playBtn.addEventListener("click", async ()=>{
-    playBtn.disabled = true;
-    msgEl.classList.add("muted");
-    msgEl.innerHTML = "Tirage en cours…";
+      const reversed = [...a].reverse().join("");
+      if(a.join("") === reversed){
+        return ["🔥 Palindrome", 80, true];
+      }
 
-    const draw = Array.from({length:6}, randLetter);
-    spinSound.currentTime = 0;
-    spinSound.play();
-    await animate(draw);
-    render(draw, true); 
+      if(straight(a)){
+        return ["⚡ Suite", 10, false];
+      }
 
-    const res = evaluate(draw);
+      if(double(a)){
+        return ["✨ Double", 2, false];
+      }
 
-    plays++;
-    playsEl.textContent = String(plays);
+      if(balance(a)){
+        return ["🎯 Équilibre", 1, false];
+      }
 
-    if (res.payout > 0){
-      score += res.payout;
-     let ranking = JSON.parse(localStorage.getItem("letto_ranking")) || [];
+      return ["🍀 Retente ta chance", 0, false];
+    }
 
-const name = playerInput.value || "Anonyme";
+    function render(draw, gain){
+      slots.forEach((s,i)=>{
+        s.textContent = draw[i];
+        s.className = "slot spin";
+        if(gain > 0){
+          s.classList.add("win");
+        } else {
+          s.classList.add("lose");
+        }
+      });
+    }
 
-// supprimer ancien score du joueur
-ranking = ranking.filter(p => p.name !== name);
+    function addHistory(draw, title, gain){
+      const li = document.createElement("li");
+      li.textContent = `${draw.join("")} — ${title}${gain > 0 ? " (+" + gain + ")" : ""}`;
+      if(historyList.children.length === 1 && historyList.children[0].textContent === "En attente..."){
+        historyList.innerHTML = "";
+      }
+      historyList.prepend(li);
+      while(historyList.children.length > 8){
+        historyList.removeChild(historyList.lastChild);
+      }
+    }
 
-// ajouter nouveau
-ranking.push({ name, score });
+    playBtn.onclick = function(){
+      winSound.volume = 1;
+      loseSound.volume = 1;
 
-// Trier du plus grand au plus petit
-ranking.sort((a, b) => b.score - a.score);
+      const draw = drawLetters();
+      const [title, gain] = evaluate(draw);
 
-// Garder seulement top 5
-ranking = ranking.slice(0, 5);
+      render(draw, gain);
 
-localStorage.setItem("letto_ranking", JSON.stringify(ranking));
-      scoreEl.textContent = String(score);
-     loseSound.currentTime = 0;
-     winSound.play();
-      
+      plays++;
+      playsEl.textContent = String(plays);
+
+      if(gain > 0){
+        score += gain;
+        scoreEl.textContent = String(score);
+        msgEl.className = "msg win";
+        msgEl.innerHTML = `<b>${title}</b><br><span class="mono">+${gain}</span>`;
+        winSound.currentTime = 0;
+        winSound.play().catch(()=>{});
+      } else {
+        msgEl.className = "msg lose";
+        msgEl.innerHTML = `<b>${title}</b><br><span class="muted">Clique RELANCER</span>`;
+        loseSound.currentTime = 0;
+        loseSound.play().catch(()=>{});
+      }
+
       if(score > best){
         best = score;
         bestEl.textContent = String(best);
-        localStorage.setItem("letto_best", best);
+        localStorage.setItem("letto_best", String(best));
       }
-      render(draw,false);
-      msgEl.classList.remove("muted");
-      msgEl.innerHTML = `<b>${res.title}</b><br><span class="mono">+${res.payout} points</span>`;
-     msgEl.classList.remove("win","lose");
-msgEl.classList.add("win");
-    }else {
-     loseSound.play();
-      render(draw,false);
-      msgEl.classList.remove("muted");
-      msgEl.innerHTML = `<b>${res.title}</b><br><span class="muted">Clique PLAY AGAIN.</span>`;
-     msgEl.className = "";
-     msgEl.classList.add(res.payout > 0 ? "win" : "lose");
-    }
 
-    pushHistory(draw,res);
-   displayRanking();
-   pushHistory(draw,res);
-    playBtn.disabled=false;
-    playBtn.textContent="PLAY AGAIN";
-   });
-  })();
- displayRanking();
-</script>
-
-<div style="margin-top:14px; opacity:0.95; font-size:14px; color:#ffd84d; text-shadow:0 0 10px rgba(255,216,77,0.35);">
-© ALPHAZARD — All rights reserved
-</div>
-
+      addHistory(draw, title, gain);
+    };
+  </script>
 </body>
 </html>
-    
+mise à jour du jeu
