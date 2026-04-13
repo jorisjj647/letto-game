@@ -419,9 +419,27 @@
       }
     }
 
-    playBtn.onclick = function(){
-      winSound.volume = 1;
-      loseSound.volume = 1;
+   playBtn.onclick = function(){
+  winSound.volume = 1;
+  loseSound.volume = 1;
+  playBtn.disabled = true;
+
+  slots.forEach(s => {
+    s.className = "slot";
+  });
+
+  let spins = 12;
+
+  const anim = setInterval(() => {
+    slots.forEach(s => {
+      s.textContent = randLetter();
+      s.className = "slot spin";
+    });
+
+    spins--;
+
+    if (spins <= 0) {
+      clearInterval(anim);
 
       const draw = drawLetters();
       const [title, gain] = evaluate(draw);
@@ -431,7 +449,7 @@
       plays++;
       playsEl.textContent = String(plays);
 
-      if(gain > 0){
+      if (gain > 0) {
         score += gain;
         scoreEl.textContent = String(score);
         msgEl.className = "msg win";
@@ -445,14 +463,17 @@
         loseSound.play().catch(()=>{});
       }
 
-      if(score > best){
+      if (score > best) {
         best = score;
         bestEl.textContent = String(best);
         localStorage.setItem("letto_best", String(best));
       }
 
       addHistory(draw, title, gain);
-    };
+      playBtn.disabled = false;
+    }
+  }, 80);
+};
   </script>
 </body>
 </html>
