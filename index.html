@@ -482,6 +482,15 @@ loseSound.currentTime = 0;
         bestEl.textContent = String(best);
         localStorage.setItem("letto_best", String(best));
       }
+      const playerInput = document.getElementById("playerInput");
+
+if (playerInput) {
+  playerInput.value = localStorage.getItem("letto_player") || "";
+
+  playerInput.addEventListener("input", () => {
+    localStorage.setItem("letto_player", playerInput.value);
+  });
+}
 
       addHistory(draw, title, gain);
       playBtn.disabled = false;
