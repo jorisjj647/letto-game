@@ -323,12 +323,25 @@ Objectif : Jusqu’où tu peux aller ? 👀
 <audio id="loseSound" src="https://www.soundjay.com/buttons/sounds/button-10.m4a"></audio>
 
   <script>
+    const clickSound = new Audio("click.mp3");
+const winSound = new Audio("win.mp3");
+const loseSound = new Audio("lose.mp3");
+
+clickSound.volume = 0.2;
+winSound.volume = 0.3;
+loseSound.volume = 0.3;
     const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     const VOWELS = new Set(["A","E","I","O","U","Y"]);
 
     const slots = [...document.querySelectorAll(".slot")];
     const playBtn = document.getElementById("playBtn");
     const msgEl = document.getElementById("msg");
+    const msgEl = document.getElementById("msg");
+
+document.getElementById("playBtn").onclick = () => {
+  clickSound.currentTime = 0;
+  clickSound.play().catch(()=>{});
+};
     const scoreEl = document.getElementById("scoreEl");
     const playsEl = document.getElementById("playsEl");
     const bestEl = document.getElementById("bestEl");
