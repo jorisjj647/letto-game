@@ -332,6 +332,10 @@ loseSound.volume = 0.3;
 
     const slots = [...document.querySelectorAll(".slot")];
     const playBtn = document.getElementById("playBtn");
+    playBtn.addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play().catch(()=>{});
+});
     const msgEl = document.getElementById("msg");
     const msgEl = document.getElementById("msg");
 
