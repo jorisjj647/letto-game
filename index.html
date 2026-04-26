@@ -9,46 +9,56 @@
 body{
   margin:0;
   font-family: Arial, sans-serif;
-  background: radial-gradient(circle at top, #111 0%, #000 80%);
-  color: #fff;
+  background: radial-gradient(circle at top, #1a1405 0%, #050505 55%, #000 100%);
+  color:#fff;
   text-align:center;
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
+  min-height:100vh;
+}
+
+.container{
+  max-width:420px;
+  padding:30px 22px;
 }
 
 h1{
-  font-size:42px;
-  color:gold;
-  text-shadow:0 0 15px rgba(255,215,0,0.6);
-  margin-bottom:10px;
+  font-size:44px;
+  color:#ffd84d;
+  letter-spacing:3px;
+  margin-bottom:12px;
+  text-shadow:0 0 18px rgba(255,216,77,.55);
+}
+
+p{
+  opacity:.85;
+  margin-bottom:34px;
+  font-size:16px;
 }
 
 .button{
   display:block;
   width:100%;
-  padding:15px;
-  margin:10px 0;
-  background: linear-gradient(145deg, #ffd700, #ffb800);
-  color:black;
+  padding:16px;
+  margin:14px 0;
+  background:linear-gradient(135deg,#ffe066,#d89b00);
+  color:#090909;
   text-decoration:none;
-  font-weight:bold;
-  border-radius:10px;
+  font-weight:900;
+  border-radius:14px;
   font-size:18px;
-  transition:0.3s;
-  box-shadow:0 0 10px rgba(255,215,0,0.4);
+  box-shadow:0 0 22px rgba(255,216,77,.35);
 }
 
-.button:hover{
-  transform:scale(1.08);
-  box-shadow:0 0 25px rgba(255,215,0,0.9);
+.button:active{
+  transform:scale(.97);
 }
 
 .footer{
-  margin-top:30px;
+  margin-top:32px;
   font-size:12px;
-  opacity:0.5;
+  opacity:.55;
 }
 </style>
 </head>
