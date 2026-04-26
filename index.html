@@ -9,7 +9,7 @@
 body{
   margin:0;
   font-family: Arial, sans-serif;
-  background: #000;
+  background: radial-gradient(circle at top, #111 0%, #000 80%);
   color: #fff;
   text-align:center;
   display:flex;
@@ -18,19 +18,11 @@ body{
   height:100vh;
 }
 
-.container{
-  max-width:400px;
-}
-
 h1{
   font-size:42px;
   color:gold;
+  text-shadow:0 0 15px rgba(255,215,0,0.6);
   margin-bottom:10px;
-}
-
-p{
-  opacity:0.7;
-  margin-bottom:40px;
 }
 
 .button{
@@ -38,17 +30,19 @@ p{
   width:100%;
   padding:15px;
   margin:10px 0;
-  background: gold;
+  background: linear-gradient(145deg, #ffd700, #ffb800);
   color:black;
   text-decoration:none;
   font-weight:bold;
   border-radius:10px;
   font-size:18px;
-  transition:0.2s;
+  transition:0.3s;
+  box-shadow:0 0 10px rgba(255,215,0,0.4);
 }
 
 .button:hover{
-  transform:scale(1.05);
+  transform:scale(1.08);
+  box-shadow:0 0 25px rgba(255,215,0,0.9);
 }
 
 .footer{
