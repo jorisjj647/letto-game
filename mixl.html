@@ -120,6 +120,30 @@ button{width:100%;padding:16px;margin-top:9px;border:0;border-radius:12px;font-s
     font-size: 34px;
   }
 }
+  /* === MIXL UPGRADE === */
+
+#phaseBox{
+  margin:12px 0;
+  padding:12px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  color:white;
+  font-weight:bold;
+  text-align:center;
+}
+
+.phase-calme{color:#7ee787;}
+.phase-chaude{color:#ffd84d;}
+.phase-critique{color:#ff5c5c;}
+
+.card-hot{
+  box-shadow:0 0 18px rgba(255,216,77,.9);
+}
+
+.card-mixl-ready{
+  box-shadow:0 0 25px rgba(0,255,120,1);
+  border:3px solid #00e676;
+}
 </style>
 </head>
 <body>
@@ -171,6 +195,54 @@ function checkBonusAndReady(){for(let ci=0;ci<cards.length;ci++){let info=countC
 function confetti(){let cols=["#e53935","#1e88e5","#fdd835","#fb8c00","#43a047","#8e24aa"];for(let i=0;i<90;i++){let c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.background=cols[Math.floor(Math.random()*cols.length)];c.style.animationDelay=(Math.random()*.8)+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),3500)}}
 function validateMixl(){if(readyCard===null||gameOver)return;readyRows.forEach(r=>{let s=r*4;cards[readyCard][s].win=true;cards[readyCard][s+1].win=true;cards[readyCard][s+2].win=true;cards[readyCard][s+3].win=true});gameOver=true;render();setTimeout(()=>{confetti();document.getElementById("winText").innerText="Carte "+(readyCard+1)+" gagnante avec 2 lignes en "+drawn+" tirages.";document.getElementById("modal").style.display="flex"},180)}
 resetGame();
+  // === UPGRADE INTERFACE MIXL ===
+
+function addPhaseBox(){
+  const panel = document.querySelector(".panel");
+  if(!panel || document.getElementById("phaseBox")) return;
+
+  const box = document.createElement("div");
+  box.id = "phaseBox";
+  box.innerHTML = "🟢 PHASE : <span class='phase-calme'>CALME</span>";
+  panel.appendChild(box);
+}
+
+function updatePhase(){
+  const phaseBox = document.getElementById("phaseBox");
+  if(!phaseBox) return;
+
+  const tirages = drawn || 0;
+
+  if(tirages < 20){
+    phaseBox.innerHTML = "🟢 PHASE : <span class='phase-calme'>CALME</span>";
+  } else if(tirages < 40){
+    phaseBox.innerHTML = "🟡 PHASE : <span class='phase-chaude'>CHAUDE</span>";
+  } else {
+    phaseBox.innerHTML = "🔴 PHASE : <span class='phase-critique'>CRITIQUE</span>";
+  }
+}
+
+function highlightCards(){
+  const cards = document.querySelectorAll(".card");
+
+  cards.forEach(card => {
+    const text = card.innerText;
+
+    if(text.includes("1/2")){
+      card.classList.add("card-hot");
+    }
+
+    if(text.includes("2/2") || text.includes("MIXL prêt")){
+      card.classList.add("card-mixl-ready");
+    }
+  });
+}
+
+setInterval(() => {
+  addPhaseBox();
+  updatePhase();
+  highlightCards();
+}, 1000);
 </script>
 </body>
 </html>
