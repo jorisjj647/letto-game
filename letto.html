@@ -382,32 +382,32 @@ Objectif : Jusqu’où tu peux aller ? 👀
       const pair3 = a[4] + a[5];
 
       if(pair1 === pair2 && pair2 === pair3){
-        return ["💎 ULTRA BONUS", 500, true];
+        return ["💎 ULTRA BONUS", 800, true];
       }
 
       const first5 = a.slice(0,5).join("");
       if(first5 === "LETTO"){
-        return ["⭐ LETTO", 120, true];
+        return ["⭐ LETTO", 250, true];
       }
 
       const reversed = [...a].reverse().join("");
       if(a.join("") === reversed){
-        return ["🔥 Palindrome", 80, true];
+        return ["🔥 Palindrome", 150, true];
       }
 
       if(straight(a)){
-        return ["⚡ Suite", 10, false];
+        return ["⚡ Suite", 50, false];
       }
 
       if(double(a)){
-        return ["✨ Double", 2, false];
+        return ["✨ Double", 25, false];
       }
 
       if(balance(a)){
-        return ["🎯 Équilibre", 1, false];
+        return ["🎯 3 voyelles / 3 consonnes", 35 , false];
       }
 
-      return ["🍀 Retente ta chance", 0, false];
+      return ["🍀 Retente ta chance", 8, false];
     }
 
     function render(draw, gain){
@@ -447,7 +447,7 @@ loseSound.currentTime = 0;
 
   let spins = 12;
 
-  const anim = setInterval(() => {
+  const anim = setInterval(() =>
     slots.forEach(s => {
       s.textContent = randLetter();
       s.className = "slot spin";
@@ -469,8 +469,30 @@ loseSound.currentTime = 0;
       if (gain > 0) {
         score += gain;
         scoreEl.textContent = String(score);
+
+if (score >= 200) {
+  scoreEl.style.color = "gold";
+  scoreEl.style.textShadow = "0 0 10px gold";
+} else if (score >= 100) {
+  scoreEl.style.color = "violet";
+} else if (score >= 50) {
+  scoreEl.style.color = "deepskyblue";
+} else if (score >= 20) {
+  scoreEl.style.color = "lime";
+} else {
+  scoreEl.style.color = "white";
+}
         msgEl.className = "msg win";
-        msgEl.innerHTML = `<b>${title}</b><br><span class="mono">+${gain}</span>`;
+        const messages = [
+  "🔥 Pas loin !",
+  "💪 Continue !",
+  "⚡ Ça chauffe !",
+  "😈 Tu peux mieux faire",
+  "👀 Encore un essai ?"
+];
+
+const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+        msgEl.innerHTML = `<b>${title}</b><br><span>${randomMsg}</span>`;
         winSound.currentTime = 0;
         winSound.play().catch(()=>{});
       } else {
