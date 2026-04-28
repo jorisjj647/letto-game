@@ -320,9 +320,6 @@ Objectif : Jusqu’où tu peux aller ? 👀
     </div>
   </div>
 
-  <audio id="winSound" src="https://www.soundjay.com/buttons/sounds/button-3.m4a"></audio>
-<audio id="loseSound" src="https://www.soundjay.com/buttons/sounds/button-10.m4a"></audio>
-
   <script>
     const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     const VOWELS = new Set(["A","E","I","O","U","Y"]);
@@ -334,8 +331,7 @@ Objectif : Jusqu’où tu peux aller ? 👀
     const playsEl = document.getElementById("playsEl");
     const bestEl = document.getElementById("bestEl");
     const historyList = document.getElementById("historyList");
-    const winSound = document.getElementById("winSound");
-    const loseSound = document.getElementById("loseSound");
+    
 
     let score = 0;
     let plays = 0;
@@ -490,13 +486,12 @@ if (score >= 200) {
 
 const randomMsg = messages[Math.floor(Math.random() * messages.length)];
         msgEl.innerHTML = `<b>${title}</b><br><span>${randomMsg}</span>`;
-        winSound.currentTime = 0;
-        winSound.play().catch(()=>{});
+        
+        
       } else {
         msgEl.className = "msg lose";
         msgEl.innerHTML = `<b>${title}</b><br><span class="muted">Clique RELANCER</span>`;
-        loseSound.currentTime = 0;
-        loseSound.play().catch(()=>{});
+        
       }
 
       if (score > best) {
