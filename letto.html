@@ -1,511 +1,234 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>LETTOGAME</title>
-  <style>
-    :root{
-      --bg:#090b10;
-      --panel:#121722;
-      --panel-2:#0f141d;
-      --gold:#ffd84d;
-      --gold-2:#f1b800;
-      --text:#f4f6fb;
-      --muted:#b7c0d1;
-      --green:#39ff14;
-      --red:#ff4d4d;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LETTO</title>
 
-    *{box-sizing:border-box}
-
-    body{
-      margin:0;
-      min-height:100vh;
-      background:radial-gradient(circle at top,#161d2b 0%,#0b0e14 45%,#05070b 100%);
-      color:var(--text);
-      font-family:Arial, Helvetica, sans-serif;
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      padding:20px;
-    }
-
-    .wrap{
-      width:100%;
-      max-width:760px;
-      background:rgba(8,10,15,.88);
-      border:1px solid rgba(255,216,77,.16);
-      border-radius:22px;
-      padding:20px;
-      box-shadow:0 0 30px rgba(0,0,0,.45), 0 0 18px rgba(255,216,77,.08);
-    }
-
-    .header{
-      text-align:center;
-      margin-bottom:14px;
-    }
-
-    .brand{
-      font-size:12px;
-      letter-spacing:3px;
-      color:#c9a94d;
-      opacity:.85;
-      margin-bottom:6px;
-    }
-
-    .title{
-      font-size:42px;
-      font-weight:900;
-      color:var(--gold);
-      text-shadow:0 0 10px rgba(255,216,77,.35);
-      letter-spacing:.08em;
-    }
-
-    .subtitle{
-      margin-top:6px;
-      color:#d2d7e2;
-      font-size:14px;
-      opacity:.9;
-    }
-
-    .top{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      gap:16px;
-      margin:18px auto;
-      max-width:620px;
-      flex-wrap:wrap;
-    }
-
-    .pill{
-      border:2px solid var(--gold);
-      padding:8px 14px;
-      border-radius:16px;
-      min-width:110px;
-      text-align:center;
-      box-shadow:
-        0 0 10px rgba(255,215,0,.28),
-        0 0 20px rgba(255,215,0,.12);
-      background:rgba(0,0,0,.35);
-      font-size:14px;
-    }
-
-    .pill b,
-    .pill strong{
-      display:block;
-      font-size:22px;
-      font-weight:900;
-      color:var(--gold);
-      margin-top:4px;
-      text-shadow:0 0 10px rgba(255,215,0,.18);
-    }
-
-    .board{
-      display:grid;
-      grid-template-columns:repeat(6,1fr);
-      gap:10px;
-      margin:18px 0 16px;
-    }
-
-    .slot{
-      height:72px;
-      display:grid;
-      place-items:center;
-      border:2px solid #a67c12;
-      background:linear-gradient(180deg,#171b26,#0d1018);
-      border-radius:16px;
-      font-size:32px;
-      font-weight:900;
-      letter-spacing:.12em;
-      color:#eef1ff;
-      box-shadow:
-        inset 0 0 12px rgba(255,215,0,.06),
-        0 0 10px rgba(255,215,0,.12);
-      transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-    }
-
-    .slot.spin{
-      animation:popIn .22s ease;
-    }
-
-    .slot.win{
-      background:linear-gradient(180deg,#171b26,#0d1018);
-      border:2px solid var(--green);
-      color:#eef1ff;
-      box-shadow:
-        inset 0 0 12px rgba(57,255,20,.12),
-        0 0 10px rgba(57,255,20,.35),
-        0 0 22px rgba(57,255,20,.18);
-    }
-
-    .slot.lose{
-      background:linear-gradient(180deg,#171b26,#0d1018);
-      border:2px solid var(--red);
-      color:#eef1ff;
-      box-shadow:
-        inset 0 0 12px rgba(255,77,77,.10),
-        0 0 10px rgba(255,77,77,.28),
-        0 0 22px rgba(255,77,77,.14);
-    }
-
-    @keyframes popIn{
-      0%{transform:scale(.88)}
-      100%{transform:scale(1)}
-    }
-
-    .actions{
-      text-align:center;
-      margin:14px 0;
-    }
-
-    .spin-btn{
-      background:linear-gradient(180deg,#ffd84d,#f1b800);
-      color:#1a1a1a;
-      border:none;
-      border-radius:14px;
-      padding:14px 28px;
-      font-weight:900;
-      font-size:18px;
-      letter-spacing:.08em;
-      cursor:pointer;
-      box-shadow:
-        0 4px 14px rgba(255,215,0,.35),
-        0 0 12px rgba(255,215,0,.22);
-    }
-
-    .spin-btn:active{transform:scale(.98)}
-
-    .msg{
-      margin-top:16px;
-      line-height:1.25;
-      font-weight:800;
-      text-align:center;
-      font-size:18px;
-      min-height:54px;
-    }
-
-    .msg.win{
-      color:#5cff8d;
-      text-shadow:0 0 12px rgba(92,255,141,.35);
-    }
-
-    .msg.lose{
-      color:#ff6b6b;
-      text-shadow:0 0 12px rgba(255,107,107,.28);
-    }
-
-    .muted{color:var(--muted)}
-
-    .mono{
-      font-size:28px;
-      font-weight:900;
-    }
-
-    .panels{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-      margin-top:18px;
-    }
-
-    .panel{
-      background:linear-gradient(180deg,#111723,#0d121b);
-      border:1px solid rgba(255,216,77,.16);
-      border-radius:16px;
-      padding:14px;
-      font-size:14px;
-      line-height:1.5;
-    }
-
-    .k{
-      color:var(--gold);
-      font-weight:900;
-      margin-bottom:10px;
-      letter-spacing:.04em;
-    }
-
-    ol{
-      margin:0;
-      padding-left:18px;
-    }
-
-    li{margin:5px 0}
-
-    #historyList{
-      margin:0;
-      padding-left:18px;
-    }
-
-    @media (max-width:700px){
-      body{padding:10px}
-      .wrap{padding:14px}
-      .title{font-size:34px}
-      .board{gap:8px}
-      .slot{height:58px;font-size:24px}
-      .spin-btn{font-size:16px;padding:12px 20px}
-      .panels{grid-template-columns:1fr}
-      .pill{min-width:96px;font-size:13px}
-      .pill b,.pill strong{font-size:20px}
-    }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <div class="header">
-      <div class="brand">ALPHAZARD</div>
-      <div class="title">LETTO</div>
-      <div class="subtitle">Ultra Letter Challenge</div>
-    </div>
-
-    <div class="top">
-      <div class="pill">SCORE<b id="scoreEl">0</b></div>
-      <div class="pill">PARTIES<b id="playsEl">0</b></div>
-      <div class="pill">MEILLEUR<b id="bestEl">0</b></div>
-    </div>
-
-    <div class="board" id="board">
-      <div class="slot">?</div>
-      <div class="slot">?</div>
-      <div class="slot">?</div>
-      <div class="slot">?</div>
-      <div class="slot">?</div>
-      <div class="slot">?</div>
-    </div>
-
-    <div class="actions">
-      <div style="text-align:center; margin-bottom:8px; font-weight:bold;">
-Objectif : Jusqu’où tu peux aller ? 👀
-</div>
-      <input 
-  id="playerInput" 
-  placeholder="Ton pseudo..." 
-  style="
-    margin-bottom:10px;
-    padding:8px;
-    border-radius:8px;
-    border:none;
+<style>
+body{
+    margin:0;
+    background:#090b10;
+    color:white;
+    font-family:Arial;
     text-align:center;
-    font-weight:bold;
-  "
-/>
-      <button id="playBtn" class="spin-btn">RELANCER</button>
-    </div>
-
-    <div id="msg" class="msg muted">
-</div>
-
-    <div class="panels">
-      <div class="panel">
-        <div class="k">📜 RÈGLES LETTO</div>
-        <ol>
- 
-          💎 3 paires identiques → ULTRA BONUS +800
-⭐ LETTO + 1 lettre → +250
-🔥 Palindrome → +150
-⚡ Suite 3 lettres ou + → +50
-🎯 Équilibre 3 voyelles / 3 consonnes → +35
-✨ Double lettre → +25
-🍀 Tirage simple → +8
-</ol>
-      </div>
-
-      <div class="panel">
-        <div class="k">🧾 HISTORIQUE</div>
-        <ol id="historyList">
-          <li>En attente...</li>
-        </ol>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-    const VOWELS = new Set(["A","E","I","O","U","Y"]);
-
-    const slots = [...document.querySelectorAll(".slot")];
-    const playBtn = document.getElementById("playBtn");
-    const msgEl = document.getElementById("msg");
-    const scoreEl = document.getElementById("scoreEl");
-    const playsEl = document.getElementById("playsEl");
-    const bestEl = document.getElementById("bestEl");
-    const historyList = document.getElementById("historyList");
-    
-
-    let score = 0;
-    let plays = 0;
-    let best = Number(localStorage.getItem("letto_best") || 0);
-    bestEl.textContent = String(best);
-
-    function randLetter(){
-      return LETTERS[Math.floor(Math.random() * LETTERS.length)];
-    }
-
-    function drawLetters(){
-      return Array.from({length:6}, randLetter);
-    }
-
-    function straight(a){
-      const vals = a.map(l => l.charCodeAt(0));
-      let run = 1;
-      for(let i=1;i<vals.length;i++){
-        if(vals[i] === vals[i-1] + 1){
-          run++;
-          if(run >= 3) return true;
-        } else {
-          run = 1;
-        }
-      }
-      return false;
-    }
-
-    function double(a){
-      for(let i=0;i<a.length-1;i++){
-        if(a[i] === a[i+1]) return true;
-      }
-      return false;
-    }
-
-    function balance(a){
-      const v = a.filter(l => VOWELS.has(l)).length;
-      return v === 3;
-    }
-
-    function evaluate(a){
-      const pair1 = a[0] + a[1];
-      const pair2 = a[2] + a[3];
-      const pair3 = a[4] + a[5];
-
-      if(pair1 === pair2 && pair2 === pair3){
-        return ["💎 ULTRA BONUS", 800, true];
-      }
-
-      const first5 = a.slice(0,5).join("");
-      if(first5 === "LETTO"){
-        return ["⭐ LETTO", 250, true];
-      }
-
-      const reversed = [...a].reverse().join("");
-      if(a.join("") === reversed){
-        return ["🔥 Palindrome", 150, true];
-      }
-
-      if(straight(a)){
-        return ["⚡ Suite", 50, false];
-      }
-
-      if(double(a)){
-        return ["✨ Double", 25, false];
-      }
-
-      if(balance(a)){
-        return ["🎯 3 voyelles / 3 consonnes", 35 , false];
-      }
-
-      return ["🍀 Retente ta chance", 8, false];
-    }
-
-    function render(draw, gain){
-      slots.forEach((s,i)=>{
-        s.textContent = draw[i];
-        s.className = "slot spin";
-        if(gain > 0){
-          s.classList.add("win");
-        } else {
-          s.classList.add("lose");
-        }
-      });
-    }
-
-    function addHistory(draw, title, gain){
-      const li = document.createElement("li");
-      li.textContent = `${draw.join("")} — ${title}${gain > 0 ? " (+" + gain + ")" : ""}`;
-      if(historyList.children.length === 1 && historyList.children[0].textContent === "En attente..."){
-        historyList.innerHTML = "";
-      }
-      historyList.prepend(li);
-      while(historyList.children.length > 8){
-        historyList.removeChild(historyList.lastChild);
-      }
-    }
-
-   playBtn.onclick = function(){
-   
-  playBtn.disabled = true;
-
-  slots.forEach(s => {
-    s.className = "slot";
-  });
-
-  let spins = 12;
-
-  const anim = setInterval(() =>
-    slots.forEach(s => {
-      s.textContent = randLetter();
-      s.className = "slot spin";
-    });
-
-    spins--;
-
-    if (spins <= 0) {
-      clearInterval(anim);
-
-      const draw = drawLetters();
-      const [title, gain] = evaluate(draw);
-
-      render(draw, gain);
-
-      plays++;
-      playsEl.textContent = String(plays);
-
-      if (gain > 0) {
-        score += gain;
-        scoreEl.textContent = String(score);
-
-if (score >= 200) {
-  scoreEl.style.color = "gold";
-  scoreEl.style.textShadow = "0 0 10px gold";
-} else if (score >= 100) {
-  scoreEl.style.color = "violet";
-} else if (score >= 50) {
-  scoreEl.style.color = "deepskyblue";
-} else if (score >= 20) {
-  scoreEl.style.color = "lime";
-} else {
-  scoreEl.style.color = "white";
-}
-        msgEl.className = "msg win";
-    
-        msgEl.innerHTML = "<b>" + title + "</b><br><span>" + randomMsg + "</span>";
-        
-        
-      } else {
-        msgEl.className = "msg lose";
-        msgEl.innerHTML = "<b>" + title + "</b>";
-        
-      }
-
-      if (score > best) {
-        best = score;
-        bestEl.textContent = String(best);
-        localStorage.setItem("letto_best", String(best));
-      }
-      const playerInput = document.getElementById("playerInput");
-
-if (playerInput) {
-  playerInput.value = localStorage.getItem("letto_player") || "";
-
-  playerInput.addEventListener("input", () => {
-    localStorage.setItem("letto_player", playerInput.value);
-  });
 }
 
-      addHistory(draw, title, gain);
-      playBtn.disabled = false;
+h1{
+    color:gold;
+    margin-top:40px;
+}
+
+.box{
+    display:inline-block;
+    width:60px;
+    height:60px;
+    border:2px solid gold;
+    border-radius:10px;
+    margin:10px;
+    font-size:30px;
+    line-height:60px;
+}
+
+button{
+    margin-top:20px;
+    padding:15px 30px;
+    background:gold;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>LETTO</h1>
+
+<div id="letters"></div>
+
+<button onclick="roll()">RELANCER</button>
+
+<script>
+function roll(){
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const container = document.getElementById("letters");
+    container.innerHTML = "";
+
+    for(let i=0;i<6;i++){
+        const letter = alphabet[Math.floor(Math.random()*alphabet.length)];
+        const div = document.createElement("div");
+        div.className="box";
+        div.textContent=letter;
+        container.appendChild(div);
     }
-  }, 80);
-};
-  </script>
+}
+
+// lancement automatique
+roll();
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LETTO</title>
+
+<style>
+body{
+    margin:0;
+    background:#090b10;
+    color:white;
+    font-family:Arial;
+    text-align:center;
+}
+
+h1{
+    color:gold;
+    margin-top:40px;
+}
+
+.box{
+    display:inline-block;
+    width:60px;
+    height:60px;
+    border:2px solid gold;
+    border-radius:10px;
+    margin:10px;
+    font-size:30px;
+    line-height:60px;
+}
+
+button{
+    margin-top:20px;
+    padding:15px 30px;
+    background:gold;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>LETTO</h1>
+
+<div id="letters"></div>
+
+<button onclick="roll()">RELANCER</button>
+
+<script>
+function roll(){
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const container = document.getElementById("letters");
+    container.innerHTML = "";
+
+    for(let i=0;i<6;i++){
+        const letter = alphabet[Math.floor(Math.random()*alphabet.length)];
+        const div = document.createElement("div");
+        div.className="box";
+        div.textContent=letter;
+        container.appendChild(div);
+    }
+}
+
+// lancement automatique
+roll();
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LETTO</title>
+
+<style>
+body{
+    background:#090b10;
+    color:white;
+    text-align:center;
+    font-family:Arial;
+}
+
+.box{
+    display:inline-block;
+    width:60px;
+    height:60px;
+    border:2px solid gold;
+    border-radius:10px;
+    margin:10px;
+    font-size:30px;
+    line-height:60px;
+}
+</style>
+    margin:0;
+    background:#090b10;
+    color:white;
+    font-family:Arial;
+    text-align:center;
+}
+
+h1{
+    color:gold;
+    margin-top:40px;
+}
+
+.box{
+    display:inline-block;
+    width:60px;
+    height:60px;
+    border:2px solid gold;
+    border-radius:10px;
+    margin:10px;
+    font-size:30px;
+    line-height:60px;
+}
+
+button{
+    margin-top:20px;
+    padding:15px 30px;
+    background:gold;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>LETTO</h1>
+
+<div id="letters"></div>
+
+<button onclick="roll()">RELANCER</button>
+
+<script>
+function roll(){
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const container = document.getElementById("letters");
+    container.innerHTML = "";
+
+    for(let i=0;i<6;i++){
+        const letter = alphabet[Math.floor(Math.random()*alphabet.length)];
+        const div = document.createElement("div");
+        div.className="box";
+        div.textContent=letter;
+        container.appendChild(div);
+    }
+}
+
+// lancement automatique
+roll();
+</script>
+
 </body>
 </html>
