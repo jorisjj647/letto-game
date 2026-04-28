@@ -476,21 +476,13 @@ if (score >= 200) {
   scoreEl.style.color = "white";
 }
         msgEl.className = "msg win";
-        const messages = [
-  "🔥 Pas loin !",
-  "💪 Continue !",
-  "⚡ Ça chauffe !",
-  "😈 Tu peux mieux faire",
-  "👀 Encore un essai ?"
-];
-
-const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+    
         msgEl.innerHTML = "<b>" + title + "</b><br><span>" + randomMsg + "</span>";
         
         
       } else {
         msgEl.className = "msg lose";
-        msgEl.innerHTML = `<b>${title}</b><br><span class="muted">Clique RELANCER</span>`;
+        msgEl.innerHTML = "<b>" + title + "</b>";
         
       }
 
