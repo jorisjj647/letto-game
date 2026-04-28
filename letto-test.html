@@ -1,29 +1,70 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<title>Test LETTO</title>
+<meta charset="UTF-8">
+<title>LETTO</title>
+
 <style>
 body {
-  background: black;
-  color: gold;
-  font-family: Arial;
-  text-align: center;
-  margin-top: 100px;
+  margin:0;
+  background:#090b10;
+  color:white;
+  font-family:Arial;
+  text-align:center;
 }
+
+h1 {
+  color:gold;
+  margin-top:40px;
+}
+
+.box {
+  display:inline-block;
+  width:60px;
+  height:60px;
+  border:2px solid gold;
+  border-radius:10px;
+  margin:10px;
+  font-size:30px;
+  line-height:60px;
+}
+
 button {
-  padding: 20px;
-  font-size: 20px;
+  margin-top:20px;
+  padding:15px 30px;
+  background:gold;
+  border:none;
+  border-radius:10px;
+  font-size:18px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>LETTO TEST</h1>
+<h1>LETTO</h1>
 
-<button onclick="alert('ça marche !')">RELANCER</button>
+<div id="letters"></div>
+
+<button onclick="roll()">RELANCER</button>
+
+<script>
+function roll(){
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const container = document.getElementById("letters");
+  container.innerHTML = "";
+
+  for(let i=0;i<6;i++){
+    const letter = alphabet[Math.floor(Math.random()*alphabet.length)];
+    const div = document.createElement("div");
+    div.className="box";
+    div.textContent=letter;
+    container.appendChild(div);
+  }
+}
+
+roll();
+</script>
 
 </body>
 </html>
-test
