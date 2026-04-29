@@ -49,6 +49,12 @@ button {
   font-size:18px;
   cursor:pointer;
 }
+  .scoreBox {
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: gold;
+  font-size: 22px;
+}
 </style>
 </head>
 
@@ -56,11 +62,15 @@ button {
 
 <div class="container">
   <h1>LETTO</h1>
+  <div class="scoreBox">
+  SCORE : <span id="score">0</span>
+</div>
   <div id="letters"></div>
   <button onclick="roll()">RELANCER</button>
 </div>
 
 <script>
+  let score = 0;
 function roll(){
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const container = document.getElementById("letters");
@@ -78,6 +88,8 @@ setTimeout(() => {
 }, 150);
     container.appendChild(div);
   }
+  score += 8;
+document.getElementById("score").textContent = score;
 }
 
 roll();
