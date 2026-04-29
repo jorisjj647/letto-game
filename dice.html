@@ -59,23 +59,42 @@ input {
   margin-top: 15px;
   font-size: 22px;
 }
+  .de.rolling {
+  animation: diceRoll 0.6s ease;
+}
+
+@keyframes diceRoll {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(12deg) scale(1.08); }
+  50% { transform: rotate(-12deg) scale(1.15); }
+  75% { transform: rotate(8deg) scale(1.08); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+#historique {
+  margin-top: 20px;
+  font-size: 22px;
+  color: gold;
+  text-shadow: 0 0 10px gold;
+}
 </style>
 </head>
 
 <body>
 
 <h1>🎲 ALPHAZARD DICE</h1>
-
-<div class="zone">
-  <div id="voyelles"></div>
-  <div id="consonnes"></div>
+  <div id="zoneDes">
+  <div class="de" id="deVoyelle">?</div>
+  <div class="de" id="deConsonne">?</div>
 </div>
+
+<div id="historique"></div>
 
 <button onclick="roll()">LANCER</button>
 <button onclick="verifier()">VALIDER</button>
 <button onclick="resetGame()">RESET</button>
 
-<br><br>
+
 
 <input id="mot" type="text" placeholder="Tape ton mot">
 
@@ -99,15 +118,37 @@ function roll() {
     return;
   }
 
-  const v = tirer(voyelles);
-  let consonnesTirees = [];
+  const deV = document.getElementById("deVoyelle");
+  const deC = document.getElementById("deConsonne");
 
-for (let i = 0; i < 4; i++) {
-  consonnesTirees.push(tirer(consonnes));
+  deV.classList.add("rolling");
+  deC.classList.add("rolling");
+
+  let animation = setInterval(() => {
+    deV.innerText = tirer(voyelles);
+    deC.innerText = tirer(consonnes);
+  }, 70);
+
+  setTimeout(() => {
+    clearInterval(animation);
+
+    const v = tirer(voyelles);
+    const c = tirer(consonnes);
+
+    deV.innerText = v;
+    deC.innerText = c;
+
+    tirages.push({ v, c });
+
+    afficherHistorique();
+
+    deV.classList.remove("rolling");
+    deC.classList.remove("rolling");
+  }, 800);
 }
-
-tirages.push({ v, c: consonnesTirees });
-  afficher();
+  function afficherHistorique() {
+  const historique = tirages.map(t => t.v + "-" + t.c).join(" / ");
+  document.getElementById("historique").innerText = historique;
 }
 
 function afficher() {
