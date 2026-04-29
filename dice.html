@@ -37,14 +37,7 @@ h1 {
 }
     .roll {
     animation: shake 0.3s;
-        document.querySelectorAll(".dice").forEach(d => {
-  d.classList.add("active");
-
-  setTimeout(() => {
-    d.classList.remove("active");
-  }, 600);
-});
-}
+      
     @keyframes glowPulse {
   0% {
     box-shadow: 0 0 10px #ffd700;
@@ -125,6 +118,7 @@ button {
 <script>
 
 document.addEventListener("DOMContentloaded",
+                          let tirages = [];
     
     let score = 0
     // Voyelles (D6)
@@ -176,45 +170,54 @@ const consonnes = [
 "B","C","D","F","G","H","J","K","L","M",
 "N","P","Q","R","S","T","V","W","X","Z"
 ];
-    function roll() {
+   function roll() {
 
-    let v = voyelles[Math.floor(Math.random() * voyelles.length)];
-    document.getElementById("voyelle").innerText = v;
+    if (tirages.length >= 3) {
+        alert("Max 3 lancers !");
+        return;
+    }
 
-    let cases = document.querySelectorAll(".c");
+    let duration = 800;
+    let interval = 80;
 
-    cases.forEach(el => {
-        let c = consonnes[Math.floor(Math.random() * consonnes.length)];
-        el.innerText = c;
+    let animation = setInterval(() => {
 
-        el.classList.remove("pop");
-        void el.offsetWidth;
-        el.classList.add("pop");
+        let v = voyelles[Math.floor(Math.random()*voyelles.length)];
+        document.getElementById("voyelle").innerText = v;
 
-        el.classList.remove("roll");
-        void el.offsetWidth;
-        el.classList.add("roll");
-    });
+        let cases = document.querySelectorAll(".c");
+        cases.forEach(el => {
+            el.innerText = consonnes[Math.floor(Math.random()*consonnes.length)];
+        });
 
-    let vEl = document.getElementById("voyelle");
+    }, interval);
 
-    vEl.classList.remove("pop");
-    void vEl.offsetWidth;
-    vEl.classList.add("pop");
+    setTimeout(() => {
 
-    vEl.classList.remove("roll");
-    void vEl.offsetWidth;
-    vEl.classList.add("roll");
+        clearInterval(animation);
 
-    document.querySelectorAll(".dice").forEach(d => {
-        d.classList.add("active");
+        let v = voyelles[Math.floor(Math.random()*voyelles.length)];
+        let c = consonnes[Math.floor(Math.random()*consonnes.length)];
 
-        setTimeout(() => {
-            d.classList.remove("active");
-        }, 600);
-    });
+        tirages.push({v, c});
+
+        afficherDes();
+
+    }, duration);
 }
-    
+    function afficherDes() {
+
+    let voyelleHTML = "";
+    let consonnesHTML = "";
+
+    tirages.forEach(t => {
+        voyelleHTML += `<div class="dice">${t.v}</div>`;
+        consonnesHTML += `<div class="dice">${t.c}</div>`;
+    });
+
+    document.getElementById("voyelle").innerHTML = voyelleHTML;
+    document.getElementById("consonnes").innerHTML = consonnesHTML;
+}
  function verifier() {
 
     let mot = document.getElementById("mot").value.toUpperCase();
