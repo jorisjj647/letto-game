@@ -100,9 +100,13 @@ function roll() {
   }
 
   const v = tirer(voyelles);
-  const c = tirer(consonnes);
+  let consonnesTirees = [];
 
-  tirages.push({ v, c });
+for (let i = 0; i < 4; i++) {
+  consonnesTirees.push(tirer(consonnes));
+}
+
+tirages.push({ v, c: consonnesTirees });
   afficher();
 }
 
@@ -111,7 +115,9 @@ function afficher() {
     tirages.map(t => `<div class="dice">${t.v}</div>`).join("");
 
   document.getElementById("consonnes").innerHTML =
-    tirages.map(t => `<div class="dice">${t.c}</div>`).join("");
+  tirages.map(t =>
+    t.c.map(c => `<div class="dice">${c}</div>`).join("")
+  ).join("");
 }
 
 function verifier() {
