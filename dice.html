@@ -105,6 +105,7 @@ input {
 
 
 <input id="mot" type="text" placeholder="Tape ton mot">
+  <input id="pseudo" placeholder="Ton pseudo">
 
 <div id="resultat"></div>
 <div id="score">Score : 0</div>
@@ -116,6 +117,7 @@ let tirages = [];
   let nbLancers = 0;
   let maxLancers = 3;
   let dejaValide = false;
+  let joueur = "";
 
 const voyelles = ["A", "E", "I", "O", "U", "Y"];
 const consonnes = ["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Z"];
@@ -172,6 +174,9 @@ function afficherLettres() {
 }
 
 function verifier() {
+  if (!joueur) {
+  joueur = document.getElementById("pseudo").value || "Joueur";
+}
   if (dejaValide) {
     alert("Tu as déjà validé ce tirage !");
     return;
@@ -202,6 +207,8 @@ function verifier() {
     score += mot.length;
     dejaValide = true;
 
+    document.getElementById("resultat").innerHTML =
+  "🔥 " + joueur + " gagne +" + mot.length + " points !";
     document.getElementById("score").innerText = "Score : " + score;
     resultat.innerHTML = "✅ +" + mot.length + " points";
     resultat.style.color = "lightgreen";
