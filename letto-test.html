@@ -49,12 +49,75 @@ button {
   font-size:18px;
   cursor:pointer;
 }
-  .scoreBox {
-  margin-bottom: 20px;
-  font-weight: bold;
-  color: gold;
-  font-size: 22px;
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>LETTO</title>
+
+
+h1 {
+  color:gold;
+  margin-top:40px;
 }
+
+.box {
+  display:inline-block;
+  width:60px;
+  height:60px;
+  border:2px solid gold;
+  border-radius:10px;
+  margin:10px;
+  font-size:30px;
+  line-height:60px;
+}
+
+button {
+  margin-top:20px;
+  padding:15px 30px;
+  background:gold;
+  border:none;
+  border-radius:10px;
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+  
+  <div class="container">
+
+<h1>LETTO</h1>
+    
+  <div id="scoreBox">
+  SCORE : <span id="score">0</span>
+</div>
+
+<div id="letters"></div>
+<button onclick="roll()">RELANCER</button>
+    
+</div>
+
+<script>
+function roll(){
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const container = document.getElementById("letters");
+  container.innerHTML = "";
+
+  for(let i=0;i<6;i++){
+    const letter = alphabet[Math.floor(Math.random()*alphabet.length)];
+    const div = document.createElement("div");
+    div.className="box";
+    div.textContent=letter;
+    container.appendChild(div);
+  }
+}
+
+roll();
+</script>
+
+</body>
+</html>
 </style>
 </head>
 
