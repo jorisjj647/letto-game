@@ -111,13 +111,20 @@ tirages.push({ v, c: consonnesTirees });
 }
 
 function afficher() {
-  document.getElementById("voyelles").innerHTML =
-    tirages.map(t => `<div class="dice">${t.v}</div>`).join("");
+  const voyellesZone = document.getElementById("voyelles");
+  const consonnesZone = document.getElementById("consonnes");
 
-  document.getElementById("consonnes").innerHTML =
-  tirages.map(t =>
-    t.c.map(c => `<div class="dice">${c}</div>`).join("")
-  ).join("");
+  // Voyelles
+  voyellesZone.innerHTML = tirages
+    .map(t => `<div class="dice">${t.v}</div>`)
+    .join("");
+
+  // Consonnes (PLUSIEURS par tirage)
+  consonnesZone.innerHTML = tirages
+    .map(t =>
+      t.c.map(c => `<div class="dice">${c}</div>`).join("")
+    )
+    .join("");
 }
 
 function verifier() {
