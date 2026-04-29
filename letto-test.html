@@ -7,15 +7,26 @@
 <style>
 body {
   margin:0;
-  background:#090b10;
+  background:radial-gradient(circle at top, #1a1f2b 0%, #090b10 100%);
   color:white;
   font-family:Arial;
   text-align:center;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.container {
+  background:#121722;
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 0 40px rgba(255,215,0,0.1);
 }
 
 h1 {
   color:gold;
-  margin-top:40px;
+  margin-bottom:20px;
 }
 
 .box {
@@ -36,17 +47,18 @@ button {
   border:none;
   border-radius:10px;
   font-size:18px;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<h1>LETTO</h1>
-
-<div id="letters"></div>
-
-<button onclick="roll()">RELANCER</button>
+<div class="container">
+  <h1>LETTO</h1>
+  <div id="letters"></div>
+  <button onclick="roll()">RELANCER</button>
+</div>
 
 <script>
 function roll(){
