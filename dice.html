@@ -70,6 +70,14 @@ input {
   75% { transform: rotate(8deg) scale(1.08); }
   100% { transform: rotate(0deg) scale(1); }
 }
+  .de {
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
 
 #historique {
   margin-top: 20px;
@@ -105,6 +113,8 @@ input {
 let score = 0;
 let tirages = [];
   let lettres = [];
+  let nbLancers = 0;
+  let maxLancers = 3;
   let dejaValide = false;
 
 const voyelles = ["A", "E", "I", "O", "U", "Y"];
@@ -115,110 +125,77 @@ function tirer(tableau) {
 }
 
 function roll() {
-  if (tirages.length >= 3) {
+  if (nbLancers >= maxLancers) {
     alert("Maximum 3 lancers !");
     return;
   }
-  if (dejaValide) {
-  alert("Tu as déjà validé ce tirage !");
-  return;
+  if (nbLancers === maxLancers) {
+  document.getElementById("resultat").innerHTML += "<br>⚠️ Dernier lancer !";
 }
 
-  const deV = document.getElementById("deVoyelle");
-  const deC = document.getElementById("deConsonne");
+  dejaValide = false;
+  nbLancers++;
 
-  deV.classList.add("rolling");
-  deC.classList.add("rolling");
+  tirages = []; // IMPORTANT → on remplace à chaque lancer
 
-  let animation = setInterval(() => {
-    deV.innerText = tirer(voyelles);
-    deC.innerText = tirer(consonnes);
-  }, 70);
+  const voyelles = ["A","E","I","O","U","Y"];
+  const consonnes = [
+    "B","C","D","F","G","H","J","K","L","M",
+    "N","P","Q","R","S","T","V","W","X","Z"
+  ];
 
-  setTimeout(() => {
-    clearInterval(animation);
+  // 2 voyelles + 5 consonnes = jouable
+  for (let i = 0; i < 2; i++) {
+    tirages.push(voyelles[Math.floor(Math.random() * voyelles.length)]);
+  }
 
-    const v = tirer(voyelles);
-    const c1 = tirer(consonnes);
-    const c2 = tirer(consonnes);
-    const c3 = tirer(consonnes);
+  for (let i = 0; i < 5; i++) {
+    tirages.push(consonnes[Math.floor(Math.random() * consonnes.length)]);
+  }
 
-    deV.innerText = v;
-    deC.innerText = c1; // juste pour affichage visuel principal
-
-    lettres.push(v, c1, c2, c3);
-    tirages.push(1);
-
-    afficherHistorique();
-
-    deV.classList.remove("rolling");
-    deC.classList.remove("rolling");
-  }, 800);
+  afficherLettres();
 }
   function afficherHistorique() {
   document.getElementById("historique").innerText = lettres.join(" ");
 }
 
-function afficher() {
-  const voyellesZone = document.getElementById("voyelles");
-  const consonnesZone = document.getElementById("consonnes");
+function afficherLettres() {
+  const zone = document.getElementById("zoneDes");
+  zone.innerHTML = "";
 
-  // Voyelles
-  voyellesZone.innerHTML = tirages
-    .map(t => `<div class="dice">${t.v}</div>`)
-    .join("");
-
-  // Consonnes (PLUSIEURS par tirage)
-  consonnesZone.innerHTML = tirages
-    .map(t =>
-      t.c.map(c => `<div class="dice">${c}</div>`).join("")
-    )
-    .join("");
+  tirages.forEach(l => {
+    let d = document.createElement("div");
+    d.className = "de";
+    d.innerText = l;
+    zone.appendChild(d);
+  });
 }
 
 function verifier() {
-  const mot = document.getElementById("mot").value.toUpperCase();
-  const resultat = document.getElementById("resultat");
+  if (dejaValide) return;
+  document.getElementById("resultat").innerHTML = "✅ +" + mot.length + " points";
 
-  let lettres = [];
-  tirages.forEach(t => {
-    lettres.push(t.v);
-    lettres.push(t.c);
-  });
+  let mot = document.getElementById("mot").value.toUpperCase();
 
-  let copie = [...lettres];
-  let valide = true;
-
-  for (let lettre of mot) {
-    let index = copie.indexOf(lettre);
-    if (index === -1) {
-      valide = false;
-      break;
-    }
-    copie.splice(index, 1);
+  if (mot.length < 3) {
+    document.getElementById("resultat").innerHTML = "❌ Mot trop court";
+    return;
   }
 
-  if (valide && mot.length > 0) {
-    score += mot.length;
-    dejaValide = true;
-    document.getElementById("score").innerText = "Score : " + score;
-    resultat.innerText = "✅ Mot valide";
-    resultat.style.color = "lightgreen";
-  } else {
-    resultat.innerText = "❌ Mot invalide";
-    resultat.style.color = "red";
-  }
+  score += mot.length;
+  document.getElementById("score").innerText = "Score : " + score;
+
+  dejaValide = true;
 }
 
 function resetGame() {
-  dejaValide = false;
   tirages = [];
-  lettres = [];
-}
-  document.getElementById("voyelles").innerHTML = "";
-  document.getElementById("consonnes").innerHTML = "";
+  nbLancers = 0;
+  dejaValide = false;
+
+  document.getElementById("zoneDes").innerHTML = "";
   document.getElementById("mot").value = "";
-  document.getElementById("resultat").innerText = "";
+  document.getElementById("resultat").innerHTML = "";
 }
 </script>
 
