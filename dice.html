@@ -172,20 +172,43 @@ function afficherLettres() {
 }
 
 function verifier() {
-  if (dejaValide) return;
-  document.getElementById("resultat").innerHTML = "✅ +" + mot.length + " points";
-
-  let mot = document.getElementById("mot").value.toUpperCase();
-
-  if (mot.length < 3) {
-    document.getElementById("resultat").innerHTML = "❌ Mot trop court";
+  if (dejaValide) {
+    alert("Tu as déjà validé ce tirage !");
     return;
   }
 
-  score += mot.length;
-  document.getElementById("score").innerText = "Score : " + score;
+  let mot = document.getElementById("mot").value.toUpperCase().trim();
+  let resultat = document.getElementById("resultat");
 
-  dejaValide = true;
+  if (mot.length < 3) {
+    resultat.innerHTML = "❌ Mot trop court";
+    resultat.style.color = "red";
+    return;
+  }
+
+  let copie = [...tirages];
+  let valide = true;
+
+  for (let lettre of mot) {
+    let index = copie.indexOf(lettre);
+    if (index === -1) {
+      valide = false;
+      break;
+    }
+    copie.splice(index, 1);
+  }
+
+  if (valide) {
+    score += mot.length;
+    dejaValide = true;
+
+    document.getElementById("score").innerText = "Score : " + score;
+    resultat.innerHTML = "✅ +" + mot.length + " points";
+    resultat.style.color = "lightgreen";
+  } else {
+    resultat.innerHTML = "❌ Mot invalide";
+    resultat.style.color = "red";
+  }
 }
 
 function resetGame() {
