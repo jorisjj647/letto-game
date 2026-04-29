@@ -105,6 +105,7 @@ input {
 let score = 0;
 let tirages = [];
   let lettres = [];
+  let dejaValide = false;
 
 const voyelles = ["A", "E", "I", "O", "U", "Y"];
 const consonnes = ["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Z"];
@@ -118,6 +119,10 @@ function roll() {
     alert("Maximum 3 lancers !");
     return;
   }
+  if (dejaValide) {
+  alert("Tu as déjà validé ce tirage !");
+  return;
+}
 
   const deV = document.getElementById("deVoyelle");
   const deC = document.getElementById("deConsonne");
@@ -195,6 +200,7 @@ function verifier() {
 
   if (valide && mot.length > 0) {
     score += mot.length;
+    dejaValide = true;
     document.getElementById("score").innerText = "Score : " + score;
     resultat.innerText = "✅ Mot valide";
     resultat.style.color = "lightgreen";
@@ -205,7 +211,10 @@ function verifier() {
 }
 
 function resetGame() {
+  dejaValide = false;
   tirages = [];
+  lettres = [];
+}
   document.getElementById("voyelles").innerHTML = "";
   document.getElementById("consonnes").innerHTML = "";
   document.getElementById("mot").value = "";
