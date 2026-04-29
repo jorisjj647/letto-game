@@ -104,6 +104,7 @@ input {
 <script>
 let score = 0;
 let tirages = [];
+  let lettres = [];
 
 const voyelles = ["A", "E", "I", "O", "U", "Y"];
 const consonnes = ["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Z"];
@@ -133,12 +134,15 @@ function roll() {
     clearInterval(animation);
 
     const v = tirer(voyelles);
-    const c = tirer(consonnes);
+    const c1 = tirer(consonnes);
+    const c2 = tirer(consonnes);
+    const c3 = tirer(consonnes);
 
     deV.innerText = v;
-    deC.innerText = c;
+    deC.innerText = c1; // juste pour affichage visuel principal
 
-    tirages.push({ v, c });
+    lettres.push(v, c1, c2, c3);
+    tirages.push(1);
 
     afficherHistorique();
 
@@ -147,8 +151,7 @@ function roll() {
   }, 800);
 }
   function afficherHistorique() {
-  const historique = tirages.map(t => t.v + "-" + t.c).join(" / ");
-  document.getElementById("historique").innerText = historique;
+  document.getElementById("historique").innerText = lettres.join(" ");
 }
 
 function afficher() {
