@@ -154,14 +154,14 @@ function roll() {
 
   lettres = [];
 
-  // 2 voyelles + 5 consonnes
-  for (let i = 0; i < 2; i++) {
-    lettres.push(tirer(voyelles));
-  }
+  // 3 voyelles + 4 consonnes
+for (let i = 0; i < 3; i++) {
+  lettres.push(tirer(voyelles));
+}
 
-  for (let i = 0; i < 5; i++) {
-    lettres.push(tirer(consonnes));
-  }
+for (let i = 0; i < 4; i++) {
+  lettres.push(tirer(consonnes));
+}
 
   document.getElementById("zoneDes").innerHTML = lettres.join(" ");
   document.getElementById("resultat").innerHTML = "Lancer " + nbLancers + " / 3";
