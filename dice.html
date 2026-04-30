@@ -111,6 +111,7 @@ input {
 <button onclick="roll()">LANCER</button>
 <button onclick="verifier()">VALIDER</button>
 <button onclick="resetGame()">RESET</button>
+  <button onclick="afficherRegles()">RÈGLES</button>
 
 
 
@@ -120,6 +121,15 @@ input {
 <div id="resultat"></div>
 <div id="score">Score : 0</div>
   <div id="classement"></div>
+  <div id="regles" style="display:none; margin-top:20px; color:gold;">
+  <h3>Règles rapides</h3>
+  <p>1. Entre ton pseudo.</p>
+  <p>2. Clique sur LANCER pour obtenir des lettres.</p>
+  <p>3. Forme un mot avec les lettres affichées.</p>
+  <p>4. Clique sur VALIDER pour marquer des points.</p>
+  <p>5. RESET lance une nouvelle manche.</p>
+  <p>Le joueur avec le meilleur score gagne.</p>
+</div>
 
 <script>
   let joueurs = {};
@@ -136,6 +146,10 @@ const consonnes = ["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","
 
 function tirer(tableau) {
   return tableau[Math.floor(Math.random() * tableau.length)];
+}
+  function afficherRegles() {
+  const bloc = document.getElementById("regles");
+  bloc.style.display = bloc.style.display === "none" ? "block" : "none";
 }
 
 function roll() {
