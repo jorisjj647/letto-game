@@ -60,6 +60,8 @@ button {
 <button onclick="roll()">RELANCER</button>
 
 <script>
+let score = 0;
+
 function roll(){
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const container = document.getElementById("letters");
@@ -68,6 +70,7 @@ function roll(){
 
     for(let i=0;i<6;i++){
         const letter = alphabet[Math.floor(Math.random()*alphabet.length)];
+
         const div = document.createElement("div");
         div.className="box";
         div.textContent=letter;
@@ -75,13 +78,9 @@ function roll(){
         container.appendChild(div);
     }
 
-    // 👉 SCORE ICI (IMPORTANT)
     score += 8;
     document.getElementById("score").textContent = score;
 }
-}
-
-roll();
 </script>
 
 </body>
