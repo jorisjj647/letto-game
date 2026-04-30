@@ -78,7 +78,26 @@ function roll(){
         container.appendChild(div);
     }
 
-    score += 8;
+    let gain = 0;
+
+for(let i=0;i<6;i++){
+    const letter = alphabet[Math.floor(Math.random()*alphabet.length)];
+
+    const div = document.createElement("div");
+    div.className="box";
+    div.textContent=letter;
+
+    // 👉 logique score
+    if("AEIOUY".includes(letter)){
+        gain += 5; // voyelle
+    } else {
+        gain += 2; // consonne
+    }
+
+    container.appendChild(div);
+}
+
+score += gain;
     document.getElementById("score").textContent = score;
 }
 </script>
