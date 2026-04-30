@@ -115,12 +115,14 @@ input {
 
 
 <input id="mot" type="text" placeholder="Tape ton mot">
-  <input id="pseudo" placeholder="Ton pseudo">
+  
 
 <div id="resultat"></div>
 <div id="score">Score : 0</div>
+  <div id="classement"></div>
 
 <script>
+  let joueurs = {};
 let score = 0;
 let tirages = [];
   let lettres = [];
@@ -225,7 +227,29 @@ document.getElementById("joueurActuel").innerText = "Joueur : " + joueur;
   }
 
   if (valide) {
-    score += mot.length;
+    let pseudo = document.getElementById("pseudo").value.trim();
+
+if (pseudo === "") {
+  alert("Entre un pseudo !");
+  return;
+}
+
+if (!joueurs[pseudo]) {
+  joueurs[pseudo] = {
+    score: 0,
+    parties: 0
+  };
+}
+
+joueurs[pseudo].score += mot.length;
+joueurs[pseudo].parties += 1;
+
+score = joueurs[pseudo].score;
+
+document.getElementById("joueurActuel").innerText = "Joueur : " + pseudo;
+document.getElementById("score").innerText = "Score : " + score;
+
+afficherClassement();
     dejaValide = true;
 
     document.getElementById("resultat").innerHTML =
@@ -247,6 +271,17 @@ function resetGame() {
   document.getElementById("zoneDes").innerHTML = "";
   document.getElementById("mot").value = "";
   document.getElementById("resultat").innerHTML = "";
+}
+  function afficherClassement() {
+  let html = "<h3>Classement</h3>";
+
+  for (let pseudo in joueurs) {
+    html += pseudo + " : " 
+      + joueurs[pseudo].score + " pts — "
+      + joueurs[pseudo].parties + " partie(s)<br>";
+  }
+
+  document.getElementById("classement").innerHTML = html;
 }
 </script>
 
