@@ -192,7 +192,7 @@ function verifier() {
   const resultat = document.getElementById("resultat");
 
   if (pseudo === "") {
-    alert("Entre un pseudo !");
+    alert("Commence le duel d'abord !");
     return;
   }
 
@@ -203,21 +203,17 @@ function verifier() {
   }
 
   let copie = [...lettres];
-  let valide = true;
 
   for (let lettre of mot) {
     let index = copie.indexOf(lettre);
-    if (index === -1) {
-      valide = false;
-      break;
-    }
-    copie.splice(index, 1);
-  }
 
-  if (!valide) {
-    resultat.innerHTML = "❌ Mot invalide";
-    resultat.style.color = "red";
-    return;
+    if (index === -1) {
+      resultat.innerHTML = "❌ Mot invalide";
+      resultat.style.color = "red";
+      return;
+    }
+
+    copie.splice(index, 1);
   }
 
   if (!joueurs[pseudo]) {
@@ -230,7 +226,7 @@ function verifier() {
   score = joueurs[pseudo].score;
   dejaValide = true;
 
-  document.getElementById("joueurActuel").innerText = "Joueur : " + pseudo;
+  document.getElementById("joueurActuel").innerText = "Tour de : " + pseudo;
   document.getElementById("score").innerText = "Score : " + score;
   resultat.innerHTML = "✅ +" + mot.length + " points";
   resultat.style.color = "lightgreen";
