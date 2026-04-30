@@ -100,10 +100,14 @@ input {
 <div id="zoneDes">? ?</div>
 
 <div id="historique"></div>
-  <div style="margin-bottom:10px;">
-  <input id="pseudo" type="text" placeholder="Ton pseudo">
-  <div id="joueurActuel">Joueur : aucun</div>
+<div id="setupDuel">
+  <input id="joueur1" type="text" placeholder="Joueur 1">
+  <input id="joueur2" type="text" placeholder="Joueur 2">
+  <button onclick="commencerDuel()">COMMENCER DUEL</button>
 </div>
+
+<div id="joueurActuel">Tour de : aucun</div>
+<div id="mancheActuelle">Manche : 0 / 3</div>
 
 <button onclick="roll()">LANCER</button>
 <button onclick="verifier()">VALIDER</button>
@@ -135,6 +139,11 @@ let maxLancers = 3;
 let dejaValide = false;
 let lettres = [];
 let joueurs = {};
+  let duelActif = false;
+let joueursDuel = [];
+let joueurIndex = 0;
+let manchesJouees = [0, 0];
+let manchesMax = 3;
 
 const voyelles = ["A","E","I","O","U","Y"];
 const consonnes = [
@@ -252,6 +261,32 @@ function afficherClassement() {
 function afficherRegles() {
   const bloc = document.getElementById("regles");
   bloc.style.display = bloc.style.display === "none" ? "block" : "none";
+}
+  function commencerDuel() {
+  let j1 = document.getElementById("joueur1").value.trim();
+  let j2 = document.getElementById("joueur2").value.trim();
+
+  if (j1 === "" || j2 === "") {
+    alert("Entre le nom des 2 joueurs !");
+    return;
+  }
+
+  duelActif = true;
+  joueursDuel = [j1, j2];
+  joueurIndex = 0;
+  manchesJouees = [0, 0];
+  score = 0;
+  joueurs = {};
+  joueurs[j1] = { score: 0, parties: 0 };
+  joueurs[j2] = { score: 0, parties: 0 };
+
+  document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueursDuel[joueurIndex];
+  document.getElementById("mancheActuelle").innerHTML = "Manche : 1 / " + manchesMax;
+  document.getElementById("score").innerHTML = "Score : 0";
+  document.getElementById("resultat").innerHTML = "Duel lancé !";
+
+  afficherClassement();
+  resetGame();
 }
 </script>
 </body>
