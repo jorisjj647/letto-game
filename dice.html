@@ -137,8 +137,13 @@ let lettres = [];
 let joueurs = {};
 
 const voyelles = ["A","E","I","O","U","Y"];
-const consonnes = ["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Z"];
-
+const consonnes = [
+  "L","R","S","T","N",
+  "L","R","S","T","N",
+  "M","P","D","C",
+  "B","F","G",
+  "V","J","K"
+];
 function tirer(tableau) {
   return tableau[Math.floor(Math.random() * tableau.length)];
 }
