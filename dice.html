@@ -132,108 +132,66 @@ input {
 </div>
 
 <script>
-  let joueurs = {};
 let score = 0;
-let tirages = [];
-  let nbLancers = 0;
-  let lettres = [];
-  let nbLancers = 0;
-  let maxLancers = 3;
-  let dejaValide = false;
-  let joueur = "";
+let nbLancers = 0;
+let maxLancers = 3;
+let dejaValide = false;
+let lettres = [];
+let joueurs = {};
 
-const voyelles = ["A", "E", "I", "O", "U", "Y"];
+const voyelles = ["A","E","I","O","U","Y"];
 const consonnes = ["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Z"];
 
 function tirer(tableau) {
   return tableau[Math.floor(Math.random() * tableau.length)];
 }
-  function afficherRegles() {
-  const bloc = document.getElementById("regles");
-  bloc.style.display = bloc.style.display === "none" ? "block" : "none";
-}
 
 function roll() {
-  if (nbLancers >= 3) {
-    alert("Maximum 3 lancers !");
-    return;
-}
   if (nbLancers >= maxLancers) {
     alert("Maximum 3 lancers !");
     return;
   }
-  if (nbLancers === maxLancers) {
-  document.getElementById("resultat").innerHTML += "<br>⚠️ Dernier lancer !";
-}
 
   dejaValide = false;
   nbLancers++;
 
-  tirages = []; // IMPORTANT → on remplace à chaque lancer
+  lettres = [];
 
-  const voyelles = ["A","E","I","O","U","Y"];
-  const consonnes = [
-    "B","C","D","F","G","H","J","K","L","M",
-    "N","P","Q","R","S","T","V","W","X","Z"
-  ];
-
-  // 2 voyelles + 5 consonnes = jouable
+  // 2 voyelles + 5 consonnes
   for (let i = 0; i < 2; i++) {
-    tirages.push(voyelles[Math.floor(Math.random() * voyelles.length)]);
+    lettres.push(tirer(voyelles));
   }
 
   for (let i = 0; i < 5; i++) {
-    tirages.push(consonnes[Math.floor(Math.random() * consonnes.length)]);
+    lettres.push(tirer(consonnes));
   }
 
-  afficherLettres();
-}
-  function afficherHistorique() {
-  document.getElementById("historique").innerText = lettres.join(" ");
-}
-
-function afficherLettres() {
-  const zone = document.getElementById("zoneDes");
-  zone.innerHTML = "";
-
-  tirages.forEach(l => {
-    let d = document.createElement("div");
-    d.className = "de";
-    d.innerText = l;
-    zone.appendChild(d);
-  });
+  document.getElementById("zoneDes").innerHTML = lettres.join(" ");
+  document.getElementById("resultat").innerHTML = "Lancer " + nbLancers + " / 3";
 }
 
 function verifier() {
-  
-  let pseudoInput = document.getElementById("pseudo").value.trim();
-
-if (pseudoInput === "") {
-  alert("Entre un pseudo !");
-  return;
-}
-
-joueur = pseudoInput;
-document.getElementById("joueurActuel").innerText = "Joueur : " + joueur;
-
-  if (!joueur) {
-  joueur = document.getElementById("pseudo").value || "Joueur";
-}
   if (dejaValide) {
     alert("Tu as déjà validé ce tirage !");
     return;
   }
 
-  let mot = document.getElementById("mot").value.toUpperCase().trim();
-  let resultat = document.getElementById("resultat");
+  const pseudo = document.getElementById("pseudo").value.trim();
+  const mot = document.getElementById("mot").value.toUpperCase().trim();
+  const resultat = document.getElementById("resultat");
 
-  if (mot.length < 3) {
+  if (pseudo === "") {
+    alert("Entre un pseudo !");
+    return;
+  }
+
+  if (mot.length < 2) {
     resultat.innerHTML = "❌ Mot trop court";
     resultat.style.color = "red";
     return;
   }
 
-  let copie = [...tirages];
+  let copie = [...lettres];
   let valide = true;
 
   for (let lettre of mot) {
@@ -245,64 +203,54 @@ document.getElementById("joueurActuel").innerText = "Joueur : " + joueur;
     copie.splice(index, 1);
   }
 
-  if (valide) {
-    let pseudo = document.getElementById("pseudo").value.trim();
-
-if (pseudo === "") {
-  alert("Entre un pseudo !");
-  return;
-}
-
-if (!joueurs[pseudo]) {
-  joueurs[pseudo] = {
-    score: 0,
-    parties: 0
-  };
-}
-
-joueurs[pseudo].score += mot.length;
-joueurs[pseudo].parties += 1;
-
-score = joueurs[pseudo].score;
-
-document.getElementById("joueurActuel").innerText = "Joueur : " + pseudo;
-document.getElementById("score").innerText = "Score : " + score;
-
-afficherClassement();
-    dejaValide = true;
-
-    document.getElementById("resultat").innerHTML =
-  "🔥 " + joueur + " gagne +" + mot.length + " points !";
-    document.getElementById("score").innerText = "Score : " + score;
-    resultat.innerHTML = "✅ +" + mot.length + " points";
-    resultat.style.color = "lightgreen";
-  } else {
+  if (!valide) {
     resultat.innerHTML = "❌ Mot invalide";
     resultat.style.color = "red";
+    return;
   }
+
+  if (!joueurs[pseudo]) {
+    joueurs[pseudo] = { score: 0, parties: 0 };
+  }
+
+  joueurs[pseudo].score += mot.length;
+  joueurs[pseudo].parties += 1;
+
+  score = joueurs[pseudo].score;
+  dejaValide = true;
+
+  document.getElementById("joueurActuel").innerText = "Joueur : " + pseudo;
+  document.getElementById("score").innerText = "Score : " + score;
+  resultat.innerHTML = "✅ +" + mot.length + " points";
+  resultat.style.color = "lightgreen";
+
+  afficherClassement();
 }
 
 function resetGame() {
-  tirages = [];
+  lettres = [];
   nbLancers = 0;
   dejaValide = false;
-  
-  document.getElementById("zoneDes").innerHTML = "";
+
+  document.getElementById("zoneDes").innerHTML = "? ?";
   document.getElementById("mot").value = "";
   document.getElementById("resultat").innerHTML = "";
 }
-  function afficherClassement() {
+
+function afficherClassement() {
   let html = "<h3>Classement</h3>";
 
   for (let pseudo in joueurs) {
-    html += pseudo + " : " 
-      + joueurs[pseudo].score + " pts — "
-      + joueurs[pseudo].parties + " partie(s)<br>";
+    html += pseudo + " : " + joueurs[pseudo].score + " pts — " + joueurs[pseudo].parties + " partie(s)<br>";
   }
 
   document.getElementById("classement").innerHTML = html;
 }
-</script>
 
+function afficherRegles() {
+  const bloc = document.getElementById("regles");
+  bloc.style.display = bloc.style.display === "none" ? "block" : "none";
+}
+</script>
 </body>
 </html>
