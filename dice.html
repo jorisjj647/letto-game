@@ -35,6 +35,12 @@ h1 {
   color: gold;
   box-shadow: 0 0 20px gold;
 }
+  #pseudo {
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  margin-right: 10px;
+}
 
 button {
   background: gold;
@@ -97,6 +103,10 @@ input {
 </div>
 
 <div id="historique"></div>
+  <div style="margin-bottom:10px;">
+  <input id="pseudo" type="text" placeholder="Ton pseudo">
+  <div id="joueurActuel">Joueur : aucun</div>
+</div>
 
 <button onclick="roll()">LANCER</button>
 <button onclick="verifier()">VALIDER</button>
@@ -174,6 +184,17 @@ function afficherLettres() {
 }
 
 function verifier() {
+  
+  let pseudoInput = document.getElementById("pseudo").value.trim();
+
+if (pseudoInput === "") {
+  alert("Entre un pseudo !");
+  return;
+}
+
+joueur = pseudoInput;
+document.getElementById("joueurActuel").innerText = "Joueur : " + joueur;
+
   if (!joueur) {
   joueur = document.getElementById("pseudo").value || "Joueur";
 }
