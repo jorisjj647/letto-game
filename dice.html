@@ -187,7 +187,7 @@ function verifier() {
     return;
   }
 
-  const pseudo = document.getElementById("pseudo").value.trim();
+  let pseudo = duelActif ? joueursDuel[joueurIndex] : "";
   const mot = document.getElementById("mot").value.toUpperCase().trim();
   const resultat = document.getElementById("resultat");
 
