@@ -68,20 +68,13 @@ function roll(){
 
     container.innerHTML = "";
 
-    for(let i=0;i<6;i++){
-        const letter = alphabet[Math.floor(Math.random()*alphabet.length)];
-
-        const div = document.createElement("div");
-        div.className="box";
-        div.textContent=letter;
-
-        container.appendChild(div);
-    }
-
+    
     let gain = 0;
+  let letters = [];
 
 for(let i=0;i<6;i++){
     const letter = alphabet[Math.floor(Math.random()*alphabet.length)];
+  letters.push(letter);
 
     const div = document.createElement("div");
     div.className="box";
@@ -95,6 +88,15 @@ for(let i=0;i<6;i++){
     }
 
     container.appendChild(div);
+}
+  // 🎯 JACKPOT
+const counts = {};
+letters.forEach(l => counts[l] = (counts[l] || 0) + 1);
+
+for(let l in counts){
+    if(counts[l] >= 3){
+        gain += 50;
+    }
 }
 
 score += gain;
