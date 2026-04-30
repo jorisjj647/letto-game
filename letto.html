@@ -13,6 +13,11 @@ body {
   font-family:Arial;
   text-align:center;
 }
+  #message {
+    margin-top: 10px;
+    font-size: 18px;
+    color: gold;
+}
   #scoreBox {
   margin-top: 10px;
   font-size: 22px;
@@ -54,6 +59,7 @@ button {
   <div id="scoreBox">
   SCORE : <span id="score">0</span>
 </div>
+  <div id="message"></div>
 
 <div id="letters"></div>
 
@@ -101,6 +107,7 @@ for(let l in counts){
 
 score += gain;
     document.getElementById("score").textContent = score;
+  document.getElementById("message").textContent = "+" + gain + " points";
 }
 </script>
 
