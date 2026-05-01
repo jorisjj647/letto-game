@@ -146,6 +146,8 @@ let joueursDuel = [];
 let joueurIndex = 0;
 let manchesJouees = [0, 0];
 let manchesMax = 3;
+  let tempsRestant = 15;
+let timerInterval = null;
 
 const voyelles = ["A","E","I","O","U","Y"];
 
@@ -156,6 +158,30 @@ const consonnes = [
   "B","F","G",
   "V","J"
 ];
+  function demarrerTimer() {
+  clearInterval(timerInterval);
+
+  tempsRestant = 15;
+  document.getElementById("timer").innerHTML = "Temps : " + tempsRestant;
+
+  timerInterval = setInterval(function() {
+    tempsRestant--;
+    document.getElementById("timer").innerHTML = "Temps : " + tempsRestant;
+
+    if (tempsRestant <= 0) {
+      clearInterval(timerInterval);
+      dejaValide = true;
+      document.getElementById("resultat").innerHTML = "⏱ Temps écoulé !";
+      document.getElementById("resultat").style.color = "red";
+
+      setTimeout(passerAuJoueurSuivant, 1200);
+    }
+  }, 1000);
+}
+
+function arreterTimer() {
+  clearInterval(timerInterval);
+}
 
 function tirer(tableau) {
   return tableau[Math.floor(Math.random() * tableau.length)];
@@ -219,6 +245,8 @@ function roll() {
 
   document.getElementById("zoneDes").innerHTML = lettres.join(" ");
   document.getElementById("resultat").innerHTML = "Lancer " + nbLancers + " / 3";
+  
+  demarrerTimer();
 }
 
 function verifier() {
@@ -267,6 +295,7 @@ function verifier() {
 
   score = joueurs[pseudo].score;
   dejaValide = true;
+  arreterTimer();
 
   document.getElementById("score").innerHTML = "Score : " + score;
   resultat.innerHTML = "✅ +" + mot.length + " points";
