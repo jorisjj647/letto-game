@@ -306,7 +306,8 @@ function afficherRegles() {
   const bloc = document.getElementById("regles");
   bloc.style.display = bloc.style.display === "none" ? "block" : "none";
 }
-  function commencerDuel() {
+
+function commencerDuel() {
   let j1 = document.getElementById("joueur1").value.trim();
   let j2 = document.getElementById("joueur2").value.trim();
 
@@ -324,19 +325,19 @@ function afficherRegles() {
   joueurs[j1] = { score: 0, parties: 0 };
   joueurs[j2] = { score: 0, parties: 0 };
 
+  lettres = [];
+  nbLancers = 0;
+  dejaValide = false;
+
+  document.getElementById("zoneDes").innerHTML = "? ?";
+  document.getElementById("mot").value = "";
   document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueursDuel[joueurIndex];
   document.getElementById("mancheActuelle").innerHTML = "Manche : 1 / " + manchesMax;
   document.getElementById("score").innerHTML = "Score : 0";
   document.getElementById("resultat").innerHTML = "Duel lancé !";
 
-    afficherClassement();
-lettres = [];
-nbLancers = 0;
-dejaValide = false;
-document.getElementById("zoneDes").innerHTML = "? ?";
-document.getElementById("mot").value = "";
+  afficherClassement();
 }
-
 </script>
 </body>
 </html>
