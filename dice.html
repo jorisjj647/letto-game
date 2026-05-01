@@ -139,13 +139,15 @@ let maxLancers = 3;
 let dejaValide = false;
 let lettres = [];
 let joueurs = {};
-  let duelActif = false;
+
+let duelActif = false;
 let joueursDuel = [];
 let joueurIndex = 0;
 let manchesJouees = [0, 0];
 let manchesMax = 3;
 
 const voyelles = ["A","E","I","O","U","Y"];
+
 const consonnes = [
   "L","R","S","T","N",
   "L","R","S","T","N",
@@ -153,11 +155,50 @@ const consonnes = [
   "B","F","G",
   "V","J"
 ];
+
 function tirer(tableau) {
   return tableau[Math.floor(Math.random() * tableau.length)];
 }
 
+function commencerDuel() {
+  let j1 = document.getElementById("joueur1").value.trim();
+  let j2 = document.getElementById("joueur2").value.trim();
+
+  if (j1 === "" || j2 === "") {
+    alert("Entre le nom des 2 joueurs !");
+    return;
+  }
+
+  duelActif = true;
+  joueursDuel = [j1, j2];
+  joueurIndex = 0;
+  manchesJouees = [0, 0];
+  score = 0;
+  joueurs = {};
+
+  joueurs[j1] = { score: 0, parties: 0 };
+  joueurs[j2] = { score: 0, parties: 0 };
+
+  lettres = [];
+  nbLancers = 0;
+  dejaValide = false;
+
+  document.getElementById("zoneDes").innerHTML = "? ?";
+  document.getElementById("mot").value = "";
+  document.getElementById("resultat").innerHTML = "Duel lancé !";
+  document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueursDuel[joueurIndex];
+  document.getElementById("mancheActuelle").innerHTML = "Manche : 1 / " + manchesMax;
+  document.getElementById("score").innerHTML = "Score : 0";
+
+  afficherClassement();
+}
+
 function roll() {
+  if (!duelActif) {
+    alert("Commence le duel d'abord !");
+    return;
+  }
+
   if (nbLancers >= maxLancers) {
     alert("Maximum 3 lancers !");
     return;
@@ -165,34 +206,28 @@ function roll() {
 
   dejaValide = false;
   nbLancers++;
-
   lettres = [];
 
-  // 3 voyelles + 4 consonnes
-for (let i = 0; i < 3; i++) {
-  lettres.push(tirer(voyelles));
-}
+  for (let i = 0; i < 3; i++) {
+    lettres.push(tirer(voyelles));
+  }
 
-for (let i = 0; i < 4; i++) {
-  lettres.push(tirer(consonnes));
-}
+  for (let i = 0; i < 4; i++) {
+    lettres.push(tirer(consonnes));
+  }
 
   document.getElementById("zoneDes").innerHTML = lettres.join(" ");
   document.getElementById("resultat").innerHTML = "Lancer " + nbLancers + " / 3";
 }
 
 function verifier() {
-  if (dejaValide) {
-    alert("Tu as déjà validé ce tirage !");
+  if (!duelActif) {
+    alert("Commence le duel d'abord !");
     return;
   }
 
-  let pseudo = duelActif ? joueursDuel[joueurIndex] : "";
-  const mot = document.getElementById("mot").value.toUpperCase().trim();
-  const resultat = document.getElementById("resultat");
-
-  if (pseudo === "") {
-    alert("Commence le duel d'abord !");
+  if (dejaValide) {
+    alert("Tu as déjà validé ce tirage !");
     return;
   }
 
@@ -200,6 +235,10 @@ function verifier() {
     alert("Lance les dés d'abord !");
     return;
   }
+
+  let pseudo = joueursDuel[joueurIndex];
+  const mot = document.getElementById("mot").value.toUpperCase().trim();
+  const resultat = document.getElementById("resultat");
 
   if (mot.length < 2) {
     resultat.innerHTML = "❌ Mot trop court";
@@ -228,8 +267,7 @@ function verifier() {
   score = joueurs[pseudo].score;
   dejaValide = true;
 
-  document.getElementById("joueurActuel").innerText = "Tour de : " + pseudo;
-  document.getElementById("score").innerText = "Score : " + score;
+  document.getElementById("score").innerHTML = "Score : " + score;
   resultat.innerHTML = "✅ +" + mot.length + " points";
   resultat.style.color = "lightgreen";
 
@@ -239,8 +277,6 @@ function verifier() {
 }
 
 function passerAuJoueurSuivant() {
-  if (!duelActif) return;
-
   if (manchesJouees[0] >= manchesMax && manchesJouees[1] >= manchesMax) {
     let j1 = joueursDuel[0];
     let j2 = joueursDuel[1];
@@ -273,16 +309,16 @@ function passerAuJoueurSuivant() {
   nbLancers = 0;
   dejaValide = false;
 
-  document.getElementById("zoneDes").innerHTML = "? ?";
-  document.getElementById("mot").value = "";
-
   let joueur = joueursDuel[joueurIndex];
   let manche = manchesJouees[joueurIndex] + 1;
 
+  document.getElementById("zoneDes").innerHTML = "? ?";
+  document.getElementById("mot").value = "";
   document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueur;
   document.getElementById("mancheActuelle").innerHTML = "Manche : " + manche + " / " + manchesMax;
   document.getElementById("score").innerHTML = "Score : " + joueurs[joueur].score;
   document.getElementById("resultat").innerHTML = "Au tour de " + joueur;
+  document.getElementById("resultat").style.color = "gold";
 }
 
 function resetGame() {
@@ -296,7 +332,10 @@ function resetGame() {
 
   if (duelActif) {
     let joueur = joueursDuel[joueurIndex];
+    let manche = manchesJouees[joueurIndex] + 1;
+
     document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueur;
+    document.getElementById("mancheActuelle").innerHTML = "Manche : " + manche + " / " + manchesMax;
     document.getElementById("score").innerHTML = "Score : " + joueurs[joueur].score;
   }
 }
@@ -314,38 +353,6 @@ function afficherClassement() {
 function afficherRegles() {
   const bloc = document.getElementById("regles");
   bloc.style.display = bloc.style.display === "none" ? "block" : "none";
-}
-
-function commencerDuel() {
-  let j1 = document.getElementById("joueur1").value.trim();
-  let j2 = document.getElementById("joueur2").value.trim();
-
-  if (j1 === "" || j2 === "") {
-    alert("Entre le nom des 2 joueurs !");
-    return;
-  }
-
-  duelActif = true;
-  joueursDuel = [j1, j2];
-  joueurIndex = 0;
-  manchesJouees = [0, 0];
-  score = 0;
-  joueurs = {};
-  joueurs[j1] = { score: 0, parties: 0 };
-  joueurs[j2] = { score: 0, parties: 0 };
-
-  lettres = [];
-  nbLancers = 0;
-  dejaValide = false;
-
-  document.getElementById("zoneDes").innerHTML = "? ?";
-  document.getElementById("mot").value = "";
-  document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueursDuel[joueurIndex];
-  document.getElementById("mancheActuelle").innerHTML = "Manche : 1 / " + manchesMax;
-  document.getElementById("score").innerHTML = "Score : 0";
-  document.getElementById("resultat").innerHTML = "Duel lancé !";
-
-  afficherClassement();
 }
 </script>
 </body>
