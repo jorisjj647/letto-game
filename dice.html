@@ -196,6 +196,11 @@ function verifier() {
     return;
   }
 
+  if (lettres.length === 0) {
+    alert("Lance les dés d'abord !");
+    return;
+  }
+
   if (mot.length < 2) {
     resultat.innerHTML = "❌ Mot trop court";
     resultat.style.color = "red";
@@ -216,28 +221,24 @@ function verifier() {
     copie.splice(index, 1);
   }
 
-  if (!joueurs[pseudo]) {
-    joueurs[pseudo] = { score: 0, parties: 0 };
-  }
-
   joueurs[pseudo].score += mot.length;
-joueurs[pseudo].parties += 1;
-manchesJouees[joueurIndex] += 1;
+  joueurs[pseudo].parties += 1;
+  manchesJouees[joueurIndex] += 1;
 
-score = joueurs[pseudo].score;
-dejaValide = true;
+  score = joueurs[pseudo].score;
+  dejaValide = true;
 
-document.getElementById("joueurActuel").innerText = "Tour de : " + pseudo;
-document.getElementById("score").innerText = "Score : " + score;
-resultat.innerHTML = "✅ +" + mot.length + " points";
-resultat.style.color = "lightgreen";
+  document.getElementById("joueurActuel").innerText = "Tour de : " + pseudo;
+  document.getElementById("score").innerText = "Score : " + score;
+  resultat.innerHTML = "✅ +" + mot.length + " points";
+  resultat.style.color = "lightgreen";
 
-afficherClassement();
+  afficherClassement();
 
-setTimeout(passerAuJoueurSuivant, 1200);
+  setTimeout(passerAuJoueurSuivant, 1200);
+}
 
-function resetGame() {
-  function passerAuJoueurSuivant() {
+function passerAuJoueurSuivant() {
   if (!duelActif) return;
 
   if (manchesJouees[0] >= manchesMax && manchesJouees[1] >= manchesMax) {
@@ -283,6 +284,8 @@ function resetGame() {
   document.getElementById("score").innerHTML = "Score : " + joueurs[joueur].score;
   document.getElementById("resultat").innerHTML = "Au tour de " + joueur;
 }
+
+function resetGame() {
   lettres = [];
   nbLancers = 0;
   dejaValide = false;
@@ -290,6 +293,12 @@ function resetGame() {
   document.getElementById("zoneDes").innerHTML = "? ?";
   document.getElementById("mot").value = "";
   document.getElementById("resultat").innerHTML = "";
+
+  if (duelActif) {
+    let joueur = joueursDuel[joueurIndex];
+    document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueur;
+    document.getElementById("score").innerHTML = "Score : " + joueurs[joueur].score;
+  }
 }
 
 function afficherClassement() {
