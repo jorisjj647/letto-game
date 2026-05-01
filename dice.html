@@ -221,20 +221,68 @@ function verifier() {
   }
 
   joueurs[pseudo].score += mot.length;
-  joueurs[pseudo].parties += 1;
+joueurs[pseudo].parties += 1;
+manchesJouees[joueurIndex] += 1;
 
-  score = joueurs[pseudo].score;
-  dejaValide = true;
+score = joueurs[pseudo].score;
+dejaValide = true;
 
-  document.getElementById("joueurActuel").innerText = "Tour de : " + pseudo;
-  document.getElementById("score").innerText = "Score : " + score;
-  resultat.innerHTML = "✅ +" + mot.length + " points";
-  resultat.style.color = "lightgreen";
+document.getElementById("joueurActuel").innerText = "Tour de : " + pseudo;
+document.getElementById("score").innerText = "Score : " + score;
+resultat.innerHTML = "✅ +" + mot.length + " points";
+resultat.style.color = "lightgreen";
 
-  afficherClassement();
-}
+afficherClassement();
+
+setTimeout(passerAuJoueurSuivant, 1200);
 
 function resetGame() {
+  function passerAuJoueurSuivant() {
+  if (!duelActif) return;
+
+  if (manchesJouees[0] >= manchesMax && manchesJouees[1] >= manchesMax) {
+    let j1 = joueursDuel[0];
+    let j2 = joueursDuel[1];
+
+    let score1 = joueurs[j1].score;
+    let score2 = joueurs[j2].score;
+
+    let message = "Fin du duel ! ";
+
+    if (score1 > score2) {
+      message += "Gagnant : " + j1;
+    } else if (score2 > score1) {
+      message += "Gagnant : " + j2;
+    } else {
+      message += "Égalité !";
+    }
+
+    document.getElementById("resultat").innerHTML = message;
+    document.getElementById("resultat").style.color = "gold";
+    return;
+  }
+
+  joueurIndex = joueurIndex === 0 ? 1 : 0;
+
+  if (manchesJouees[joueurIndex] >= manchesMax) {
+    joueurIndex = joueurIndex === 0 ? 1 : 0;
+  }
+
+  lettres = [];
+  nbLancers = 0;
+  dejaValide = false;
+
+  document.getElementById("zoneDes").innerHTML = "? ?";
+  document.getElementById("mot").value = "";
+
+  let joueur = joueursDuel[joueurIndex];
+  let manche = manchesJouees[joueurIndex] + 1;
+
+  document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueur;
+  document.getElementById("mancheActuelle").innerHTML = "Manche : " + manche + " / " + manchesMax;
+  document.getElementById("score").innerHTML = "Score : " + joueurs[joueur].score;
+  document.getElementById("resultat").innerHTML = "Au tour de " + joueur;
+}
   lettres = [];
   nbLancers = 0;
   dejaValide = false;
