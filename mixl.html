@@ -570,10 +570,12 @@ function startMultiplayer(){
   }
 
   document.getElementById("multiSetup").style.display = "none";
+render();
+setTimeout(updateCardOwners, 300);
   updateCardOwners();
 }
 
-function updateCardOwners(){
+function updateCardOwners();
   const cards = document.querySelectorAll(".card");
 
   cards.forEach((card, index) => {
