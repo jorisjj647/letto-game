@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <h1>ALPHAZARD MIXL</h1>
+  <div class="grid"></div>
 
 <p style="opacity:0.8">
 Trouve 2 lignes sur une même carte pour gagner.
@@ -518,6 +519,21 @@ function afficherClassement() {
 function afficherRegles() {
   const bloc = document.getElementById("regles");
   bloc.style.display = bloc.style.display === "none" ? "block" : "none";
+}
+  function generateGrid(){
+  const grid = document.querySelector(".grid");
+  if(!grid) return;
+
+  grid.innerHTML = "";
+
+  for(let i = 0; i < 6; i++){
+    grid.innerHTML += `
+      <div class="card">
+        <h2>Carte ${i + 1}</h2>
+        <div class="content"></div>
+      </div>
+    `;
+  }
 }
 </script>
   <div id="multiSetup" style="position:fixed;inset:0;background:#050505;color:white;z-index:9999;display:flex;align-items:center;justify-content:center;">
