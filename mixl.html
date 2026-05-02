@@ -542,47 +542,6 @@ function afficherRegles() {
 </div>
 
 <script>
-let playerOwners = [];
-
-function createPseudoInputs(){
-  const count = parseInt(document.getElementById("playerCount").value);
-  const box = document.getElementById("pseudoInputs");
-  box.innerHTML = "";
-
-  for(let i = 1; i <= count; i++){
-    box.innerHTML += '<input id="player'+i+'" placeholder="Pseudo joueur '+i+'" style="padding:10px;width:100%;margin:5px 0;">';
-  }
-}
-
-function startMultiplayer(){
-  const count = parseInt(document.getElementById("playerCount").value);
-  const players = [];
-
-  for(let i = 1; i <= count; i++){
-    const input = document.getElementById("player"+i);
-    players.push(input && input.value.trim() ? input.value.trim() : "Joueur " + i);
-  }
-
-  playerOwners = [];
-
-  for(let card = 0; card < 6; card++){
-    playerOwners[card] = players[card % count];
-  }
-
-  document.getElementById("multiSetup").style.display = "none";
-
-  // relance proprement le jeu
-  gameOver = false;
-  readyCard = null;
-
-  resetGame();
-
-  setTimeout(function(){
-    updateCardOwners();
-  }, 800);
-}
-createPseudoInputs();
-setInterval(updateCardOwners, 500);
 </script>
 </body>
 </html>
