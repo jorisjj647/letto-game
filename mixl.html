@@ -560,7 +560,7 @@ function startMultiplayer(){
 
   for(let i = 1; i <= count; i++){
     const input = document.getElementById("player"+i);
-    players.push(input.value.trim() || "Joueur " + i);
+    players.push(input && input.value.trim() ? input.value.trim() : "Joueur " + i);
   }
 
   playerOwners = [];
@@ -570,22 +570,17 @@ function startMultiplayer(){
   }
 
   document.getElementById("multiSetup").style.display = "none";
-resetGame();
-setTimeout(updateCardOwners, 500);
-  updateCardOwners();
+
+  // relance proprement le jeu
+  gameOver = false;
+  readyCard = null;
+
+  resetGame();
+
+  setTimeout(function(){
+    updateCardOwners();
+  }, 800);
 }
-
-function updateCardOwners(){
-  const cards = document.querySelectorAll(".card");
-
-  cards.forEach((card, index) => {
-    const title = card.querySelector("h2");
-    if(title && playerOwners[index]){
-      title.innerText = "Carte " + (index + 1) + " — " + playerOwners[index];
-    }
-  });
-}
-
 createPseudoInputs();
 setInterval(updateCardOwners, 500);
 </script>
