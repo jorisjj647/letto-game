@@ -185,7 +185,17 @@ let bag=[],cards=[],drawn=0,gameOver=false,bonusShown={},readyCard=null,readyRow
 function shuffle(a){let arr=[...a];for(let i=arr.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
 function vowel(m){return m.slice(-1)}
 function fullSet(){let s=[];consonnes.forEach(c=>voyelles.forEach(v=>s.push(c+v)));return shuffle(s)}
-function resetGame(){let set=fullSet();bag=[...set];cards=[];drawn=0;gameOver=false;bonusShown={};readyCard=null;readyRows=[];for(let i=0;i<6;i++){cards.push(set.slice(i*20,(i+1)*20).map(m=>({mix:m,marked:false,win:false})))}document.getElementById("modal").style.display="none";document.getElementById("bonusAlert").classList.remove("show");document.getElementById("readyAlert").classList.remove("show");document.getElementById("validateBtn").classList.remove("show");document.getElementById("token").innerText="--";document.getElementById("token").style.borderColor="#777";render()}
+function resetGame(){
+  gameOver = false;
+  readyCard = null;
+  winnerShown = false; // si tu l’avais ajouté
+  document.getElementById("modal").style.display = "none";
+
+  // option : relancer l’écran multijoueur
+  // document.getElementById("multiSetup").style.display = "flex";
+
+  // ton reset existant…
+}let set=fullSet();bag=[...set];cards=[];drawn=0;gameOver=false;bonusShown={};readyCard=null;readyRows=[];for(let i=0;i<6;i++){cards.push(set.slice(i*20,(i+1)*20).map(m=>({mix:m,marked:false,win:false})))}document.getElementById("modal").style.display="none";document.getElementById("bonusAlert").classList.remove("show");document.getElementById("readyAlert").classList.remove("show");document.getElementById("validateBtn").classList.remove("show");document.getElementById("token").innerText="--";document.getElementById("token").style.borderColor="#777";render()}
 function countCompleteLines(card){let count=0;let rows=[];for(let r=0;r<5;r++){let s=r*4;let line=[card[s],card[s+1],card[s+2],card[s+3]];if(line.every(c=>c.marked)){count++;rows.push(r)}}return {count:count,rows:rows}}
 function showBonus(ci){let alert=document.getElementById("bonusAlert");alert.innerText="BONUS ! Carte "+(ci+1)+" chauffe 🔥";alert.classList.remove("show");void alert.offsetWidth;alert.classList.add("show");setTimeout(()=>alert.classList.remove("show"),1800)}
 function showReady(ci){let alert=document.getElementById("readyAlert");alert.innerText="MIXL prêt sur Carte "+(ci+1)+" !";alert.classList.remove("show");void alert.offsetWidth;alert.classList.add("show");document.getElementById("validateBtn").classList.add("show")}
@@ -267,7 +277,8 @@ setInterval(() => {
     </select>
 
     <div id="pseudoInputs"></div>
-
+    
+    <button onclick="shareScore()">Partager</button>
     <button onclick="startMultiplayer()" style="margin-top:15px;padding:12px;width:100%;font-weight:bold;">
       Lancer la partie
     </button>
@@ -281,6 +292,15 @@ function createPseudoInputs(){
   const count = parseInt(document.getElementById("playerCount").value);
   const box = document.getElementById("pseudoInputs");
   box.innerHTML = "";
+  function shareScore(){
+  const text = `${playerOwners[readyCard] || "Un joueur"} gagne à MIXL en ${drawn} tirages ! Tu peux faire mieux ?`;
+  if (navigator.share) {
+    navigator.share({ text });
+  } else {
+    navigator.clipboard.writeText(text);
+    alert("Score copié !");
+  }
+}
 
   for(let i = 1; i <= count; i++){
     box.innerHTML += `
@@ -329,11 +349,7 @@ function detectWinner(){
 
 // boucle de vérification
 setInterval(detectWinner, 800);
-
-  document.getElementById("multiSetup").style.display = "none";
-  updateCardOwners();
-}
-
+ 
 function updateCardOwners(){
   const cards = document.querySelectorAll(".card");
 
