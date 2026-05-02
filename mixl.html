@@ -264,13 +264,269 @@ setInterval(() => {
   updatePhase();
   highlightCards();
 }, 1000);
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>ALPHAZARD DICE</title>
+
+<style>
+body {
+  background: black;
+  color: gold;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding-top: 40px;
+}
+
+h1 {
+  font-size: 42px;
+  text-shadow: 0 0 15px gold;
+}
+
+.zone {
+  margin: 30px auto;
+}
+
+.dice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 110px;
+  height: 110px;
+  margin: 10px;
+  border: 3px solid gold;
+  border-radius: 18px;
+  font-size: 60px;
+  color: gold;
+  box-shadow: 0 0 20px gold;
+}
+  #pseudo {
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  margin-right: 10px;
+}
+
+button {
+  background: gold;
+  color: black;
+  border: none;
+  padding: 12px 25px;
+  margin: 8px;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+input {
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  text-align: center;
+}
+
+#score, #resultat {
+  margin-top: 15px;
+  font-size: 22px;
+}
+  .de.rolling {
+  animation: diceRoll 0.6s ease;
+}
+
+@keyframes diceRoll {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(12deg) scale(1.08); }
+  50% { transform: rotate(-12deg) scale(1.15); }
+  75% { transform: rotate(8deg) scale(1.08); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+  .de {
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+#historique {
+  margin-top: 20px;
+  font-size: 22px;
+  color: gold;
+  text-shadow: 0 0 10px gold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎲 ALPHAZARD DICE</h1>
+<div id="zoneDes">? ?</div>
+
+<div id="historique"></div>
+  <div style="margin-bottom:10px;">
+  <input id="pseudo" type="text" placeholder="Ton pseudo">
+  <div id="joueurActuel">Joueur : aucun</div>
+</div>
+
+<button onclick="roll()">LANCER</button>
+<button onclick="verifier()">VALIDER</button>
+<button onclick="resetGame()">RESET</button>
+  <button onclick="afficherRegles()">RÈGLES</button>
+
+
+
+<input id="mot" type="text" placeholder="Tape ton mot">
+  
+
+<div id="resultat"></div>
+<div id="score">Score : 0</div>
+  <div id="classement"></div>
+  <div id="regles" style="display:none; margin-top:20px; color:gold;">
+  <h3>Règles rapides</h3>
+  <p>1. Entre ton pseudo.</p>
+  <p>2. Clique sur LANCER pour obtenir des lettres.</p>
+  <p>3. Forme un mot avec les lettres affichées.</p>
+  <p>4. Clique sur VALIDER pour marquer des points.</p>
+  <p>5. RESET lance une nouvelle manche.</p>
+  <p>Le joueur avec le meilleur score gagne.</p>
+</div>
+
+<script>
+let score = 0;
+let nbLancers = 0;
+let maxLancers = 3;
+let dejaValide = false;
+let lettres = [];
+let joueurs = {};
+
+const voyelles = ["A","E","I","O","U","Y"];
+const consonnes = [
+  "L","R","S","T","N",
+  "L","R","S","T","N",
+  "M","P","D","C",
+  "B","F","G",
+  "V","J"
+];
+function tirer(tableau) {
+  return tableau[Math.floor(Math.random() * tableau.length)];
+}
+
+function roll() {
+  if (nbLancers >= maxLancers) {
+    alert("Maximum 3 lancers !");
+    return;
+  }
+
+  dejaValide = false;
+  nbLancers++;
+
+  lettres = [];
+
+  // 3 voyelles + 4 consonnes
+for (let i = 0; i < 3; i++) {
+  lettres.push(tirer(voyelles));
+}
+
+for (let i = 0; i < 4; i++) {
+  lettres.push(tirer(consonnes));
+}
+
+  document.getElementById("zoneDes").innerHTML = lettres.join(" ");
+  document.getElementById("resultat").innerHTML = "Lancer " + nbLancers + " / 3";
+}
+
+function verifier() {
+  if (dejaValide) {
+    alert("Tu as déjà validé ce tirage !");
+    return;
+  }
+
+  const pseudo = document.getElementById("pseudo").value.trim();
+  const mot = document.getElementById("mot").value.toUpperCase().trim();
+  const resultat = document.getElementById("resultat");
+
+  if (pseudo === "") {
+    alert("Entre un pseudo !");
+    return;
+  }
+
+  if (mot.length < 2) {
+    resultat.innerHTML = "❌ Mot trop court";
+    resultat.style.color = "red";
+    return;
+  }
+
+  let copie = [...lettres];
+  let valide = true;
+
+  for (let lettre of mot) {
+    let index = copie.indexOf(lettre);
+    if (index === -1) {
+      valide = false;
+      break;
+    }
+    copie.splice(index, 1);
+  }
+
+  if (!valide) {
+    resultat.innerHTML = "❌ Mot invalide";
+    resultat.style.color = "red";
+    return;
+  }
+
+  if (!joueurs[pseudo]) {
+    joueurs[pseudo] = { score: 0, parties: 0 };
+  }
+
+  joueurs[pseudo].score += mot.length;
+  joueurs[pseudo].parties += 1;
+
+  score = joueurs[pseudo].score;
+  dejaValide = true;
+
+  document.getElementById("joueurActuel").innerText = "Joueur : " + pseudo;
+  document.getElementById("score").innerText = "Score : " + score;
+  resultat.innerHTML = "✅ +" + mot.length + " points";
+  resultat.style.color = "lightgreen";
+
+  afficherClassement();
+}
+
+function resetGame() {
+  lettres = [];
+  nbLancers = 0;
+  dejaValide = false;
+
+  document.getElementById("zoneDes").innerHTML = "? ?";
+  document.getElementById("mot").value = "";
+  document.getElementById("resultat").innerHTML = "";
+}
+
+function afficherClassement() {
+  let html = "<h3>Classement</h3>";
+
+  for (let pseudo in joueurs) {
+    html += pseudo + " : " + joueurs[pseudo].score + " pts — " + joueurs[pseudo].parties + " partie(s)<br>";
+  }
+
+  document.getElementById("classement").innerHTML = html;
+}
+
+function afficherRegles() {
+  const bloc = document.getElementById("regles");
+  bloc.style.display = bloc.style.display === "none" ? "block" : "none";
+}
 </script>
-  <div id="multiSetup" style="position:fixed;inset:0;background:#050505;color:white;z-index:99999;display:flex;align-items:center;justify-content:center;text-align:center;">
-  <div style="background:#111;padding:25px;border-radius:20px;border:2px solid gold;max-width:360px;">
-    <h2 style="color:gold;">MIXL Multijoueur</h2>
+  <div id="multiSetup" style="position:fixed;inset:0;background:#050505;color:white;z-index:9999;display:flex;align-items:center;justify-content:center;">
+  <div style="background:#111;padding:25px;border-radius:20px;border:2px solid gold;max-width:360px;width:90%;">
+    
+    <h2 style="color:gold;text-align:center;">MIXL Multijoueur</h2>
 
     <p>Nombre de joueurs</p>
-    <select id="playerCount" onchange="createPseudoInputs()" style="padding:10px;width:100%;margin-bottom:10px;">
+    <select id="playerCount" onchange="createPseudoInputs()" style="width:100%;padding:10px;margin-bottom:10px;">
       <option value="2">2 joueurs</option>
       <option value="3">3 joueurs</option>
       <option value="6">6 joueurs</option>
@@ -278,9 +534,10 @@ setInterval(() => {
 
     <div id="pseudoInputs"></div>
 
-    <button onclick="startMultiplayer()" style="margin-top:15px;padding:12px;width:100%;font-weight:bold;">
+    <button onclick="startMultiplayer()" style="margin-top:10px;width:100%;padding:12px;">
       Lancer la partie
     </button>
+
   </div>
 </div>
 
@@ -330,5 +587,9 @@ function updateCardOwners(){
 createPseudoInputs();
 setInterval(updateCardOwners, 500);
 </script>
+
 </body>
 </html>
+
+
+
