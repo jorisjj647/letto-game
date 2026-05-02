@@ -575,7 +575,7 @@ setTimeout(updateCardOwners, 300);
   updateCardOwners();
 }
 
-function updateCardOwners();
+function updateCardOwners(){
   const cards = document.querySelectorAll(".card");
 
   cards.forEach((card, index) => {
@@ -589,7 +589,6 @@ function updateCardOwners();
 createPseudoInputs();
 setInterval(updateCardOwners, 500);
 </script>
-
 </body>
 </html>
 
