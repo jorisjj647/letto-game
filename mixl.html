@@ -244,5 +244,97 @@ setInterval(() => {
   highlightCards();
 }, 1000);
 </script>
+  <div id="multiSetup" style="position:fixed;inset:0;background:#050505;color:white;z-index:99999;display:flex;align-items:center;justify-content:center;text-align:center;">
+  <div style="background:#111;padding:25px;border-radius:20px;border:2px solid gold;max-width:360px;">
+    <h2 style="color:gold;">MIXL Multijoueur</h2>
+
+    <p>Nombre de joueurs</p>
+    <select id="playerCount" style="padding:10px;width:100%;margin-bottom:10px;">
+      <option value="2">2 joueurs</option>
+      <option value="3">3 joueurs</option>
+      <option value="6">6 joueurs</option>
+    </select>
+
+    <div id="pseudoInputs"></div>
+
+    <button onclick="startMultiplayer()" style="margin-top:15px;padding:12px;width:100%;font-weight:bold;">
+      Lancer la partie
+    </button>
+  </div>
+</div>
+
+<script>
+let playerOwners = [];
+
+function createPseudoInputs(){
+  const count = parseInt(document.getElementById("playerCount").value);
+  const box = document.getElementById("pseudoInputs");
+  box.innerHTML = "";
+
+  for(let i = 1; i <= count; i++){
+    box.innerHTML += `
+      <input id="player${i}" placeholder="Pseudo joueur ${i}"
+      style="padding:10px;width:100%;margin:5px 0;">
+    `;
+  }
+}
+
+document.getElementById("playerCount").addEventListener("change", createPseudoInputs);
+createPseudoInputs();
+
+function startMultiplayer(){
+  const count = parseInt(document.getElementById("playerCount").value);
+  const players = [];
+
+  for(let i = 1; i <= count; i++){
+    const name = document.getElementById("player"+i).value.trim();
+    players.push(name || "Joueur " + i);
+  }
+
+  playerOwners = [];
+
+  for(let card = 0; card < 6; card++){
+    playerOwners[card] = players[card % count];
+  }
+  // === DÉTECTION GAGNANT MIXL ===
+
+let winnerShown = false;
+
+function detectWinner(){
+  const cards = document.querySelectorAll(".card");
+
+  cards.forEach((card, index) => {
+    const text = card.innerText;
+
+    if(!winnerShown && (text.includes("2/2") || text.includes("MIXL prêt"))){
+      winnerShown = true;
+
+      const winner = playerOwners[index] || "Joueur";
+
+      alert(winner + " gagne en " + drawn + " tirages !");
+    }
+  });
+}
+
+// boucle de vérification
+setInterval(detectWinner, 800);
+
+  document.getElementById("multiSetup").style.display = "none";
+  updateCardOwners();
+}
+
+function updateCardOwners(){
+  const cards = document.querySelectorAll(".card");
+
+  cards.forEach((card, index) => {
+    const title = card.querySelector("h2");
+    if(title && playerOwners[index]){
+      title.innerText = "Carte " + (index + 1) + " — " + playerOwners[index];
+    }
+  });
+}
+
+setInterval(updateCardOwners, 500);
+</script>
 </body>
 </html>
