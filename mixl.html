@@ -193,7 +193,18 @@ function render(){document.getElementById("remaining").innerText=bag.length;docu
 function drawToken(){if(gameOver||readyCard!==null||bag.length===0)return;let b=document.getElementById("bag");b.classList.remove("shake");void b.offsetWidth;b.classList.add("shake");let idx=Math.floor(Math.random()*bag.length);let t=bag.splice(idx,1)[0];drawn++;let tok=document.getElementById("token");tok.classList.remove("pop");void tok.offsetWidth;tok.classList.add("pop");tok.innerText=t;tok.style.borderColor=colors[vowel(t)];cards.forEach(card=>{let found=card.find(c=>c.mix===t);if(found)found.marked=true});checkBonusAndReady();render()}
 function checkBonusAndReady(){for(let ci=0;ci<cards.length;ci++){let info=countCompleteLines(cards[ci]);if(info.count===1&&!bonusShown[ci]){bonusShown[ci]=true;showBonus(ci)}if(info.count>=2&&readyCard===null){readyCard=ci;readyRows=info.rows;showReady(ci);return}}}
 function confetti(){let cols=["#e53935","#1e88e5","#fdd835","#fb8c00","#43a047","#8e24aa"];for(let i=0;i<90;i++){let c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.background=cols[Math.floor(Math.random()*cols.length)];c.style.animationDelay=(Math.random()*.8)+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),3500)}}
-function validateMixl(){if(readyCard===null||gameOver)return;readyRows.forEach(r=>{let s=r*4;cards[readyCard][s].win=true;cards[readyCard][s+1].win=true;cards[readyCard][s+2].win=true;cards[readyCard][s+3].win=true});gameOver=true;render();setTimeout(()=>{confetti();document.getElementById("winText").innerText="Carte "+(readyCard+1)+" gagnante avec 2 lignes en "+drawn+" tirages.";document.getElementById("modal").style.display="flex"},180)}
+function validateMixl(){
+  if(readyCard===null || gameOver) return;
+
+  gameOver = true;
+
+  const winner = playerOwners[readyCard] || "Joueur";
+
+  document.getElementById("winText").innerText =
+    winner + " gagne en " + drawn + " tirages !";
+
+  document.getElementById("modal").style.display = "flex";
+};readyRows.forEach(r=>{let s=r*4;cards[readyCard][s].win=true;cards[readyCard][s+1].win=true;cards[readyCard][s+2].win=true;cards[readyCard][s+3].win=true});gameOver=true;render();setTimeout(()=>{confetti();document.getElementById("winText").innerText="Carte "+(readyCard+1)+" gagnante avec 2 lignes en "+drawn+" tirages.";document.getElementById("modal").style.display="flex"},180)}
 resetGame();
   // === UPGRADE INTERFACE MIXL ===
 
