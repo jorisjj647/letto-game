@@ -86,9 +86,7 @@ function roll(){
     
     let gain = 0;
   let letters = [];
-  if(gain >= 40){
-    document.getElementById("winSound").play();
-}
+  
 
 for(let i=0;i<6;i++){
     const letter = alphabet[Math.floor(Math.random()*alphabet.length)];
@@ -118,6 +116,12 @@ for(let l in counts){
 }
 
 let message = "";
+  score += gain;
+document.getElementById("score").textContent = score;
+
+if(gain >= 40){
+    document.getElementById("winSound").play();
+}
 
 if(gain >= 40){
     message = "🔥 GROS SCORE !";
