@@ -137,6 +137,12 @@ function roll(){
       gain += 50;
     }
   }
+  // ✨ DOUBLE LETTRE
+for(let i = 0; i < letters.length - 1; i++){
+  if(letters[i] === letters[i+1]){
+    gain += 2;
+  }
+}
 
   score += gain;
   document.getElementById("score").textContent = score;
