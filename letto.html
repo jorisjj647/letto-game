@@ -57,13 +57,24 @@ button {
   font-size:18px;
   cursor:pointer;
 }
+  #playerName {
+  margin: 10px auto 18px auto;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: none;
+  font-size: 18px;
+  text-align: center;
+  width: 220px;
+}
 </style>
 </head>
 
 <body>
 
 <h1>LETTO</h1>
-  <p id="subtitle">Forme un mot avec ces lettres</p>
+  <p id="playerDisplay"></p>
+  <p id="subtitle">Jusqu’où peux-tu aller ?</p>
+  <input id="playerName" placeholder="Ton pseudo..." />
   <div id="scoreBox">
   SCORE : <span id="score">0</span>
 </div>
@@ -79,6 +90,8 @@ button {
 let score = 0;
 
 function roll(){
+  const player = document.getElementById("playerName").value;
+  document.getElementById("playerDisplay").textContent = "Joueur : " + player;
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const container = document.getElementById("letters");
   const scoreEl = document.getElementById("score");
