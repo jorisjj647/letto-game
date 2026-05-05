@@ -77,7 +77,9 @@ button {
 let score = 0;
 
 function roll(){
-  document.getElementById("clickSound").play();
+  const sound = document.getElementById("clickSound");
+sound.currentTime = 0;
+sound.play().catch(() => {});
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const container = document.getElementById("letters");
 
@@ -120,7 +122,9 @@ let message = "";
 document.getElementById("score").textContent = score;
 
 if(gain >= 40){
-    document.getElementById("winSound").play();
+    const win = document.getElementById("winSound");
+win.currentTime = 0;
+win.play().catch(() => {});
 }
 
 if(gain >= 40){
