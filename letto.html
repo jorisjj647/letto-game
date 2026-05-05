@@ -77,68 +77,47 @@ button {
 let score = 0;
 
 function roll(){
-  
   const sound = document.getElementById("clickSound");
-sound.currentTime = 0;
-sound.play().catch(() => {});
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const container = document.getElementById("letters");
+  if(sound){
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
+  }
 
-    container.innerHTML = "";
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const container = document.getElementById("letters");
+  container.innerHTML = "";
 
-    
-    let gain = 0;
+  let gain = 0;
   let letters = [];
-  
 
-for(let i=0;i<6;i++){
-    const letter = alphabet[Math.floor(Math.random()*alphabet.length)];
-  letters.push(letter);
+  for(let i = 0; i < 6; i++){
+    const letter = alphabet[Math.floor(Math.random() * alphabet.length)];
+    letters.push(letter);
 
     const div = document.createElement("div");
-    div.className="box";
-    div.textContent=letter;
-
-    // 👉 logique score
-    if("AEIOUY".includes(letter)){
-        gain += 5; // voyelle
-    } else {
-        gain += 2; // consonne
-    }
-
+    div.className = "box";
+    div.textContent = letter;
     container.appendChild(div);
-}
-  // 🎯 JACKPOT
-const counts = {};
-letters.forEach(l => counts[l] = (counts[l] || 0) + 1);
 
-for(let l in counts){
-    if(counts[l] >= 3){
-        gain += 50;
+    if("AEIOUY".includes(letter)){
+      gain += 5;
+    } else {
+      gain += 2;
     }
-}
+  }
 
-let message = "";
+  const counts = {};
+  letters.forEach(l => counts[l] = (counts[l] || 0) + 1);
+
+  for(let l in counts){
+    if(counts[l] >= 3){
+      gain += 50;
+    }
+  }
+
   score += gain;
-document.getElementById("score").textContent = score;
-
-if(gain >= 40){
-    const win = document.getElementById("winSound");
-win.currentTime = 0;
-win.play().catch(() => {});
+  document.getElementById("score").textContent = score;
 }
-
-if(gain >= 40){
-    message = "🔥 GROS SCORE !";
-} else if(gain >= 20){
-    message = "💪 Bien joué !";
-} else {
-    message = "Continue...";
-}
-
-document.getElementById("message").textContent = message;
 </script>
-<audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
-<audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
 </body>
 </html>
