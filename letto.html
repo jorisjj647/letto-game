@@ -90,6 +90,7 @@ function roll(){
   container.innerHTML = "";
 
   let gain = 0;
+  let message = "";
   let letters = [];
 
  for(let i = 0; i < 6; i++){
@@ -134,18 +135,20 @@ function roll(){
 
   for(let l in counts){
     if(counts[l] >= 3){
-      gain += 50;
-    }
+  gain += 50;
+  message = "🔥 SUPER COMBO !";
+}
   }
   // ✨ DOUBLE LETTRE
 for(let i = 0; i < letters.length - 1; i++){
   if(letters[i] === letters[i+1]){
-    gain += 2;
-  }
+  gain += 2;
+  message = "✨ DOUBLE !";
 }
 
   score += gain;
   document.getElementById("score").textContent = score;
+  document.getElementById("message").textContent = message || ("+" + gain + " points");
 }
 </script>
 </body>
