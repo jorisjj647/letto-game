@@ -13,7 +13,7 @@ body {
   padding-top: 40px;
 }
 
-h1 {
+  
   font-size: 42px;
   text-shadow: 0 0 15px gold;
 }
@@ -56,16 +56,19 @@ button {
 input {
   padding: 12px;
   font-size: 18px;
-  border-radius: 10px;
-  border: 1px solid #d4af37;
-  background: rgba(0, 0, 0, 0.75);
-  color: #f5d76e;
+  border-radius: 12px;
+  border: 1px solid #d4af37 !important;
+  background: rgba(15, 15, 15, 0.92) !important;
+  color: #f5d76e !important;
   margin: 8px;
   text-align: center;
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
+  -webkit-appearance: none;
+  appearance: none;
 }
   input::placeholder {
-  color: #bfa75a;
+  color: #b89b3c;
+  opacity: 1;
 }
 
 #score, #resultat {
@@ -97,6 +100,13 @@ input {
   font-size: 22px;
   color: gold;
   text-shadow: 0 0 10px gold;
+}
+  img {
+  display: block;
+  margin: 20px auto 10px auto;
+  width: 280px;
+  max-width: 75%;
+  height: auto;
 }
 </style>
 </head>
