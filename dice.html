@@ -317,15 +317,18 @@ function passerAuJoueurSuivant() {
     let score1 = joueurs[j1].score;
     let score2 = joueurs[j2].score;
 
-    let message = "Fin du duel ! ";
+    let message = "🏁 FIN DU DUEL<br><br>";
 
-    if (score1 > score2) {
-      message += "Gagnant : " + j1;
-    } else if (score2 > score1) {
-      message += "Gagnant : " + j2;
-    } else {
-      message += "Égalité !";
-    }
+message += j1 + " : " + score1 + " pts<br>";
+message += j2 + " : " + score2 + " pts<br><br>";
+
+if (score1 > score2) {
+  message += "🏆 VAINQUEUR DU DUEL : " + j1;
+} else if (score2 > score1) {
+  message += "🏆 VAINQUEUR DU DUEL : " + j2;
+} else {
+  message += "🤝 ÉGALITÉ PARFAITE !";
+}
 
     document.getElementById("resultat").innerHTML = message;
     document.getElementById("resultat").style.color = "gold";
