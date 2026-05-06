@@ -307,6 +307,9 @@ function verifier() {
 }
 
 function passerAuJoueurSuivant() {
+  if (!duelActif) return;
+
+  // Si les 2 joueurs ont joué 3 manches chacun : fin du duel
   if (manchesJouees[0] >= manchesMax && manchesJouees[1] >= manchesMax) {
     let j1 = joueursDuel[0];
     let j2 = joueursDuel[1];
@@ -326,11 +329,25 @@ function passerAuJoueurSuivant() {
 
     document.getElementById("resultat").innerHTML = message;
     document.getElementById("resultat").style.color = "gold";
+    document.getElementById("joueurActuel").innerHTML = "Duel terminé";
+    document.getElementById("mancheActuelle").innerHTML = "Manche : 3 / 3";
+    document.getElementById("zoneDes").innerHTML = "? ?";
+    document.getElementById("mot").value = "";
     return;
   }
 
-  joueurIndex = joueurIndex === 0 ? 1 : 0;
+  // On cherche le prochain joueur qui n'a pas encore joué 3 manches
+  if (joueurIndex === 0) {
+    if (manchesJouees[1] < manchesMax) {
+      joueurIndex = 1;
+    }
+  } else {
+    if (manchesJouees[0] < manchesMax) {
+      joueurIndex = 0;
+    }
+  }
 
+  // Sécurité : si le joueur choisi a déjà fini ses 3 manches, on prend l'autre
   if (manchesJouees[joueurIndex] >= manchesMax) {
     joueurIndex = joueurIndex === 0 ? 1 : 0;
   }
@@ -338,12 +355,14 @@ function passerAuJoueurSuivant() {
   lettres = [];
   nbLancers = 0;
   dejaValide = false;
+  tempsRestant = 15;
 
   let joueur = joueursDuel[joueurIndex];
   let manche = manchesJouees[joueurIndex] + 1;
 
   document.getElementById("zoneDes").innerHTML = "? ?";
   document.getElementById("mot").value = "";
+  document.getElementById("timer").innerHTML = "Temps : 15";
   document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueur;
   document.getElementById("mancheActuelle").innerHTML = "Manche : " + manche + " / " + manchesMax;
   document.getElementById("score").innerHTML = "Score : " + joueurs[joueur].score;
