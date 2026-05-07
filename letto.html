@@ -74,7 +74,7 @@ button {
 <h1>LETTO</h1>
   <p id="playerDisplay"></p>
   <p id="subtitle">Jusqu’où peux-tu aller ?</p>
-  <input id="playerName" placeholder="Ton pseudo..." />
+  <input id="playerName" placeholder="Ton pseudo..." oninput="updatePlayer()" />
   <div id="scoreBox">
   SCORE : <span id="score">0</span>
 </div>
@@ -150,6 +150,10 @@ function roll(){
 
         if(messageBox){
           messageBox.textContent = message || ("+" + gain + " points");
+          function updatePlayer(){
+  const player = document.getElementById("playerName").value;
+  document.getElementById("playerDisplay").textContent = "Joueur : " + player;
+}
         }
       }
     }, i * 200);
