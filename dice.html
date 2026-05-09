@@ -199,13 +199,21 @@ const consonnes = [
     document.getElementById("timer").innerHTML = "Temps : " + tempsRestant;
 
     if (tempsRestant <= 0) {
-      clearInterval(timerInterval);
-      dejaValide = true;
-      document.getElementById("resultat").innerHTML = "⏱ Temps écoulé !";
-      document.getElementById("resultat").style.color = "red";
+  clearInterval(timerInterval);
+  dejaValide = true;
 
-      setTimeout(passerAuJoueurSuivant, 1200);
-    }
+  let pseudo = joueursDuel[joueurIndex];
+
+  joueurs[pseudo].parties += 1;
+  manchesJouees[joueurIndex] += 1;
+
+  document.getElementById("resultat").innerHTML = "⏱ Temps écoulé ! Manche perdue";
+  document.getElementById("resultat").style.color = "red";
+
+  afficherClassement();
+
+  setTimeout(passerAuJoueurSuivant, 1200);
+}
   }, 1000);
 }
 
