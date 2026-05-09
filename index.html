@@ -1,83 +1,144 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ALPHAZARD</title>
+  <meta charset="UTF-8">
+  <title>ALPHAZARD LETTO</title>
 
-<style>
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background: radial-gradient(circle at top, #1a1405 0%, #050505 55%, #000 100%);
-  color:#fff;
-  text-align:center;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-}
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1a1408 0%, #050505 55%, #000 100%);
+      color: #f5d76e;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px 15px;
+      box-sizing: border-box;
+    }
 
-.container{
-  max-width:420px;
-  padding:30px 22px;
-}
+    .logo {
+      width: 360px;
+      max-width: 90%;
+      margin: 10px auto 20px auto;
+      display: block;
+    }
 
-h1{
-  font-size:44px;
-  color:#ffd84d;
-  letter-spacing:3px;
-  margin-bottom:12px;
-  text-shadow:0 0 18px rgba(255,216,77,.55);
-}
+    h1 {
+      font-size: 34px;
+      margin: 10px 0 5px;
+      color: #f5d76e;
+      text-shadow: 0 0 18px rgba(245, 215, 110, 0.7);
+    }
 
-p{
-  opacity:.85;
-  margin-bottom:34px;
-  font-size:16px;
-}
+    .subtitle {
+      font-size: 18px;
+      color: #d4af37;
+      margin-bottom: 30px;
+      letter-spacing: 2px;
+    }
 
-.button{
-  display:block;
-  width:100%;
-  padding:16px;
-  margin:14px 0;
-  background:linear-gradient(135deg,#ffe066,#d89b00);
-  color:#090909;
-  text-decoration:none;
-  font-weight:900;
-  border-radius:14px;
-  font-size:18px;
-  box-shadow:0 0 22px rgba(255,216,77,.35);
-}
+    .card {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 25px;
+      border: 1px solid #d4af37;
+      border-radius: 18px;
+      background: rgba(0, 0, 0, 0.65);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.18);
+    }
 
-.button:active{
-  transform:scale(.97);
-}
+    p {
+      font-size: 19px;
+      line-height: 1.5;
+      color: #f7e8a6;
+    }
 
-.footer{
-  margin-top:32px;
-  font-size:12px;
-  opacity:.55;
-}
-</style>
+    .rules {
+      margin: 25px auto;
+      text-align: left;
+      max-width: 520px;
+      color: #f5d76e;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .play-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 14px 28px;
+      border-radius: 14px;
+      border: 1px solid #f5d76e;
+      background: linear-gradient(to bottom, #f7d96b, #c89516, #8a5c00);
+      color: #111;
+      font-size: 18px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 0 18px rgba(245, 215, 110, 0.45);
+    }
+
+    .note {
+      margin-top: 22px;
+      font-size: 14px;
+      color: #bfa75a;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 18px 10px;
+      }
+
+      .logo {
+        width: 260px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      p {
+        font-size: 16px;
+      }
+
+      .rules {
+        font-size: 15px;
+      }
+
+      .play-button {
+        font-size: 16px;
+        padding: 12px 22px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container">
+  <img class="logo" src="E9FA6FC4-4042-41B7-B5E9-ACB7BDF67EC8.jpeg" alt="ALPHAZARD LETTO">
 
-<h1>ALPHAZARD</h1>
-<p>Choisis ton mode de jeu</p>
+  <div class="card">
+    <h1>ALPHAZARD LETTO</h1>
+    <div class="subtitle">THE LETTER LOTTO</div>
 
-<a class="button" href="./letto.html">🎲 Jouer à LETTO</a>
-<a class="button" href="./mixl.html">🔥 Jouer à MIXL</a>
+    <p>
+      Un jeu de lettres rapide en duel :  
+      deux joueurs, trois manches chacun, quinze secondes pour trouver le meilleur mot.
+    </p>
 
-<div class="footer">
-© ALPHAZARD
-</div>
+    <div class="rules">
+      <strong>Règles rapides :</strong><br>
+      • 2 joueurs s’affrontent en duel<br>
+      • 3 manches par joueur<br>
+      • 15 secondes pour composer un mot<br>
+      • Temps écoulé = manche perdue<br>
+      • Le meilleur score gagne
+    </div>
 
-</div>
+    <a class="play-button" href="dice.html">JOUER À ALPHAZARD DICE</a>
+
+    <div class="note">
+      Version test — conseillé en mode paysage sur téléphone.
+    </div>
+  </div>
 
 </body>
 </html>
