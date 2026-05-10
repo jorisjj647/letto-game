@@ -77,8 +77,9 @@ button {
   <input id="playerName" placeholder="Ton pseudo..." oninput="updatePlayer()" />
   <input id="player2Name" placeholder="Pseudo joueur 2..." />
   <div id="turnDisplay">Tour de : Joueur 1</div>
-  <div id="scoreBox">
-  SCORE : <span id="score">0</span>
+ <div id="scoreBox">
+  🥇 Joueur 1 : <span id="score1">0</span><br>
+  🥈 Joueur 2 : <span id="score2">0</span>
 </div>
   <div id="message"></div>
 
@@ -89,7 +90,8 @@ button {
 <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
 
 <script>
-let score = 0;
+let score1 = 0;
+let score2 = 0;
   let currentPlayer = 1;
 
 function roll(){
@@ -157,8 +159,13 @@ document.getElementById("turnDisplay").textContent = "Tour de : " + currentName;
           }
         }
 
-        score += gain;
-        scoreEl.textContent = score;
+        if(currentPlayer === 1){
+  score1 += gain;
+} else {
+  score2 += gain;
+}
+        document.getElementById("score1").textContent = score1;
+document.getElementById("score2").textContent = score2;
 
         if(messageBox){
           messageBox.textContent = message || ("+" + gain + " points");
