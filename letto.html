@@ -93,6 +93,8 @@ button {
 let score1 = 0;
 let score2 = 0;
   let currentPlayer = 1;
+  let turns1 = 0;
+let turns2 = 0;
 
 function roll(){
   const player = document.getElementById("playerName").value;
@@ -106,6 +108,18 @@ if(currentPlayer === 1){
 
 document.getElementById("turnDisplay").textContent = "Tour de : " + currentName;
   document.getElementById("playerDisplay").textContent = "Joueur : " + player;
+  if(turns1 >= 5 && turns2 >= 5){
+
+  if(score1 > score2){
+    alert("🏆 Joueur 1 gagne !");
+  } else if(score2 > score1){
+    alert("🏆 Joueur 2 gagne !");
+  } else {
+    alert("🤝 Égalité !");
+  }
+
+  return;
+}
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const container = document.getElementById("letters");
   const scoreEl = document.getElementById("score");
@@ -159,10 +173,12 @@ document.getElementById("turnDisplay").textContent = "Tour de : " + currentName;
           }
         }
 
-        if(currentPlayer === 1){
+ if(currentPlayer === 1){
   score1 += gain;
+  turns1++;
 } else {
   score2 += gain;
+  turns2++;
 }
         document.getElementById("score1").textContent = score1;
 document.getElementById("score2").textContent = score2;
