@@ -75,6 +75,8 @@ button {
   <p id="playerDisplay"></p>
   <p id="subtitle">Jusqu’où peux-tu aller ?</p>
   <input id="playerName" placeholder="Ton pseudo..." oninput="updatePlayer()" />
+  <input id="player2Name" placeholder="Pseudo joueur 2..." />
+  <div id="turnDisplay">Tour de : Joueur 1</div>
   <div id="scoreBox">
   SCORE : <span id="score">0</span>
 </div>
@@ -88,9 +90,19 @@ button {
 
 <script>
 let score = 0;
+  let currentPlayer = 1;
 
 function roll(){
   const player = document.getElementById("playerName").value;
+  let currentName = "";
+
+if(currentPlayer === 1){
+  currentName = document.getElementById("playerName").value || "Joueur 1";
+} else {
+  currentName = document.getElementById("player2Name").value || "Joueur 2";
+}
+
+document.getElementById("turnDisplay").textContent = "Tour de : " + currentName;
   document.getElementById("playerDisplay").textContent = "Joueur : " + player;
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const container = document.getElementById("letters");
@@ -158,6 +170,11 @@ function roll(){
       }
     }, i * 200);
   }
+  if(currentPlayer === 1){
+  currentPlayer = 2;
+} else {
+  currentPlayer = 1;
+}
 }
 </script>
 </body>
