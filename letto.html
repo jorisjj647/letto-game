@@ -104,6 +104,7 @@ let score2 = 0;
 let turns2 = 0;
 
 function roll(){
+  const playerTurn = currentPlayer;
   const player = document.getElementById("playerName").value;
   let currentName = "";
 
@@ -179,7 +180,7 @@ if(currentPlayer === 1){
           }
         }
 
- if(currentPlayer === 1){
+if(playerTurn === 1){
   score1 += gain;
   turns1++;
 } else {
