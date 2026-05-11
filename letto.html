@@ -110,10 +110,9 @@ function roll(){
 if(currentPlayer === 1){
   currentName = document.getElementById("playerName").value || "Joueur 1";
 } else {
-  currentName = document.getElementById("player2Name").value || "Joueur 2";
+  currentName = document.getElementById("player2Name").value || 
+  "Joueur 2";
 }
-
-document.getElementById("turnDisplay").textContent = "Tour de : " + currentName;
   
   if(turns1 >= 5 && turns2 >= 5){
 
@@ -200,6 +199,7 @@ document.getElementById("score2").textContent = score2;
       }
     }, i * 200);
   }
+  document.getElementById("turnDisplay").textContent = "Tour de : " + currentName;
   if(currentPlayer === 1){
   currentPlayer = 2;
 } else {
