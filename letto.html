@@ -148,26 +148,7 @@ if(currentPlayer === 1){
   "Joueur 2";
 }
   
- document.getElementById("victoryScreen").style.display = "flex";
-
-if(score1 > score2){
-
-document.getElementById("victoryText").textContent =
-"🏆 " + (document.getElementById("playerName").value || "Joueur 1") + " remporte le duel !";
-
-} else if(score2 > score1){
-
-document.getElementById("victoryText").textContent =
-"🏆 " + (document.getElementById("player2Name").value || "Joueur 2") + " remporte le duel !";
-
-} else {
-
-document.getElementById("victoryText").textContent =
-"🤝 Égalité !";
-
-}
-
-return;
+ 
 }
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const container = document.getElementById("letters");
