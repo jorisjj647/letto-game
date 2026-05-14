@@ -80,6 +80,32 @@ button {
   text-align: center;
   width: 220px;
 }
+  #victoryScreen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.92);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+#victoryText{
+color:gold;
+font-size:48px;
+text-align:center;
+text-shadow:0 0 25px gold;
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.08);}
+100%{transform:scale(1);}
+}
 </style>
 </head>
 
@@ -122,17 +148,26 @@ if(currentPlayer === 1){
   "Joueur 2";
 }
   
-  if(turns1 >= 5 && turns2 >= 5){
+ document.getElementById("victoryScreen").style.display = "flex";
 
-  if(score1 > score2){
-    alert("🏆 " + (document.getElementById("playerName").value || "Joueur 1") + " gagne !");
-  } else if(score2 > score1){
-    alert("🏆 " + (document.getElementById("player2Name").value || "Joueur 2") + " gagne !");
-  } else {
-    alert("🤝 Égalité !");
-  }
+if(score1 > score2){
 
-  return;
+document.getElementById("victoryText").textContent =
+"🏆 " + (document.getElementById("playerName").value || "Joueur 1") + " remporte le duel !";
+
+} else if(score2 > score1){
+
+document.getElementById("victoryText").textContent =
+"🏆 " + (document.getElementById("player2Name").value || "Joueur 2") + " remporte le duel !";
+
+} else {
+
+document.getElementById("victoryText").textContent =
+"🤝 Égalité !";
+
+}
+
+return;
 }
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const container = document.getElementById("letters");
@@ -215,6 +250,10 @@ document.getElementById("score2").textContent = score2;
 }
 }
 </script>
+  <div id="victoryScreen" style="display:none;">
+  <h2 id="victoryText"></h2>
+</div>
+  
 </body>
 </html>
 
