@@ -125,9 +125,9 @@ if(currentPlayer === 1){
   if(turns1 >= 5 && turns2 >= 5){
 
   if(score1 > score2){
-    alert("🏆 Joueur 1 gagne !");
+    alert("🏆 " + (document.getElementById("playerName").value || "Joueur 1") + " gagne !");
   } else if(score2 > score1){
-    alert("🏆 Joueur 2 gagne !");
+    alert("🏆 " + (document.getElementById("player2Name").value || "Joueur 2") + " gagne !");
   } else {
     alert("🤝 Égalité !");
   }
