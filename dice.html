@@ -174,7 +174,14 @@ input {
     font-size: 16px;
   }
 }
- 
+ #aideJeu {
+  color: #d4af37;
+  font-size: 15px;
+  margin: 8px auto;
+  max-width: 420px;
+  line-height: 1.4;
+  opacity: 0.9;
+}
 </style>
 </head>
 
@@ -201,7 +208,10 @@ input {
   <button onclick="afficherRegles()">RÈGLES</button>
 
 
-
+<div id="aideJeu">
+  Compose un mot avec les lettres affichées.<br>
+  Chaque lettre ne peut être utilisée qu’une seule fois.
+</div>
 <input id="mot" type="text" placeholder="Tape ton mot">
   
 
