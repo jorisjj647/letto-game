@@ -291,7 +291,7 @@ input {
 <img class="deTitre" src="de-consonnes.png" alt="Dé consonnes ALPHADÉS">
 <span class="deIcone">D20</span>
  </div>
-  <div id="signatureAlphades">ALPHADÉS — dés alphabétiques créés par Justin Joris JOLY depuis 2011</div>
+  <div id="signatureAlphades">ALPHADÉS — dés alphabétiques créés par Joris justin JOLY depuis 2011</div>
   <div id="versionTest">Version test — duel local — améliorations en cours</div>
 
 <div id="zoneDes">? ?</div>
@@ -334,6 +334,7 @@ input {
 </div>
 
 <script>
+  const winSound = new Audio("win.mp3");
 let score = 0;
 let nbLancers = 0;
 let maxLancers = 3;
@@ -530,6 +531,7 @@ message += j1 + " : " + score1 + " pts<br>";
 message += j2 + " : " + score2 + " pts<br><br>";
 
 if (score1 > score2) {
+  winSound.play();
   message += "🏆 VAINQUEUR DU DUEL : " + j1;
 } else if (score2 > score1) {
   message += "🏆 VAINQUEUR DU DUEL : " + j2;
