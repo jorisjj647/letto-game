@@ -527,20 +527,21 @@ function passerAuJoueurSuivant() {
     let score1 = joueurs[j1].score;
     let score2 = joueurs[j2].score;
 
-    let message = "🏁 FIN DU DUEL<br><br>";
-
-message += j1 + " : " + score1 + " pts<br>";
-message += j2 + " : " + score2 + " pts<br><br>";
+let message = "";
 
 if (score1 > score2) {
   winSound.play();
-  message += "👑🏆 VAINQUEUR DU DUEL 🏆👑<br><b>" + j1.toUpperCase() + "</b>";
+  message += "👑🏆 VAINQUEUR DU DUEL 🏆👑<br><b>" + j1.toUpperCase() + " — " + score1 + " pts</b><br><br>";
 } else if (score2 > score1) {
   winSound.play();
-  message += "👑🏆 VAINQUEUR DU DUEL 🏆👑<br><b>" + j2.toUpperCase() + "</b>";
+  message += "👑🏆 VAINQUEUR DU DUEL 🏆👑<br><b>" + j2.toUpperCase() + " — " + score2 + " pts</b><br><br>";
 } else {
-  message += "🤝 ÉGALITÉ PARFAITE ! Aucun vainqueur";
+  message += "🤝 ÉGALITÉ PARFAITE ! Aucun vainqueur<br><br>";
 }
+
+message += "🏁 FIN DU DUEL<br><br>";
+message += j1 + " : " + score1 + " pts<br>";
+message += j2 + " : " + score2 + " pts";
 
     document.getElementById("resultat").innerHTML = message;
     document.getElementById("resultat").style.color = "gold";
