@@ -502,6 +502,11 @@ function verifier() {
 
     copie.splice(index, 1);
   }
+  if (!motsAutorises.includes(mot)) {
+  resultat.innerHTML = "❌ Mot inconnu";
+  resultat.style.color = "red";
+  return;
+}
 
   joueurs[pseudo].score += mot.length;
   joueurs[pseudo].parties += 1;
