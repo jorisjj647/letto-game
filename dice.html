@@ -369,6 +369,43 @@ const consonnes = [
   "N","P","Q","R","S",
   "T","V","W","X","Z"
 ];
+  const dictionnaire = [
+"AIR",
+"AMI",
+"AMOUR",
+"ARC",
+"ART",
+"AUTO",
+"BAL",
+"BAR",
+"BON",
+"CHAT",
+"CHIEN",
+"COEUR",
+"DAME",
+"DES",
+"EAU",
+"FEU",
+"JEU",
+"JOUR",
+"LUNE",
+"MAIN",
+"MER",
+"MOT",
+"NOM",
+"OR",
+"PAIN",
+"PERE",
+"ROI",
+"RUE",
+"SAC",
+"SEL",
+"SOLEIL",
+"TERRE",
+"TRAIN",
+"VIE",
+"VILLE"
+];
   function demarrerTimer() {
   clearInterval(timerInterval);
 
@@ -495,6 +532,11 @@ function verifier() {
     resultat.style.color = "red";
     return;
   }
+  if (!dictionnaire.includes(mot)) {
+  resultat.innerHTML = "❌ Mot inconnu";
+  resultat.style.color = "red";
+  return;
+}
 
   let copie = [...lettres];
 
