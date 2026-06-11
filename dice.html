@@ -463,7 +463,7 @@ function roll() {
     lettres.push(tirer(consonnes));
   }
 
-  document.getElementById("zoneDes").innerHTML = lettres.join(" ");
+  document.getElementById("zoneDes").innerHTML = '<span style="color:#00ff66; font-weight:bold; text-shadow:0 0 8px #00ff66, 0 0 14px #00ff66;">' + lettres.join(" ") + '</span>';
   document.getElementById("resultat").innerHTML = "Lancer " + nbLancers + " / 3";
   
   demarrerTimer();
