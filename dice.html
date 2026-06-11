@@ -510,13 +510,14 @@ function verifier() {
 
     copie.splice(index, 1);
   }
-  if (!motsAutorises.includes(mot)) {
-  resultat.innerHTML = "❌ Mot inconnu";
-  resultat.style.color = "red";
-  return;
-}
 
-  joueurs[pseudo].score += mot.length;
+  let points = mot.length;
+
+if (mot.length === 5) points = 7;
+if (mot.length === 6) points = 10;
+if (mot.length === 7) points = 18;
+
+joueurs[pseudo].score += points;
   joueurs[pseudo].parties += 1;
   manchesJouees[joueurIndex] += 1;
 
@@ -525,7 +526,11 @@ function verifier() {
   arreterTimer();
 
   document.getElementById("score").innerHTML = "Score : " + score;
-  resultat.innerHTML = "✅ +" + mot.length + " points";
+  if (mot.length === 7) {
+  resultat.innerHTML = "🌟 ALPHAZARD ! 🌟<br>Mot de 7 lettres trouvé !<br>+18 points";
+} else {
+  resultat.innerHTML = "✅ +" + points + " points";
+}
   resultat.style.color = "lightgreen";
 
   afficherClassement();
