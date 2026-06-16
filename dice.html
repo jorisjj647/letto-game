@@ -326,6 +326,7 @@ input {
   Compose un mot avec les lettres affichées.<br>
   Chaque lettre ne peut être utilisée qu’une seule fois.
 </div>
+  <div id="lettresSaisie"></div>
 <input id="mot" type="text" placeholder="Tape ton mot">
   
 
@@ -466,6 +467,7 @@ function roll() {
   }
 
   document.getElementById("zoneDes").innerHTML = '<span style="color:#00ff66; font-weight:bold; text-shadow:0 0 8px #00ff66, 0 0 14px #00ff66;">' + lettres.join(" ") + '</span>';
+  document.getElementById("lettresSaisie").innerHTML = document.getElementById("zoneDes").innerHTML;
   document.getElementById("resultat").innerHTML = "Lancer " + nbLancers + " / 3";
   
   demarrerTimer();
