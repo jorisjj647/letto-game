@@ -312,7 +312,7 @@ input {
   <div id="signatureAlphades">ALPHADÉS — dés alphabétiques créés par Joris Justin JOLY depuis 2011</div>
   <div id="versionTest">Version test — duel local — améliorations en cours</div>
 
-<div id="zoneDes">? ?</div>
+<div id="zoneDes"></div>
 
 <div id="historique"></div>
 <div id="setupDuel">
@@ -612,7 +612,8 @@ message += j2 + " : " + score2 + " pts";
   let joueur = joueursDuel[joueurIndex];
   let manche = manchesJouees[joueurIndex] + 1;
 
-  document.getElementById("zoneDes").innerHTML = "? ?";
+  document.getElementById("zoneDes").innerHTML = "";
+document.getElementById("lettresSaisie").innerHTML = "Lance les ALPHADÉS";
   document.getElementById("mot").value = "";
   document.getElementById("timer").innerHTML = "Temps : 15";
   document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueur;
@@ -627,7 +628,8 @@ function resetGame() {
   nbLancers = 0;
   dejaValide = false;
 
-  document.getElementById("zoneDes").innerHTML = "? ?";
+  document.getElementById("zoneDes").innerHTML = "";
+document.getElementById("lettresSaisie").innerHTML = "Lance les ALPHADÉS";
   document.getElementById("mot").value = "";
   document.getElementById("resultat").innerHTML = "";
 
