@@ -522,6 +522,11 @@ function verifier() {
     resultat.style.color = "red";
     return;
   }
+  if (!dictionnaire.includes(mot)) {
+  resultat.innerHTML = "❌ Mot inconnu";
+  resultat.style.color = "red";
+  return;
+}
 
   let copie = [...lettres];
 
