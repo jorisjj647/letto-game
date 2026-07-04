@@ -737,10 +737,7 @@ const winSound = new Audio("https://assets.mixkit.co/active_storage/sfx/270/270-
   // son de relance désactivé pour éviter le ralentissement
  
       playsEl.textContent = String(plays);
-if(Math.random() < 0.04){
-  gain += 10;
-  title = "✨ BONUS LETTO";
-}
+
 
       if (gain > 0) {
         score += gain;
