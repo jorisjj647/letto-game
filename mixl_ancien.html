@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<h1>ALPHAZARD MIXL</h1>
+  <div class="grid"></div>
+
+<p style="opacity:0.8">
+Trouve 2 lignes sur une même carte pour gagner.
+</p>
+<style>
+:root{--red:#e53935;--blue:#1e88e5;--yellow:#fdd835;--orange:#fb8c00;--green:#43a047;--purple:#8e24aa;--gold:#f5c542}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#07111f;color:white;padding:16px}
+header{text-align:center;margin-bottom:14px}
+h1{font-size:42px;margin:0;letter-spacing:3px}
+.m{color:var(--red)}.i{color:var(--yellow)}.x{color:var(--blue)}.l{color:var(--green)}
+.main{display:grid;grid-template-columns:220px 1fr;gap:12px;max-width:1000px;margin:auto}
+.panel{background:#101c2d;border-radius:18px;padding:14px;border:1px solid rgba(255,255,255,.15)}
+.bag{height:105px;background:linear-gradient(145deg,#111,#333);border-radius:25px;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:bold;margin-bottom:10px}
+.bag.shake{animation:shake .35s}
+@keyframes shake{25%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}75%{transform:rotate(-4deg)}}
+.stat{background:#07111f;border-radius:12px;padding:8px;margin:7px 0;text-align:center}
+.stat strong{display:block;color:var(--gold);font-size:26px}
+.token{width:90px;height:90px;border-radius:50%;background:white;color:#111;margin:10px auto;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:bold;border:8px solid #777}
+.token.pop{animation:pop .25s}
+@keyframes pop{0%{transform:scale(.7)}80%{transform:scale(1.15)}100%{transform:scale(1)}}
+button{width:100%;padding:16px;margin-top:9px;border:0;border-radius:12px;font-size:18px;font-weight:bold;cursor:pointer}
+#draw{background:var(--gold);color:#111}
+#reset{background:#223451;color:white}
+#validateBtn{display:none;background:#00c853;color:white;box-shadow:0 0 14px rgba(0,200,83,.8)}
+#validateBtn.show{display:block;animation:pop .35s}
+.info{text-align:center;font-weight:bold;margin-bottom:12px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{background:white;color:#111;border:5px solid var(--red);border-radius:14px;padding:9px;transition:.25s}
+.card.bonus{border-color:var(--gold);box-shadow:0 0 18px rgba(245,197,66,.9)}
+.card.ready{border-color:#00c853;box-shadow:0 0 22px rgba(0,200,83,.95)}
+.card h2{margin:0 0 6px;background:var(--red);color:white;text-align:center;border-radius:8px;padding:5px;font-size:16px}
+.card.bonus h2{background:var(--gold);color:#111}
+.card.ready h2{background:#00c853;color:white}
+.card .bonusText{font-size:13px;text-align:center;margin-bottom:6px;font-weight:bold;color:#333}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.cell{height:40px;background:#eee;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+.cell.marked{color:white;animation:mark .2s}
+@keyframes mark{0%{transform:scale(1.18)}100%{transform:scale(1)}}
+.cell.win{outline:4px solid var(--gold);box-shadow:0 0 16px var(--gold);animation:pulse 1s infinite}
+@keyframes pulse{50%{filter:brightness(1.4)}}
+#bonusAlert{display:none;margin-top:10px;background:var(--gold);color:#111;text-align:center;padding:10px;border-radius:12px;font-weight:bold}
+#bonusAlert.show{display:block;animation:pop .35s}
+#readyAlert{display:none;margin-top:10px;background:#00c853;color:white;text-align:center;padding:10px;border-radius:12px;font-weight:bold}
+#readyAlert.show{display:block;animation:pop .35s}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:9}
+.box{background:white;color:#111;border-radius:22px;padding:28px;text-align:center;max-width:420px;animation:zoom .35s}
+@keyframes zoom{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+.box h2{font-size:60px;margin:0 0 8px}
+.confetti{position:fixed;top:-20px;width:10px;height:18px;animation:fall 2.6s linear forwards;z-index:20}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.2}}
+@media(max-width:850px){body{padding:10px}.main{grid-template-columns:1fr}.cards{grid-template-columns:1fr}h1{font-size:38px}.bag{height:95px}}
+.cards{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+
+@media(min-width:700px){
+  .cards{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(min-width:1000px){
+  .cards{
+    grid-template-columns:repeat(3,1fr);
+  }
+}
+@media (max-width: 768px) {
+
+  body {
+    padding: 8px;
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 100%;
+  }
+
+  .panel {
+    padding: 10px;
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .cell {
+    height: 52px;
+    font-size: 17px;
+  }
+
+  .token {
+    width: 80px;
+    height: 80px;
+    font-size: 28px;
+  }
+
+  button {
+    font-size: 18px;
+    padding: 14px;
+  }
+
+  h1 {
+    font-size: 34px;
+  }
+}
+  /* === MIXL UPGRADE === */
+
+#phaseBox{
+  margin:12px 0;
+  padding:12px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  color:white;
+  font-weight:bold;
+  text-align:center;
+}
+
+.phase-calme{color:#7ee787;}
+.phase-chaude{color:#ffd84d;}
+.phase-critique{color:#ff5c5c;}
+
+.card-hot{
+  box-shadow:0 0 18px rgba(255,216,77,.9);
+}
+
+.card-mixl-ready{
+  box-shadow:0 0 25px rgba(0,255,120,1);
+  border:3px solid #00e676;
+}
+</style>
+</head>
+<body>
+<header>
+<div style="color:var(--gold);font-weight:bold">ALPHAZARD</div>
+<h1><span class="m">M</span><span class="i">I</span><span class="x">X</span><span class="l">L</span></h1>
+<div>1 ligne = BONUS • 2 lignes sur la même carte = <b>VALIDER MIXL</b></div>
+</header>
+<div class="main">
+<section class="panel">
+<div id="bag" class="bag">MIXL</div>
+<div class="stat">Jetons restants <strong id="remaining">120</strong></div>
+<div class="stat">Tirages <strong id="draws">0</strong></div>
+<div>Dernier jeton :</div>
+<div id="token" class="token">--</div>
+<div id="bonusAlert">BONUS !</div>
+<div id="readyAlert">MIXL prêt ! Valide ta victoire.</div>
+<button id="draw" onclick="drawToken()">PIOCHER</button>
+<button id="validateBtn" onclick="validateMixl()">VALIDER MIXL</button>
+<button id="reset" onclick="resetGame()">REJOUER</button>
+</section>
+<section>
+<div class="panel info">Règle PRO++ : 1 ligne = bonus. 2 lignes sur la même carte rendent MIXL validable. La victoire se confirme avec le bouton VALIDER MIXL.</div>
+<div id="cards" class="cards"></div>
+</section>
+</div>
+<div id="modal" class="modal">
+<div class="box">
+<h2><span class="m">M</span><span class="i">I</span><span class="x">X</span><span class="l">L</span> !</h2>
+<p id="winText"></p>
+<button onclick="resetGame()">Nouvelle partie</button>
+</div>
+</div>
+<script>
+const consonnes=["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Z"];
+const voyelles=["A","E","I","O","U","Y"];
+const colors={A:"#e53935",E:"#1e88e5",I:"#fdd835",O:"#fb8c00",U:"#43a047",Y:"#8e24aa"};
+let bag=[],cards=[],drawn=0,gameOver=false,bonusShown={},readyCard=null,readyRows=[];
+function shuffle(a){let arr=[...a];for(let i=arr.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
+function vowel(m){return m.slice(-1)}
+function fullSet(){let s=[];consonnes.forEach(c=>voyelles.forEach(v=>s.push(c+v)));return shuffle(s)}
+function resetGame(){
+  gameOver = false;
+  readyCard = null;
+  winnerShown = false; // si tu l’avais ajouté
+  document.getElementById("modal").style.display = "none";
+
+  // option : relancer l’écran multijoueur
+  // document.getElementById("multiSetup").style.display = "flex";
+
+  // ton reset existant…
+}let set=fullSet();bag=[...set];cards=[];drawn=0;gameOver=false;bonusShown={};readyCard=null;readyRows=[];for(let i=0;i<6;i++){cards.push(set.slice(i*20,(i+1)*20).map(m=>({mix:m,marked:false,win:false})))}document.getElementById("modal").style.display="none";document.getElementById("bonusAlert").classList.remove("show");document.getElementById("readyAlert").classList.remove("show");document.getElementById("validateBtn").classList.remove("show");document.getElementById("token").innerText="--";document.getElementById("token").style.borderColor="#777";render()}
+function countCompleteLines(card){let count=0;let rows=[];for(let r=0;r<5;r++){let s=r*4;let line=[card[s],card[s+1],card[s+2],card[s+3]];if(line.every(c=>c.marked)){count++;rows.push(r)}}return {count:count,rows:rows}}
+function showBonus(ci){let alert=document.getElementById("bonusAlert");alert.innerText="BONUS ! Carte "+(ci+1)+" chauffe 🔥";alert.classList.remove("show");void alert.offsetWidth;alert.classList.add("show");setTimeout(()=>alert.classList.remove("show"),1800)}
+function showReady(ci){let alert=document.getElementById("readyAlert");alert.innerText="MIXL prêt sur Carte "+(ci+1)+" !";alert.classList.remove("show");void alert.offsetWidth;alert.classList.add("show");document.getElementById("validateBtn").classList.add("show")}
+function render(){document.getElementById("remaining").innerText=bag.length;document.getElementById("draws").innerText=drawn;let out=document.getElementById("cards");out.innerHTML="";cards.forEach((card,ci)=>{let info=countCompleteLines(card);let state="";if(readyCard===ci)state=" ready";else if(info.count>=1)state=" bonus";let div=document.createElement("div");div.className="card"+state;let label="Lignes : "+info.count+" / 2";if(readyCard===ci)label+=" • MIXL prêt";else if(info.count==1)label+=" • BONUS";div.innerHTML="<h2>Carte "+(ci+1)+"</h2><div class='bonusText'>"+label+"</div><div class='grid'></div>";let grid=div.querySelector(".grid");card.forEach(cell=>{let el=document.createElement("div");el.className="cell"+(cell.marked?" marked":"")+(cell.win?" win":"");el.innerText=cell.mix;if(cell.marked){let v=vowel(cell.mix);el.style.background=colors[v];if(v==="I")el.style.color="#111"}grid.appendChild(el)});out.appendChild(div)})}
+function drawToken(){if(gameOver||readyCard!==null||bag.length===0)return;let b=document.getElementById("bag");b.classList.remove("shake");void b.offsetWidth;b.classList.add("shake");let idx=Math.floor(Math.random()*bag.length);let t=bag.splice(idx,1)[0];drawn++;let tok=document.getElementById("token");tok.classList.remove("pop");void tok.offsetWidth;tok.classList.add("pop");tok.innerText=t;tok.style.borderColor=colors[vowel(t)];cards.forEach(card=>{let found=card.find(c=>c.mix===t);if(found)found.marked=true});checkBonusAndReady();render()}
+function checkBonusAndReady(){for(let ci=0;ci<cards.length;ci++){let info=countCompleteLines(cards[ci]);if(info.count===1&&!bonusShown[ci]){bonusShown[ci]=true;showBonus(ci)}if(info.count>=2&&readyCard===null){readyCard=ci;readyRows=info.rows;showReady(ci);return}}}
+function confetti(){let cols=["#e53935","#1e88e5","#fdd835","#fb8c00","#43a047","#8e24aa"];for(let i=0;i<90;i++){let c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.background=cols[Math.floor(Math.random()*cols.length)];c.style.animationDelay=(Math.random()*.8)+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),3500)}}
+function validateMixl(){
+  if(readyCard===null || gameOver) return;
+
+  gameOver = true;
+
+  const winner = playerOwners[readyCard] || "Joueur";
+
+  document.getElementById("winText").innerText =
+    winner + " gagne en " + drawn + " tirages !";
+
+  document.getElementById("modal").style.display = "flex";
+};readyRows.forEach(r=>{let s=r*4;cards[readyCard][s].win=true;cards[readyCard][s+1].win=true;cards[readyCard][s+2].win=true;cards[readyCard][s+3].win=true});gameOver=true;render();setTimeout(()=>{confetti();document.getElementById("winText").innerText="Carte "+(readyCard+1)+" gagnante avec 2 lignes en "+drawn+" tirages.";document.getElementById("modal").style.display="flex"},180)}
+resetGame();
+  // === UPGRADE INTERFACE MIXL ===
+
+function addPhaseBox(){
+  const panel = document.querySelector(".panel");
+  if(!panel || document.getElementById("phaseBox")) return;
+
+  const box = document.createElement("div");
+  box.id = "phaseBox";
+  box.innerHTML = "🟢 PHASE : <span class='phase-calme'>CALME</span>";
+  panel.appendChild(box);
+}
+
+function updatePhase(){
+  const phaseBox = document.getElementById("phaseBox");
+  if(!phaseBox) return;
+
+  const tirages = drawn || 0;
+
+  if(tirages < 20){
+    phaseBox.innerHTML = "🟢 PHASE : <span class='phase-calme'>CALME</span>";
+  } else if(tirages < 40){
+    phaseBox.innerHTML = "🟡 PHASE : <span class='phase-chaude'>CHAUDE</span>";
+  } else {
+    phaseBox.innerHTML = "🔴 PHASE : <span class='phase-critique'>CRITIQUE</span>";
+  }
+}
+
+function highlightCards(){
+  const cards = document.querySelectorAll(".card");
+
+  cards.forEach(card => {
+    const text = card.innerText;
+
+    if(text.includes("1/2")){
+      card.classList.add("card-hot");
+    }
+
+    if(text.includes("2/2") || text.includes("MIXL prêt")){
+      card.classList.add("card-mixl-ready");
+    }
+  });
+}
+
+setInterval(() => {
+  addPhaseBox();
+  updatePhase();
+  highlightCards();
+}, 1000);
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>ALPHAZARD DICE</title>
+
+<style>
+body {
+  background: black;
+  color: gold;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding-top: 40px;
+}
+
+h1 {
+  font-size: 42px;
+  text-shadow: 0 0 15px gold;
+}
+
+.zone {
+  margin: 30px auto;
+}
+
+.dice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 110px;
+  height: 110px;
+  margin: 10px;
+  border: 3px solid gold;
+  border-radius: 18px;
+  font-size: 60px;
+  color: gold;
+  box-shadow: 0 0 20px gold;
+}
+  #pseudo {
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  margin-right: 10px;
+}
+
+button {
+  background: gold;
+  color: black;
+  border: none;
+  padding: 12px 25px;
+  margin: 8px;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+input {
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  text-align: center;
+}
+
+#score, #resultat {
+  margin-top: 15px;
+  font-size: 22px;
+}
+  .de.rolling {
+  animation: diceRoll 0.6s ease;
+}
+
+@keyframes diceRoll {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(12deg) scale(1.08); }
+  50% { transform: rotate(-12deg) scale(1.15); }
+  75% { transform: rotate(8deg) scale(1.08); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+  .de {
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+#historique {
+  margin-top: 20px;
+  font-size: 22px;
+  color: gold;
+  text-shadow: 0 0 10px gold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎲 ALPHAZARD DICE</h1>
+<div id="zoneDes">? ?</div>
+
+<div id="historique"></div>
+  <div style="margin-bottom:10px;">
+  <input id="pseudo" type="text" placeholder="Ton pseudo">
+  <div id="joueurActuel">Joueur : aucun</div>
+</div>
+
+<button onclick="roll()">LANCER</button>
+<button onclick="verifier()">VALIDER</button>
+<button onclick="resetGame()">RESET</button>
+  <button onclick="afficherRegles()">RÈGLES</button>
+
+
+
+<input id="mot" type="text" placeholder="Tape ton mot">
+  
+
+<div id="resultat"></div>
+<div id="score">Score : 0</div>
+  <div id="classement"></div>
+  <div id="regles" style="display:none; margin-top:20px; color:gold;">
+  <h3>Règles rapides</h3>
+  <p>1. Entre ton pseudo.</p>
+  <p>2. Clique sur LANCER pour obtenir des lettres.</p>
+  <p>3. Forme un mot avec les lettres affichées.</p>
+  <p>4. Clique sur VALIDER pour marquer des points.</p>
+  <p>5. RESET lance une nouvelle manche.</p>
+  <p>Le joueur avec le meilleur score gagne.</p>
+</div>
+
+<script>
+let score = 0;
+let nbLancers = 0;
+let maxLancers = 3;
+let dejaValide = false;
+let lettres = [];
+let joueurs = {};
+
+const voyelles = ["A","E","I","O","U","Y"];
+const consonnes = [
+  "L","R","S","T","N",
+  "L","R","S","T","N",
+  "M","P","D","C",
+  "B","F","G",
+  "V","J"
+];
+function tirer(tableau) {
+  return tableau[Math.floor(Math.random() * tableau.length)];
+}
+
+function roll() {
+  if (nbLancers >= maxLancers) {
+    alert("Maximum 3 lancers !");
+    return;
+  }
+
+  dejaValide = false;
+  nbLancers++;
+
+  lettres = [];
+
+  // 3 voyelles + 4 consonnes
+for (let i = 0; i < 3; i++) {
+  lettres.push(tirer(voyelles));
+}
+
+for (let i = 0; i < 4; i++) {
+  lettres.push(tirer(consonnes));
+}
+
+  document.getElementById("zoneDes").innerHTML = lettres.join(" ");
+  document.getElementById("resultat").innerHTML = "Lancer " + nbLancers + " / 3";
+}
+
+function verifier() {
+  if (dejaValide) {
+    alert("Tu as déjà validé ce tirage !");
+    return;
+  }
+
+  const pseudo = document.getElementById("pseudo").value.trim();
+  const mot = document.getElementById("mot").value.toUpperCase().trim();
+  const resultat = document.getElementById("resultat");
+
+  if (pseudo === "") {
+    alert("Entre un pseudo !");
+    return;
+  }
+
+  if (mot.length < 2) {
+    resultat.innerHTML = "❌ Mot trop court";
+    resultat.style.color = "red";
+    return;
+  }
+
+  let copie = [...lettres];
+  let valide = true;
+
+  for (let lettre of mot) {
+    let index = copie.indexOf(lettre);
+    if (index === -1) {
+      valide = false;
+      break;
+    }
+    copie.splice(index, 1);
+  }
+
+  if (!valide) {
+    resultat.innerHTML = "❌ Mot invalide";
+    resultat.style.color = "red";
+    return;
+  }
+
+  if (!joueurs[pseudo]) {
+    joueurs[pseudo] = { score: 0, parties: 0 };
+  }
+
+  joueurs[pseudo].score += mot.length;
+  joueurs[pseudo].parties += 1;
+
+  score = joueurs[pseudo].score;
+  dejaValide = true;
+
+  document.getElementById("joueurActuel").innerText = "Joueur : " + pseudo;
+  document.getElementById("score").innerText = "Score : " + score;
+  resultat.innerHTML = "✅ +" + mot.length + " points";
+  resultat.style.color = "lightgreen";
+
+  afficherClassement();
+}
+
+function resetGame() {
+  lettres = [];
+  nbLancers = 0;
+  dejaValide = false;
+
+  document.getElementById("zoneDes").innerHTML = "? ?";
+  document.getElementById("mot").value = "";
+  document.getElementById("resultat").innerHTML = "";
+}
+
+function afficherClassement() {
+  let html = "<h3>Classement</h3>";
+
+  for (let pseudo in joueurs) {
+    html += pseudo + " : " + joueurs[pseudo].score + " pts — " + joueurs[pseudo].parties + " partie(s)<br>";
+  }
+
+  document.getElementById("classement").innerHTML = html;
+}
+
+function afficherRegles() {
+  const bloc = document.getElementById("regles");
+  bloc.style.display = bloc.style.display === "none" ? "block" : "none";
+}
+  function generateGrid(){
+  const grid = document.querySelector(".grid");
+  if(!grid) return;
+
+  grid.innerHTML = "";
+
+  for(let i = 0; i < 6; i++){
+    grid.innerHTML += `
+      <div class="card">
+        <h2>Carte ${i + 1}</h2>
+        <div class="content"></div>
+      </div>
+    `;
+  }
+}
+</script>
+  <div id="multiSetup" style="position:fixed;inset:0;background:#050505;color:white;z-index:9999;display:flex;align-items:center;justify-content:center;">
+  <div style="background:#111;padding:25px;border-radius:20px;border:2px solid gold;max-width:360px;width:90%;">
+    
+    <h2 style="color:gold;text-align:center;">MIXL Multijoueur</h2>
+
+    <p>Nombre de joueurs</p>
+    <select id="playerCount" onchange="createPseudoInputs()" style="width:100%;padding:10px;margin-bottom:10px;">
+      <option value="2">2 joueurs</option>
+      <option value="3">3 joueurs</option>
+      <option value="6">6 joueurs</option>
+    </select>
+
+    <div id="pseudoInputs"></div>
+
+    <button onclick="startMultiplayer()" style="margin-top:10px;width:100%;padding:12px;">
+      Lancer la partie
+    </button>
+
+  </div>
+</div>
+
+<script>
+</script>
+</body>
+</html>
+
+
+
+
