@@ -52,6 +52,8 @@ box-shadow:
 }
 #validateBtn{display:none;background:#00c853;color:white;box-shadow:0 0 14px rgba(0,200,83,.8)}
 #validateBtn.show{display:block;animation:pop .45s ease;}
+.actionRow{display:block;}
+.actionRow button{width:100%;}
 .info{
 text-align:center;
 font-weight:bold;
@@ -172,9 +174,12 @@ transition:.2s;
   }
 }
 @media (max-width: 768px) {
+  #playerName {
+  display: none !important;
+}
 
   body {
-    padding: 8px;
+    padding: 4px;
   }
 
   .main {
@@ -388,11 +393,11 @@ margin-bottom:14px;
   .main{display:flex !important; flex-direction:column !important; gap:6px !important; max-width:100% !important;}
   .main > .panel:first-child{
     display:grid;
-    grid-template-columns:64px 1fr 56px;
+   grid-template-columns:64px 1fr 60px 60px;
     grid-template-areas:
-      "sac bag token"
-      "last brand draw"
-      "players players reset";
+      "sac bag token token"
+      "last brand draw draw"
+      "players players actions actions";
     gap:5px;
     align-items:center;
     padding:6px !important;
@@ -407,8 +412,23 @@ margin-bottom:14px;
   .main > .panel:first-child > div:nth-of-type(8){grid-area:brand; margin:0 !important; font-size:10px !important; line-height:1.1 !important;}
   .main > .panel:first-child > div:nth-of-type(11){grid-area:last; font-size:12px; margin:0 !important;}
   #draw{grid-area:draw; margin:0 !important; padding:8px 5px !important; font-size:13px !important; border-radius:12px;}
-  #reset{grid-area:reset; margin:0 !important; padding:7px 8px !important; font-size:12px !important; border-radius:12px; width:auto; justify-self:end;}
-  #validateBtn{grid-area:reset; margin:0 !important; padding:7px 8px !important; font-size:12px !important; border-radius:12px; width:auto; justify-self:start;}
+  .actionRow{
+     grid-area:actions;
+     display:flex;
+     gap:6px;
+     align-items:center;
+     width:100%;
+   }
+   .actionRow #reset,
+   .actionRow #validateBtn{
+     flex:1 1 0;
+     width:auto !important;
+     min-width:0;
+     margin:0 !important;
+     padding:7px 5px !important;
+     font-size:11px !important;
+     border-radius:12px;
+   }
 
   .main > .panel:first-child > div:nth-of-type(2),
   .main > .panel:first-child > div:nth-of-type(3),
@@ -511,6 +531,7 @@ margin-bottom:14px;
   }
 }
 
+
 </style>
 
 </head>
@@ -521,7 +542,7 @@ margin-bottom:14px;
 <div style="opacity:.88;font-size:20px;letter-spacing:1px;margin-top:4px;">
 Pioche. Complète. Valide.
 </div>
-<div style="font-size:30px;font-weight:bold;margin-top:6px;">
+<div style="font-size:18px;font-weight:bold;margin-top:6px;">
 1 ligne horizontale = <span style="color:gold;">BONUS</span>
 </div>
 </header>
@@ -569,9 +590,11 @@ by Justin Joris JOLY
 <div id="token" class="token">--</div>
 <div id="bonusAlert">BONUS !</div>
 <div id="readyAlert">MIXL prêt ! Valide ta victoire.</div>
-<button id="draw" onclick=";drawToken()">PIOCHER</button>
-<button id="validateBtn" onclick="validateMixl()">VALIDER MIXL</button>
+<button id="draw" onclick="drawToken()">PIOCHER</button>
+<div class="actionRow">
 <button id="reset" onclick="resetGame()">REJOUER</button>
+<button id="validateBtn" onclick="validateMixl()">VICTOIRE</button>
+</div>
 </section>
 <section>
 <div style="text-align:center;font-weight:bold;color:gold;margin-bottom:8px;background:rgba(255,215,0,.12);
