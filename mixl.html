@@ -564,6 +564,50 @@ margin-bottom:14px;
   font-weight:bold;
   cursor:pointer;
 }
+/* === MODE SOLO : choix de carte === */
+#draw:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  filter:grayscale(.25);
+}
+.card.solo-choice{
+  outline:3px dashed rgba(255,215,0,.75);
+}
+.card.solo-selected{
+  grid-column:1 / -1;
+  order:-1;
+  outline:4px solid gold;
+  box-shadow:0 0 24px rgba(255,215,0,.85),0 12px 28px rgba(0,0,0,.45);
+  transform:none;
+}
+.card.solo-mini{
+  padding:3px !important;
+  border-width:2px !important;
+  opacity:.82;
+}
+.card.solo-mini h2{font-size:10px !important;padding:2px !important;margin-bottom:1px !important;}
+.card.solo-mini .bonusText{font-size:8px !important;margin-bottom:1px !important;}
+.card.solo-mini .grid{gap:2px !important;}
+.card.solo-mini .cell{height:18px !important;font-size:8px !important;border-radius:5px !important;}
+@media (max-width:768px){
+  .cards.solo-active{grid-template-columns:repeat(5,1fr) !important;}
+  .cards.solo-active .card.solo-selected{grid-column:1 / -1;}
+}
+
+
+/* === MIXL V3.2 — CÉLÉBRATIONS BONUS / MIXL === */
+#eventOverlay{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;background:rgba(2,8,18,.78);backdrop-filter:blur(4px);pointer-events:none}
+#eventOverlay.show{display:flex}
+#eventOverlay .eventBox{width:min(520px,88vw);padding:28px 22px;border-radius:24px;text-align:center;color:white;border:3px solid var(--gold);background:linear-gradient(145deg,#101c2d,#07111f);box-shadow:0 0 45px rgba(255,215,0,.72);animation:eventZoom .42s ease both}
+#eventOverlay.bonus .eventBox{border-color:var(--gold);box-shadow:0 0 55px rgba(255,215,0,.95)}
+#eventOverlay.mixl .eventBox{border-color:#00c853;box-shadow:0 0 70px rgba(0,200,83,.95)}
+#eventTitle{font-size:clamp(42px,10vw,78px);font-weight:900;letter-spacing:3px;margin-bottom:10px}
+#eventCard{font-size:clamp(22px,5vw,34px);font-weight:800}
+@keyframes eventZoom{0%{transform:scale(.55);opacity:0}70%{transform:scale(1.08);opacity:1}100%{transform:scale(1);opacity:1}}
+.card.event-flash{animation:eventCardFlash .9s ease 2}
+@keyframes eventCardFlash{0%,100%{filter:brightness(1);transform:scale(1)}50%{filter:brightness(1.55);transform:scale(1.035)}}
+#winText{white-space:pre-line;font-size:18px;line-height:1.45}
+
 </style>
 
 </head>
@@ -660,6 +704,14 @@ Clique sur VALIDER MIXL pour confirmer ta victoire.
 <div id="cards" class="cards"></div>
 </section>
 </div>
+
+<div id="eventOverlay" aria-live="assertive">
+  <div class="eventBox">
+    <div id="eventTitle"></div>
+    <div id="eventCard"></div>
+  </div>
+</div>
+
 <div id="modal" class="modal">
 <div class="box">
 <h2><span class="m">M</span><span class="i">I</span><span class="x">X</span><span class="l">L</span> !</h2>
@@ -674,6 +726,7 @@ function setPlayers(n){
 document.getElementById("modeDisplay").innerText =
 "Mode : "+n+" joueur"+(n>1?"s":"");
 selectedPlayers=n;
+selectedSoloCard=null;
 updatePlayerInputs();
 document.getElementById("btn1").style.boxShadow="none";
 document.getElementById("btn2").style.boxShadow="none";
@@ -708,6 +761,7 @@ active.style.background="linear-gradient(145deg,#ffe27a,#d9a400)";
 active.style.color="#111";
 active.style.boxShadow="0 0 14px rgba(255,215,0,.55)";
 }
+render();
 }
 function getPlayerName(ci){
 let player=Math.floor(ci/(6/selectedPlayers))+1;
@@ -734,9 +788,28 @@ function vowel(m){return m.slice(-1)}
 function fullSet(){let s=[];consonnes.forEach(c=>voyelles.forEach(v=>s.push(c+v)));return shuffle(s)}
 function resetGame(){selectedSoloCard=null;let set=fullSet();bag=[...set];cards=[];drawn=0;gameOver=false;bonusShown={};readyCard=null;readyRows=[];for(let i=0;i<6;i++){cards.push(set.slice(i*20,(i+1)*20).map(m=>({mix:m,marked:false,win:false})))}document.getElementById("modal").style.display="none";document.getElementById("bonusAlert").classList.remove("show");document.getElementById("readyAlert").classList.remove("show");document.getElementById("validateBtn").classList.remove("show");document.getElementById("token").innerText="--";document.getElementById("token").style.borderColor="#777";render()}
 function countCompleteLines(card){let count=0;let rows=[];for(let r=0;r<5;r++){let s=r*4;let line=[card[s],card[s+1],card[s+2],card[s+3]];if(line.every(c=>c.marked)){count++;rows.push(r)}}return {count:count,rows:rows}}
-function showBonus(ci){let alert=document.getElementById("bonusAlert");alert.innerText="BONUS ! 🔥 BONUS POUR "+getPlayerName(ci)+" !";alert.classList.remove("show");void alert.offsetWidth;alert.classList.add("show");setTimeout(()=>alert.classList.remove("show"),1800)}
-function showReady(ci){let alert=document.getElementById("readyAlert");alert.innerText="MIXL prêt sur Carte "+(ci+1)+" !";alert.classList.remove("show");void alert.offsetWidth;alert.classList.add("show");document.getElementById("validateBtn").classList.add("show")}
-function render(){document.getElementById("remaining").innerText=bag.length;document.getElementById("draws").innerText=drawn;let out=document.getElementById("cards");out.innerHTML="";cards.forEach((card,ci)=>{let info=countCompleteLines(card);let state="";if(readyCard===ci)state=" ready";else if(info.count>=1)state=" bonus";let div=document.createElement("div");div.className="card"+state;let label="Lignes : "+info.count+" / 2";if(readyCard===ci)label+=" • MIXL prêt";else if(info.count==1)label+=" • BONUS";div.innerHTML="<h2>Carte "+(ci+1)+"</h2><div class='bonusText'>"+getPlayerName(ci)+"</div><div class='bonusText'>"+label+"</div><div class='grid'></div>";let grid=div.querySelector(".grid");card.forEach(cell=>{let el=document.createElement("div");el.className="cell"+(cell.marked?" marked":"")+(cell.win?" win":"");el.innerText=cell.mix;if(cell.marked){let v=vowel(cell.mix);el.style.background=colors[v];if(v==="I")el.style.color="#111"}grid.appendChild(el)});out.appendChild(div)})}
+function showBonus(ci){
+  let alert=document.getElementById("bonusAlert");
+  alert.innerText="BONUS ! Carte "+(ci+1);
+  alert.classList.remove("show");
+  void alert.offsetWidth;
+  alert.classList.add("show");
+  playBonus();
+  showEvent("bonus","⭐ BONUS ! ⭐","Carte "+(ci+1),1200,ci);
+  setTimeout(()=>alert.classList.remove("show"),1800);
+}
+function showReady(ci){
+  let alert=document.getElementById("readyAlert");
+  alert.innerText="MIXL prêt sur Carte "+(ci+1)+" !";
+  alert.classList.remove("show");
+  void alert.offsetWidth;
+  alert.classList.add("show");
+  playMixlReady();
+  showEvent("mixl","🏆 MIXL ! 🏆","Carte "+(ci+1),1800,ci);
+  document.getElementById("validateBtn").classList.add("show");
+}
+function selectSoloCard(ci){if(selectedPlayers!==1||drawn>0||gameOver)return;selectedSoloCard=ci;render()}
+function render(){document.getElementById("remaining").innerText=bag.length;document.getElementById("draws").innerText=drawn;let out=document.getElementById("cards");let drawBtn=document.getElementById("draw");out.innerHTML="";out.classList.toggle("solo-active",selectedPlayers===1&&selectedSoloCard!==null);if(selectedPlayers===1&&selectedSoloCard===null){document.getElementById("modeDisplay").innerText="Mode Solo : choisis ta carte";drawBtn.disabled=true;drawBtn.innerText="CHOISIS TA CARTE"}else{document.getElementById("modeDisplay").innerText="Mode : "+selectedPlayers+" joueur"+(selectedPlayers>1?"s":"");drawBtn.disabled=false;drawBtn.innerText="PIOCHER"}cards.forEach((card,ci)=>{let info=countCompleteLines(card);let state="";if(readyCard===ci)state=" ready";else if(info.count>=1)state=" bonus";let div=document.createElement("div");let soloClass="";if(selectedPlayers===1){if(selectedSoloCard===null)soloClass=" solo-choice";else if(selectedSoloCard===ci)soloClass=" solo-selected";else soloClass=" solo-mini"}div.className="card"+state+soloClass;if(selectedPlayers===1&&drawn===0)div.onclick=()=>selectSoloCard(ci);let label="Lignes : "+info.count+" / 2";if(readyCard===ci)label+=" • MIXL prêt";else if(info.count==1)label+=" • BONUS";div.innerHTML="<h2>Carte "+(ci+1)+"</h2><div class='bonusText'>"+getPlayerName(ci)+"</div><div class='bonusText'>"+label+"</div><div class='grid'></div>";let grid=div.querySelector(".grid");card.forEach(cell=>{let el=document.createElement("div");el.className="cell"+(cell.marked?" marked":"")+(cell.win?" win":"");el.innerText=cell.mix;if(cell.marked){let v=vowel(cell.mix);el.style.background=colors[v];if(v==="I")el.style.color="#111"}grid.appendChild(el)});out.appendChild(div)})}
 const pseudoInput=document.getElementById("pseudoInput");
 
 if(localStorage.getItem("mixlPseudo")){
@@ -748,7 +821,7 @@ pseudoInput.addEventListener("input",()=>{
 localStorage.setItem("mixlPseudo",pseudoInput.value);
 });
 function drawToken(){let pseudo=document.getElementById("pseudoInput").value;
-if(pseudo)document.getElementById("playerName").innerText=pseudo;if(gameOver||readyCard!==null||bag.length===0)return;let b=document.getElementById("bag");
+if(pseudo)document.getElementById("playerName").innerText=pseudo;if(selectedPlayers===1&&selectedSoloCard===null)return;if(gameOver||readyCard!==null||bag.length===0)return;let b=document.getElementById("bag");
 playStart();
 setTimeout(() => {
     b.classList.remove("shake");
@@ -775,6 +848,50 @@ checkBonusAndReady();
 render();
 }, 380)}
 function checkBonusAndReady(){for(let ci=0;ci<cards.length;ci++){let info=countCompleteLines(cards[ci]);if(info.count===1&&!bonusShown[ci]){bonusShown[ci]=true;showBonus(ci)}if(info.count>=2&&readyCard===null){readyCard=ci;readyRows=info.rows;showReady(ci);return}}}
+
+let eventTimer=null;
+function showEvent(type,title,cardText,duration,cardIndex){
+  const overlay=document.getElementById("eventOverlay");
+  const titleEl=document.getElementById("eventTitle");
+  const cardEl=document.getElementById("eventCard");
+  clearTimeout(eventTimer);
+  overlay.className="";
+  overlay.classList.add("show",type);
+  titleEl.innerText=title;
+  cardEl.innerText=cardText;
+  const cardEls=document.querySelectorAll("#cards .card");
+  if(cardEls[cardIndex]){
+    cardEls[cardIndex].classList.remove("event-flash");
+    void cardEls[cardIndex].offsetWidth;
+    cardEls[cardIndex].classList.add("event-flash");
+  }
+  eventTimer=setTimeout(()=>{overlay.className="";},duration);
+}
+function playBonus(){
+  const ctx=new (window.AudioContext||window.webkitAudioContext)();
+  [659.25,880].forEach((freq,i)=>{
+    const o=ctx.createOscillator(); const g=ctx.createGain();
+    o.type="sine"; o.frequency.value=freq;
+    const start=ctx.currentTime+i*0.11;
+    g.gain.setValueAtTime(0.0001,start);
+    g.gain.exponentialRampToValueAtTime(0.22,start+0.02);
+    g.gain.exponentialRampToValueAtTime(0.001,start+0.25);
+    o.connect(g);g.connect(ctx.destination);o.start(start);o.stop(start+0.27);
+  });
+}
+function playMixlReady(){
+  const ctx=new (window.AudioContext||window.webkitAudioContext)();
+  [392,523.25,659.25,783.99].forEach((freq,i)=>{
+    const o=ctx.createOscillator(); const g=ctx.createGain();
+    o.type="triangle"; o.frequency.value=freq;
+    const start=ctx.currentTime+i*0.10;
+    g.gain.setValueAtTime(0.0001,start);
+    g.gain.exponentialRampToValueAtTime(0.20,start+0.02);
+    g.gain.exponentialRampToValueAtTime(0.001,start+0.30);
+    o.connect(g);g.connect(ctx.destination);o.start(start);o.stop(start+0.32);
+  });
+}
+
 function playStart(){
     let ctx = new (window.AudioContext || window.webkitAudioContext)();
     let o = ctx.createOscillator();
@@ -825,7 +942,26 @@ o.stop(ctx.currentTime+i*0.09+0.24);
 }
 
 function confetti(){let cols=["#e53935","#1e88e5","#fdd835","#fb8c00","#43a047","#8e24aa"];for(let i=0;i<90;i++){let c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.background=cols[Math.floor(Math.random()*cols.length)];c.style.animationDelay=(Math.random()*.8)+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),3500)}}
-function validateMixl(){if(readyCard===null||gameOver)return;readyRows.forEach(r=>{let s=r*4;cards[readyCard][s].win=true;cards[readyCard][s+1].win=true;cards[readyCard][s+2].win=true;cards[readyCard][s+3].win=true});gameOver=true;render();setTimeout(()=>{playVictory();confetti();document.getElementById("winText").innerText="🏆 "+getPlayerName(readyCard)+" remporte la partie avec 2 lignes en "+drawn+" tirages.";document.getElementById("modal").style.display="flex"},180)}
+function validateMixl(){
+  if(readyCard===null||gameOver)return;
+  readyRows.forEach(r=>{let s=r*4;cards[readyCard][s].win=true;cards[readyCard][s+1].win=true;cards[readyCard][s+2].win=true;cards[readyCard][s+3].win=true;});
+  gameOver=true;
+  render();
+  playVictory();
+  confetti();
+  showEvent("mixl","🏆 MIXL ! 🏆","Carte "+(readyCard+1),1900,readyCard);
+  let message="";
+  if(selectedPlayers===1){
+    if(readyCard===selectedSoloCard){
+      message="BRAVO !\n\nTu avais choisi la Carte "+(selectedSoloCard+1)+".\nElle réalise MIXL en "+drawn+" tirages !\n\nFélicitations !";
+    }else{
+      message="La Carte "+(readyCard+1)+" réalise MIXL !\n\nTu avais choisi la Carte "+(selectedSoloCard+1)+".\nCette fois-ci, ce n'est pas la bonne carte.\n\nRetente ta chance !";
+    }
+  }else{
+    message=getPlayerName(readyCard)+" remporte la partie avec 2 lignes en "+drawn+" tirages.";
+  }
+  setTimeout(()=>{document.getElementById("winText").innerText=message;document.getElementById("modal").style.display="flex";},2000);
+}
 resetGame();
 </script>
 </body>
