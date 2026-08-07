@@ -608,27 +608,77 @@ margin-bottom:14px;
 @keyframes eventCardFlash{0%,100%{filter:brightness(1);transform:scale(1)}50%{filter:brightness(1.55);transform:scale(1.035)}}
 #winText{white-space:pre-line;font-size:18px;line-height:1.45}
 
+
+/* === MIXL V3.3 — IDENTITÉ / MOBILE === */
+#mixlOnboarding{padding:18px;overflow:auto}
+#mixlOnboarding .onboarding-card{width:min(680px,94vw);background:linear-gradient(145deg,#101c2d,#07111f);border:1px solid rgba(255,215,0,.35);border-radius:26px;padding:28px 24px;text-align:center;box-shadow:0 0 45px rgba(255,215,0,.18),0 18px 50px rgba(0,0,0,.45)}
+#mixlOnboarding .onboarding-brand{color:var(--gold);font-weight:800;letter-spacing:2px;margin-bottom:8px}
+#mixlOnboarding h1{font-size:clamp(52px,12vw,86px);margin:0 0 8px;letter-spacing:5px}
+#mixlOnboarding h2{margin:0 0 20px;font-size:clamp(18px,4vw,26px)}
+.onboarding-modes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.onboarding-mode{background:rgba(255,255,255,.05);border:1px solid rgba(255,215,0,.22);border-radius:16px;padding:14px;text-align:left}
+.onboarding-mode strong{display:block;color:var(--gold);margin-bottom:6px;font-size:16px}
+.onboarding-mode span{display:block;font-size:14px;line-height:1.35}
+.onboarding-rules{display:grid;gap:8px;margin:18px 0;font-size:16px}
+.onboarding-rules div{background:rgba(255,215,0,.08);border-radius:12px;padding:9px 12px}
+.onboarding-tagline{margin-top:12px;font-size:13px;opacity:.75}
+@media(max-width:620px){#mixlOnboarding{padding:10px}#mixlOnboarding .onboarding-card{padding:20px 14px;border-radius:20px}.onboarding-modes{grid-template-columns:1fr}.onboarding-mode{text-align:center;padding:10px}.onboarding-rules{font-size:14px}#mixlOnboarding button{padding:12px 18px;font-size:17px}}
+#draw.choose-card-pulse{animation:chooseCardPulse 1.45s ease-in-out infinite;opacity:1!important;filter:none!important;color:#111!important;background:linear-gradient(145deg,#fff0a5,#d9a400)!important;box-shadow:0 0 12px rgba(255,215,0,.65),0 0 26px rgba(255,215,0,.38)!important}
+@keyframes chooseCardPulse{0%,100%{transform:scale(1);box-shadow:0 0 12px rgba(255,215,0,.55),0 0 24px rgba(255,215,0,.25)}50%{transform:scale(1.035);box-shadow:0 0 20px rgba(255,215,0,.95),0 0 38px rgba(255,215,0,.55)}}
+@media(max-width:768px){
+  .main > .panel:first-child > .stat:first-of-type{display:block!important;grid-column:1/-1;padding:5px 8px!important;margin:2px 0!important;font-size:11px!important}
+  .main > .panel:first-child > .stat:first-of-type strong{display:inline!important;font-size:15px!important;margin-left:5px}
+  .info.mobile-rules{display:block!important;font-size:11px!important;line-height:1.3!important;padding:5px 8px!important;margin:0 0 6px!important}
+}
+
+
+/* === MIXL V3.3 — TOKENS + FIN DE PARTIE === */
+#winText .result-title{font-size:24px;font-weight:900;margin-bottom:10px}
+#winText .result-stats{margin:14px 0;line-height:1.55;font-size:17px}
+#winText .result-message{margin-top:12px;font-weight:800}
+#winText .result-win{color:#0a8f3c}
+#winText .result-loss{color:#b3122f}
+.end-actions{display:flex;gap:10px;margin-top:14px}
+.end-actions button{flex:1;width:auto}
+#homeBtn{background:linear-gradient(145deg,#223451,#18263d);color:white}
+@media(max-width:768px){
+  .main > .panel:first-child > .stat:first-of-type{
+    display:block!important;grid-column:1/-1;padding:5px 8px!important;
+    margin:2px 0!important;font-size:11px!important
+  }
+  .main > .panel:first-child > .stat:first-of-type strong{
+    display:inline!important;font-size:15px!important;margin-left:4px
+  }
+}
+
+
+/* === M3.3-09 — MIXL FLOW === */
+.mixl-flow-token{position:fixed;z-index:12000;width:54px;height:54px;border-radius:50%;background:#fff;color:#111;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;border:6px solid var(--gold);box-shadow:0 0 22px rgba(255,215,0,.9),0 10px 24px rgba(0,0,0,.45);pointer-events:none;will-change:transform,opacity}
+.cell.flow-impact{animation:flowImpact .55s ease}
+@keyframes flowImpact{0%{transform:scale(.82);box-shadow:0 0 0 rgba(255,215,0,0)}45%{transform:scale(1.16);box-shadow:0 0 28px rgba(255,215,0,.95)}100%{transform:scale(1);box-shadow:0 0 10px rgba(255,215,0,.35)}}
+#sacJetons.flow-pulse{animation:sacFlowPulse .52s ease}
+@keyframes sacFlowPulse{0%{transform:scale(1) translateY(0)}35%{transform:scale(1.04) translateY(-2px) rotate(-1.5deg)}70%{transform:scale(1.01) translateY(1px) rotate(.8deg)}100%{transform:scale(1) translateY(0)}}
+
 </style>
 
 </head>
 <body>
   <div id="mixlOnboarding">
-  <h1>ALPHAZARD MIXL</h1>
-
-<h2>Le jeu de société de l'alphabet</h2>
-
-<p>
-Hasard, réflexion et stratégie se rencontrent pour offrir
-une expérience ludique à partager en famille ou entre amis.
-</p>
-
-<p style="color:gold;font-weight:bold;">
-Avant de commencer, découvre les règles du jeu.
-</p>
-
-<button onclick="document.getElementById('mixlOnboarding').style.display='none'">
-COMMENCER
-</button>
+  <div class="onboarding-card">
+    <div class="onboarding-brand">ALPHAZARD présente</div>
+    <h1><span class="m">M</span><span class="i">I</span><span class="x">X</span><span class="l">L</span></h1>
+    <h2>Le jeu de société de l'alphabet</h2>
+    <div class="onboarding-modes">
+      <div class="onboarding-mode"><strong>👤 SOLO</strong><span>Choisis une carte et tente de réaliser un MIXL avant les autres cartes.</span></div>
+      <div class="onboarding-mode"><strong>👥 MULTIJOUEUR</strong><span>Chaque joueur choisit une carte. Le premier à réaliser un MIXL gagne.</span></div>
+    </div>
+    <div class="onboarding-rules">
+      <div>⭐ 1 ligne horizontale = <b>BONUS</b></div>
+      <div>🏆 2 lignes sur une même carte = <b>MIXL</b></div>
+    </div>
+    <button onclick="document.getElementById('mixlOnboarding').style.display='none'">COMMENCER</button>
+    <div class="onboarding-tagline">Simple à apprendre. Plaisant à rejouer.</div>
+  </div>
 </div>
 <header>
 <div style="color:var(--gold);font-weight:bold">ALPHAZARD</div>
@@ -695,7 +745,7 @@ by Justin Joris JOLY
 box-shadow:0 0 12px rgba(255,215,0,.18);padding:6px 14px;border-radius:12px;border:1px solid rgba(255,215,0,.35);display:inline-block;margin-left:auto;margin-right:auto;"><span id="playerName" style="text-shadow:0 0 8px rgba(255,215,0,.65);">JOUEUR 1</span></div>
 
 
-<div class="panel info">
+<div class="panel info mobile-rules">
 COMMENT JOUER ?<br>
 1 ligne = BONUS<br>
 2 lignes sur une même carte = <span style="color:#00c853">MIXL VALIDÉ</span><br>
@@ -715,8 +765,11 @@ Clique sur VALIDER MIXL pour confirmer ta victoire.
 <div id="modal" class="modal">
 <div class="box">
 <h2><span class="m">M</span><span class="i">I</span><span class="x">X</span><span class="l">L</span> !</h2>
-<p id="winText"></p>
-<button onclick="resetGame()">Nouvelle partie</button>
+<div id="winText"></div>
+<div class="end-actions">
+<button onclick="resetGame()">REJOUER</button>
+<button id="homeBtn" onclick="goHome()">ACCUEIL</button>
+</div>
 </div>
 </div>
 <script>
@@ -809,7 +862,7 @@ function showReady(ci){
   document.getElementById("validateBtn").classList.add("show");
 }
 function selectSoloCard(ci){if(selectedPlayers!==1||drawn>0||gameOver)return;selectedSoloCard=ci;render()}
-function render(){document.getElementById("remaining").innerText=bag.length;document.getElementById("draws").innerText=drawn;let out=document.getElementById("cards");let drawBtn=document.getElementById("draw");out.innerHTML="";out.classList.toggle("solo-active",selectedPlayers===1&&selectedSoloCard!==null);if(selectedPlayers===1&&selectedSoloCard===null){document.getElementById("modeDisplay").innerText="Mode Solo : choisis ta carte";drawBtn.disabled=true;drawBtn.innerText="CHOISIS TA CARTE"}else{document.getElementById("modeDisplay").innerText="Mode : "+selectedPlayers+" joueur"+(selectedPlayers>1?"s":"");drawBtn.disabled=false;drawBtn.innerText="PIOCHER"}cards.forEach((card,ci)=>{let info=countCompleteLines(card);let state="";if(readyCard===ci)state=" ready";else if(info.count>=1)state=" bonus";let div=document.createElement("div");let soloClass="";if(selectedPlayers===1){if(selectedSoloCard===null)soloClass=" solo-choice";else if(selectedSoloCard===ci)soloClass=" solo-selected";else soloClass=" solo-mini"}div.className="card"+state+soloClass;if(selectedPlayers===1&&drawn===0)div.onclick=()=>selectSoloCard(ci);let label="Lignes : "+info.count+" / 2";if(readyCard===ci)label+=" • MIXL prêt";else if(info.count==1)label+=" • BONUS";div.innerHTML="<h2>Carte "+(ci+1)+"</h2><div class='bonusText'>"+getPlayerName(ci)+"</div><div class='bonusText'>"+label+"</div><div class='grid'></div>";let grid=div.querySelector(".grid");card.forEach(cell=>{let el=document.createElement("div");el.className="cell"+(cell.marked?" marked":"")+(cell.win?" win":"");el.innerText=cell.mix;if(cell.marked){let v=vowel(cell.mix);el.style.background=colors[v];if(v==="I")el.style.color="#111"}grid.appendChild(el)});out.appendChild(div)})}
+function render(){document.getElementById("remaining").innerText=bag.length;document.getElementById("draws").innerText=drawn;let out=document.getElementById("cards");let drawBtn=document.getElementById("draw");out.innerHTML="";out.classList.toggle("solo-active",selectedPlayers===1&&selectedSoloCard!==null);if(selectedPlayers===1&&selectedSoloCard===null){document.getElementById("modeDisplay").innerText="Mode Solo : choisis ta carte";drawBtn.disabled=true;drawBtn.innerText="CHOISIS TA CARTE";drawBtn.classList.add("choose-card-pulse")}else{document.getElementById("modeDisplay").innerText="Mode : "+selectedPlayers+" joueur"+(selectedPlayers>1?"s":"");drawBtn.disabled=false;drawBtn.innerText="PIOCHER";drawBtn.classList.remove("choose-card-pulse")}cards.forEach((card,ci)=>{let info=countCompleteLines(card);let state="";if(readyCard===ci)state=" ready";else if(info.count>=1)state=" bonus";let div=document.createElement("div");let soloClass="";if(selectedPlayers===1){if(selectedSoloCard===null)soloClass=" solo-choice";else if(selectedSoloCard===ci)soloClass=" solo-selected";else soloClass=" solo-mini"}div.className="card"+state+soloClass;if(selectedPlayers===1&&drawn===0)div.onclick=()=>selectSoloCard(ci);let label="Lignes : "+info.count+" / 2";if(readyCard===ci)label+=" • MIXL prêt";else if(info.count==1)label+=" • BONUS";let playerLine=selectedPlayers===1?"":"<div class='bonusText'>"+getPlayerName(ci)+"</div>";div.innerHTML="<h2>Carte "+(ci+1)+"</h2>"+playerLine+"<div class='bonusText'>"+label+"</div><div class='grid'></div>";let grid=div.querySelector(".grid");card.forEach(cell=>{let el=document.createElement("div");el.className="cell"+(cell.marked?" marked":"")+(cell.win?" win":"");el.innerText=cell.mix;if(cell.marked){let v=vowel(cell.mix);el.style.background=colors[v];if(v==="I")el.style.color="#111"}grid.appendChild(el)});out.appendChild(div)})}
 const pseudoInput=document.getElementById("pseudoInput");
 
 if(localStorage.getItem("mixlPseudo")){
@@ -820,33 +873,102 @@ pseudoInput.value=localStorage.getItem("mixlPseudo");
 pseudoInput.addEventListener("input",()=>{
 localStorage.setItem("mixlPseudo",pseudoInput.value);
 });
-function drawToken(){let pseudo=document.getElementById("pseudoInput").value;
-if(pseudo)document.getElementById("playerName").innerText=pseudo;if(selectedPlayers===1&&selectedSoloCard===null)return;if(gameOver||readyCard!==null||bag.length===0)return;let b=document.getElementById("bag");
-playStart();
-setTimeout(() => {
+
+function animateMixlFlow(tokenText,targetCardIndex,targetCellIndex,done){
+  const sac=document.getElementById("sacJetons");
+  const cardsDom=document.querySelectorAll("#cards .card");
+  const targetCard=cardsDom[targetCardIndex];
+  const targetCell=targetCard ? targetCard.querySelectorAll(".cell")[targetCellIndex] : null;
+  if(!sac||!targetCell){done();return;}
+
+  sac.classList.remove("flow-pulse");
+  void sac.offsetWidth;
+  sac.classList.add("flow-pulse");
+
+  const start=sac.getBoundingClientRect();
+  const end=targetCell.getBoundingClientRect();
+  const flyer=document.createElement("div");
+  flyer.className="mixl-flow-token";
+  flyer.innerText=tokenText;
+  flyer.style.borderColor=colors[vowel(tokenText)];
+  flyer.style.left=(start.left+start.width/2-27)+"px";
+  flyer.style.top=(start.top+start.height/2-27)+"px";
+  document.body.appendChild(flyer);
+
+  const dx=(end.left+end.width/2)-(start.left+start.width/2);
+  const dy=(end.top+end.height/2)-(start.top+start.height/2);
+  const arc=Math.max(-90,Math.min(-45,-Math.abs(dx)*0.12-45));
+
+  const animation=flyer.animate([
+    {transform:"translate(0,0) scale(.36) rotate(-6deg)",opacity:0},
+    {transform:"translate(4px,-4px) scale(.58) rotate(-2deg)",opacity:.55,offset:.16},
+    {transform:"translate(10px,-12px) scale(.82) rotate(8deg)",opacity:1,offset:.34},
+    {transform:`translate(${dx*.48}px,${dy*.48+arc}px) scale(1.08) rotate(150deg)`,opacity:1,offset:.66},
+    {transform:`translate(${dx}px,${dy}px) scale(.72) rotate(300deg)`,opacity:1}
+  ],{duration:930,easing:"cubic-bezier(.18,.62,.2,1)",fill:"forwards"});
+
+  animation.onfinish=()=>{
+    flyer.remove();
+    done();
+    requestAnimationFrame(()=>{
+      const newCard=document.querySelectorAll("#cards .card")[targetCardIndex];
+      const newCell=newCard ? newCard.querySelectorAll(".cell")[targetCellIndex] : null;
+      if(newCell){
+        newCell.classList.remove("flow-impact");
+        void newCell.offsetWidth;
+        newCell.classList.add("flow-impact");
+      }
+    });
+  };
+}
+
+function drawToken(){
+  let pseudo=document.getElementById("pseudoInput").value;
+  if(pseudo)document.getElementById("playerName").innerText=pseudo;
+  if(selectedPlayers===1&&selectedSoloCard===null)return;
+  if(gameOver||readyCard!==null||bag.length===0)return;
+
+  let b=document.getElementById("bag");
+  playStart();
+
+  setTimeout(()=>{
     b.classList.remove("shake");
     void b.offsetWidth;
     b.classList.add("shake");
-}, 100);setTimeout(() => {
-let idx=Math.floor(Math.random()*bag.length);
-let t=bag.splice(idx,1)[0];
-drawn++;
-let tok=document.getElementById("token");
-tok.classList.remove("pop");
-void tok.offsetWidth;
-tok.classList.add("pop");
-tok.innerText=t;
-tok.style.borderColor=colors[vowel(t)];
-cards.forEach(card=>{
-let found=card.find(c=>c.mix===t);
-if(found){
-found.marked=true;
-setTimeout(playCrystal,220);
+  },100);
+
+  setTimeout(()=>{
+    let idx=Math.floor(Math.random()*bag.length);
+    let t=bag.splice(idx,1)[0];
+    drawn++;
+
+    let tok=document.getElementById("token");
+    tok.classList.remove("pop");
+    void tok.offsetWidth;
+    tok.classList.add("pop");
+    tok.innerText=t;
+    tok.style.borderColor=colors[vowel(t)];
+
+    let targetCardIndex=-1;
+    let targetCellIndex=-1;
+    cards.forEach((card,ci)=>{
+      let cellIndex=card.findIndex(c=>c.mix===t);
+      if(cellIndex!==-1){
+        targetCardIndex=ci;
+        targetCellIndex=cellIndex;
+      }
+    });
+
+    animateMixlFlow(t,targetCardIndex,targetCellIndex,()=>{
+      if(targetCardIndex!==-1&&targetCellIndex!==-1){
+        cards[targetCardIndex][targetCellIndex].marked=true;
+        setTimeout(playCrystal,80);
+      }
+      checkBonusAndReady();
+      render();
+    });
+  },380);
 }
-});
-checkBonusAndReady();
-render();
-}, 380)}
 function checkBonusAndReady(){for(let ci=0;ci<cards.length;ci++){let info=countCompleteLines(cards[ci]);if(info.count===1&&!bonusShown[ci]){bonusShown[ci]=true;showBonus(ci)}if(info.count>=2&&readyCard===null){readyCard=ci;readyRows=info.rows;showReady(ci);return}}}
 
 let eventTimer=null;
@@ -867,8 +989,20 @@ function showEvent(type,title,cardText,duration,cardIndex){
   }
   eventTimer=setTimeout(()=>{overlay.className="";},duration);
 }
+
+let mixlAudioCtx=null;
+function getMixlAudioCtx(){
+  if(!mixlAudioCtx){
+    mixlAudioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  }
+  if(mixlAudioCtx.state==="suspended"){
+    mixlAudioCtx.resume().catch(()=>{});
+  }
+  return mixlAudioCtx;
+}
+
 function playBonus(){
-  const ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const ctx=getMixlAudioCtx();
   [659.25,880].forEach((freq,i)=>{
     const o=ctx.createOscillator(); const g=ctx.createGain();
     o.type="sine"; o.frequency.value=freq;
@@ -880,7 +1014,7 @@ function playBonus(){
   });
 }
 function playMixlReady(){
-  const ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const ctx=getMixlAudioCtx();
   [392,523.25,659.25,783.99].forEach((freq,i)=>{
     const o=ctx.createOscillator(); const g=ctx.createGain();
     o.type="triangle"; o.frequency.value=freq;
@@ -893,7 +1027,7 @@ function playMixlReady(){
 }
 
 function playStart(){
-    let ctx = new (window.AudioContext || window.webkitAudioContext)();
+    let ctx = getMixlAudioCtx();
     let o = ctx.createOscillator();
     let g = ctx.createGain();
 
@@ -910,7 +1044,7 @@ function playStart(){
     o.stop(ctx.currentTime + 0.18);
 }
 function playCrystal(){
-let ctx=new (window.AudioContext||window.webkitAudioContext)();
+let ctx=getMixlAudioCtx();
 let o=ctx.createOscillator();
 let g=ctx.createGain();
 o.type="sine";
@@ -924,7 +1058,7 @@ o.stop(ctx.currentTime+0.45);
 }
 
 function playVictory(){
-let ctx=new (window.AudioContext||window.webkitAudioContext)();
+let ctx=getMixlAudioCtx();
 let notes=[523.25,659.25,783.99,1046.5];
 notes.forEach((freq,i)=>{
 let o=ctx.createOscillator();
@@ -942,6 +1076,8 @@ o.stop(ctx.currentTime+i*0.09+0.24);
 }
 
 function confetti(){let cols=["#e53935","#1e88e5","#fdd835","#fb8c00","#43a047","#8e24aa"];for(let i=0;i<90;i++){let c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.background=cols[Math.floor(Math.random()*cols.length)];c.style.animationDelay=(Math.random()*.8)+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),3500)}}
+function goHome(){document.getElementById("modal").style.display="none";document.getElementById("mixlOnboarding").style.display="flex";resetGame();}
+
 function validateMixl(){
   if(readyCard===null||gameOver)return;
   readyRows.forEach(r=>{let s=r*4;cards[readyCard][s].win=true;cards[readyCard][s+1].win=true;cards[readyCard][s+2].win=true;cards[readyCard][s+3].win=true;});
@@ -950,17 +1086,29 @@ function validateMixl(){
   playVictory();
   confetti();
   showEvent("mixl","🏆 MIXL ! 🏆","Carte "+(readyCard+1),1900,readyCard);
-  let message="";
+
+  const usedTokens=drawn;
+  const remainingTokens=bag.length;
+  let html="";
+
   if(selectedPlayers===1){
     if(readyCard===selectedSoloCard){
-      message="BRAVO !\n\nTu avais choisi la Carte "+(selectedSoloCard+1)+".\nElle réalise MIXL en "+drawn+" tirages !\n\nFélicitations !";
+      html="<div class='result-title result-win'>🏆 MIXL RÉALISÉ !</div>"+
+      "<div>Carte "+(readyCard+1)+"</div>"+
+      "<div class='result-stats'>⭐ 2 lignes complétées<br>🟡 "+usedTokens+" TOKENS utilisés<br>🎯 "+remainingTokens+" TOKENS restants</div>"+
+      "<div class='result-message result-win'>Bravo ! Tu avais choisi la bonne carte.</div>";
     }else{
-      message="La Carte "+(readyCard+1)+" réalise MIXL !\n\nTu avais choisi la Carte "+(selectedSoloCard+1)+".\nCette fois-ci, ce n'est pas la bonne carte.\n\nRetente ta chance !";
+      html="<div class='result-title result-loss'>🏆 La Carte "+(readyCard+1)+" réalise MIXL</div>"+
+      "<div class='result-stats'>⭐ 2 lignes complétées<br>🟡 "+usedTokens+" TOKENS utilisés<br>🎯 "+remainingTokens+" TOKENS restants</div>"+
+      "<div class='result-message result-loss'>Tu avais choisi la Carte "+(selectedSoloCard+1)+". Retente ta chance !</div>";
     }
   }else{
-    message=getPlayerName(readyCard)+" remporte la partie avec 2 lignes en "+drawn+" tirages.";
+    html="<div class='result-title result-win'>🏆 MIXL RÉALISÉ !</div>"+
+    "<div>"+getPlayerName(readyCard)+" remporte la partie.</div>"+
+    "<div class='result-stats'>⭐ 2 lignes complétées<br>🟡 "+usedTokens+" TOKENS utilisés<br>🎯 "+remainingTokens+" TOKENS restants</div>";
   }
-  setTimeout(()=>{document.getElementById("winText").innerText=message;document.getElementById("modal").style.display="flex";},2000);
+
+  setTimeout(()=>{document.getElementById("winText").innerHTML=html;document.getElementById("modal").style.display="flex";},2000);
 }
 resetGame();
 </script>
