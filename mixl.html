@@ -659,6 +659,14 @@ margin-bottom:14px;
 #sacJetons.flow-pulse{animation:sacFlowPulse .52s ease}
 @keyframes sacFlowPulse{0%{transform:scale(1) translateY(0)}35%{transform:scale(1.04) translateY(-2px) rotate(-1.5deg)}70%{transform:scale(1.01) translateY(1px) rotate(.8deg)}100%{transform:scale(1) translateY(0)}}
 
+
+/* === MIXL FLOW iPhone / Safari compatible === */
+.mixl-flow-token.ios-flight{
+  transition:
+    transform .93s cubic-bezier(.18,.62,.2,1),
+    opacity .18s ease;
+}
+
 </style>
 
 </head>
@@ -899,15 +907,7 @@ function animateMixlFlow(tokenText,targetCardIndex,targetCellIndex,done){
   const dy=(end.top+end.height/2)-(start.top+start.height/2);
   const arc=Math.max(-90,Math.min(-45,-Math.abs(dx)*0.12-45));
 
-  const animation=flyer.animate([
-    {transform:"translate(0,0) scale(.36) rotate(-6deg)",opacity:0},
-    {transform:"translate(4px,-4px) scale(.58) rotate(-2deg)",opacity:.55,offset:.16},
-    {transform:"translate(10px,-12px) scale(.82) rotate(8deg)",opacity:1,offset:.34},
-    {transform:`translate(${dx*.48}px,${dy*.48+arc}px) scale(1.08) rotate(150deg)`,opacity:1,offset:.66},
-    {transform:`translate(${dx}px,${dy}px) scale(.72) rotate(300deg)`,opacity:1}
-  ],{duration:930,easing:"cubic-bezier(.18,.62,.2,1)",fill:"forwards"});
-
-  animation.onfinish=()=>{
+  const finishFlow=()=>{
     flyer.remove();
     done();
     requestAnimationFrame(()=>{
@@ -920,6 +920,27 @@ function animateMixlFlow(tokenText,targetCardIndex,targetCellIndex,done){
       }
     });
   };
+
+  if(typeof flyer.animate==="function"){
+    const animation=flyer.animate([
+      {transform:"translate(0,0) scale(.36) rotate(-6deg)",opacity:0},
+      {transform:"translate(4px,-4px) scale(.58) rotate(-2deg)",opacity:.55,offset:.16},
+      {transform:"translate(10px,-12px) scale(.82) rotate(8deg)",opacity:1,offset:.34},
+      {transform:`translate(${dx*.48}px,${dy*.48+arc}px) scale(1.08) rotate(150deg)`,opacity:1,offset:.66},
+      {transform:`translate(${dx}px,${dy}px) scale(.72) rotate(300deg)`,opacity:1}
+    ],{duration:930,easing:"cubic-bezier(.18,.62,.2,1)",fill:"forwards"});
+    animation.onfinish=finishFlow;
+  }else{
+    flyer.classList.add("ios-flight");
+    flyer.style.opacity="0";
+    flyer.style.transform="translate(0,0) scale(.36) rotate(-6deg)";
+    void flyer.offsetWidth;
+    setTimeout(()=>{
+      flyer.style.opacity="1";
+      flyer.style.transform=`translate(${dx}px,${dy}px) scale(.72) rotate(300deg)`;
+    },40);
+    setTimeout(finishFlow,980);
+  }
 }
 
 function drawToken(){
