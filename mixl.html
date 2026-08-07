@@ -667,6 +667,24 @@ margin-bottom:14px;
     opacity .18s ease;
 }
 
+
+.device-note{
+  margin:12px auto 4px;
+  max-width:520px;
+  font-size:13px;
+  line-height:1.4;
+  color:#d8c27a;
+  opacity:.92;
+  text-align:center;
+}
+@media (max-width:600px){
+  .device-note{
+    font-size:12px;
+    margin-top:10px;
+    padding:0 10px;
+  }
+}
+
 </style>
 
 </head>
@@ -684,7 +702,13 @@ margin-bottom:14px;
       <div>⭐ 1 ligne horizontale = <b>BONUS</b></div>
       <div>🏆 2 lignes sur une même carte = <b>MIXL</b></div>
     </div>
-    <button onclick="document.getElementById('mixlOnboarding').style.display='none'">COMMENCER</button>
+    
+<div class="device-note">
+  Sur téléphone : mode SOLO uniquement.<br>
+  Sur tablette et ordinateur : SOLO ou MULTIJOUEUR.
+</div>
+
+<button onclick="document.getElementById('mixlOnboarding').style.display='none'">COMMENCER</button>
     <div class="onboarding-tagline">Simple à apprendre. Plaisant à rejouer.</div>
   </div>
 </div>
