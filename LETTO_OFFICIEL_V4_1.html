@@ -1244,6 +1244,31 @@ rulesClose.addEventListener("click", () => {
   skip.addEventListener("click", finishIntro);
 })();
 </script>
+<script>
+if (window.innerWidth <= 700) {
+  const rulesList = document.getElementById("rulesList");
+  const historyList = document.getElementById("historyList");
+  const titles = document.querySelectorAll(".panel .k");
+
+  if (rulesList && historyList && titles.length >= 2) {
+    rulesList.style.display = "none";
+    historyList.style.display = "none";
+
+    titles[0].style.cursor = "pointer";
+    titles[1].style.cursor = "pointer";
+
+    titles[0].addEventListener("click", () => {
+      rulesList.style.display =
+        rulesList.style.display === "none" ? "block" : "none";
+    });
+
+    titles[1].addEventListener("click", () => {
+      historyList.style.display =
+        historyList.style.display === "none" ? "block" : "none";
+    });
+  }
+}
+</script>
 
 </body>
 </html>
