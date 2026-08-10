@@ -1,0 +1,1243 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LETTOGAME</title>
+  <style>
+    :root{
+      --bg:#090b10;
+      --panel:#121722;
+      --panel-2:#0f141d;
+      --gold:#ffd84d;
+      --gold-2:#f1b800;background:rgba(255,215,0,.08);
+      --text:#f4f6fb;
+      --muted:#b7c0d1;background:rgba(255,215,0,.08);
+      --green:#39ff14;
+      --red:#ff4d4d;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      background:radial-gradient(circle at top,#161d2b 0%,#0b0e14 45%,#05070b 100%);
+      color:var(--text);
+      font-family:Arial, Helvetica, sans-serif;
+      display:flex;
+      justify-content:center;
+
+      align-items:flex-start;
+      padding:20px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:760px;
+      background:rgba(8,10,15,.88);
+      border:1px solid rgba(255,216,77,.16);
+      border-radius:22px;
+      padding:20px;
+      box-shadow:0 0 30px rgba(0,0,0,.45), 0 0 18px rgba(255,216,77,.08);
+    }
+.wrap.jackpotFlash{
+  animation:jackpotGlow 1s ease;
+}
+
+@keyframes jackpotGlow{
+  0%{
+    box-shadow:
+      0 0 30px rgba(0,0,0,.45),
+      0 0 18px rgba(255,216,77,.18);
+    transform:scale(1);
+  }
+
+  50%{
+    box-shadow:
+      0 0 120px rgba(255,216,77,.95),
+      0 0 80px rgba(255,216,77,.75),
+      0 0 40px rgba(255,255,255,.35);
+    transform:scale(1.02);
+  }
+
+  100%{
+    box-shadow:
+      0 0 30px rgba(0,0,0,.45),
+      0 0 18px rgba(255,216,77,.18);
+    transform:scale(1);
+  }
+}
+
+    .header{
+      text-align:center;
+      margin-bottom:14px;
+    }
+.logo-wrap{
+  text-align:center;
+  margin-bottom:10px;
+}
+
+.top-logo{
+  width:240px;
+  max-width:90%;
+  filter:
+    drop-shadow(0 0 12px rgba(255,215,0,.22));
+animation:logoBreath 3s ease-in-out infinite;
+}
+@keyframes logoBreath{
+  0%{
+    filter:drop-shadow(0 0 10px rgba(255,215,0,.18));
+  }
+  50%{
+    filter:drop-shadow(0 0 22px rgba(255,215,0,.45));
+  }
+  100%{
+    filter:drop-shadow(0 0 10px rgba(255,215,0,.18));
+  }
+}
+
+    .brand{
+      font-size:12px;
+      letter-spacing:3px;
+      color:#c9a94d;
+      opacity:.85;
+      margin-bottom:6px;
+    }
+
+    .title{
+      font-size:30px;
+margin-top:-4px;
+margin-bottom:2px;
+      font-weight:900;
+      color:var(--gold);
+      text-shadow:0 0 10px rgba(255,216,77,.35);
+      letter-spacing:.08em;
+    }
+
+    .subtitle{
+      margin-top:6px;
+      color:#d2d7e2;
+      font-size:14px;
+      opacity:.9;
+    }
+
+    .top{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:16px;
+      margin:18px auto;
+      max-width:620px;
+      flex-wrap:wrap;
+    }
+
+    .pill{
+      border:2px solid var(--gold);
+      padding:8px 14px;
+      border-radius:16px;
+      min-width:110px;
+      text-align:center;
+      
+       box-shadow:
+0 0 12px rgba(255,215,0,.45),
+0 0 30px rgba(255,215,0,.20),
+inset 0 0 12px rgba(255,215,0,.12);
+      background:rgba(0,0,0,.35);
+      font-size:14px;
+    }
+
+    .pill b,
+    .pill strong{
+      display:block;
+      font-size:22px;
+      font-weight:900;
+      color:var(--gold);
+      margin-top:4px;
+      text-shadow:0 0 10px rgba(255,215,0,.18);
+    }
+
+    .board{
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      gap:10px;
+      margin:18px 0 16px;
+    }
+
+    .slot{
+      height:72px;
+      display:grid;
+      place-items:center;
+      border:2px solid #a67c12;
+      background:linear-gradient(180deg,#171b26,#0d1018);
+      border-radius:16px;
+      font-size:32px;
+      font-weight:900;
+      letter-spacing:.12em;
+      color:#eef1ff;
+      box-shadow:
+        inset 0 0 12px rgba(255,215,0,.06),
+        0 0 10px rgba(255,215,0,.12);
+      transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+animation:slotGlow 2.4s infinite;
+    }
+   
+@keyframes cardEntrance{
+  0%{
+    transform:translateY(40px) scale(.85);
+  }
+
+  70%{
+    transform:translateY(-6px) scale(1.03);
+  }
+
+  100%{
+    transform:translateY(0) scale(1);
+  }
+}
+.board-entrance .slot{
+  animation:
+    cardEntrance 1.4s ease-out forwards,
+    slotGlow 2.4s infinite 1s;
+}
+.board-entrance .slot:nth-child(1){ animation-delay:0s, 1s; }
+.board-entrance .slot:nth-child(2){ animation-delay:.12s, 1.12s; }
+.board-entrance .slot:nth-child(3){ animation-delay:.24s, 1.24s; }
+.board-entrance .slot:nth-child(4){ animation-delay:.36s, 1.36s; }
+.board-entrance .slot:nth-child(5){ animation-delay:.48s, 1.48s; }
+.board-entrance .slot:nth-child(6){ animation-delay:.60s, 1.60s; }
+@keyframes slotGlow{
+  0%{
+    transform:scale(1);
+    box-shadow:
+    inset 0 0 12px rgba(255,215,0,.10),
+    0 0 12px rgba(255,215,0,.18);
+  }
+
+  50%{
+    transform:scale(1.03);
+    box-shadow:
+    inset 0 0 20px rgba(255,215,0,.18),
+    0 0 28px rgba(255,215,0,.40);
+  }
+
+  100%{
+    transform:scale(1);
+    box-shadow:
+    inset 0 0 12px rgba(255,215,0,.10),
+    0 0 12px rgba(255,215,0,.18);
+  }
+}
+
+    .slot.spin{
+      animation:popIn .22s ease;
+    }
+
+    .slot.win{
+      background:
+linear-gradient(180deg,rgba(57,255,20,.18),rgba(13,16,24,.96));
+backdrop-filter:blur(4px);
+      border:2px solid var(--green);
+      color:#eef1ff;
+      box-shadow:
+        inset 0 0 12px rgba(57,255,20,.12),
+        0 0 10px rgba(57,255,20,.35),
+        0 0 22px rgba(57,255,20,.18);
+animation:slotWinPulse 1.2s infinite;
+animation:winPulse .45s ease;
+    }
+@keyframes winPulse{
+  0%{
+    transform:scale(1);
+  }
+
+  40%{
+    transform:scale(1.12);
+    box-shadow:
+      0 0 22px rgba(57,255,20,.85),
+      0 0 44px rgba(57,255,20,.45);
+  }
+
+  100%{
+    transform:scale(1);
+  }
+}
+@keyframes slotWinPulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.03);}
+  100%{transform:scale(1);}
+}
+
+    .slot.lose{
+      background:linear-gradient(180deg,#171b26,#0d1018);
+      border:2px solid var(--red);
+      color:#eef1ff;
+      box-shadow:
+        inset 0 0 12px rgba(255,77,77,.10),
+        0 0 10px rgba(255,77,77,.28),
+        0 0 22px rgba(255,77,77,.14);
+    }
+
+    @keyframes popIn{
+      0%{transform:scale(.88)}
+      100%{transform:scale(1)}
+    }
+
+    .actions{
+      text-align:center;
+      margin:0;
+    }
+
+    .spin-btn{
+      background:linear-gradient(180deg,#ffd84d,#f1b800);
+      color:#1a1a1a;
+      border:none;
+      border-radius:14px;
+      padding:18px 42px;
+      font-weight:900;
+      font-size:24px;
+      letter-spacing:.08em;
+      cursor:pointer;
+      box-shadow:
+        0 4px 14px rgba(255,215,0,.35),
+        0 0 12px rgba(255,215,0,.22);
+      animation:pulseBtn 1.6s infinite;
+    }
+.spin-btn:hover{
+  transform:translateY(-2px) scale(1.03);
+  box-shadow:
+    0 6px 22px rgba(255,215,0,.65),
+    0 0 34px rgba(255,215,0,.45);
+transition:transform .18s ease, box-shadow .18s ease;
+}
+.btn-dice{
+height:26px;
+width:auto;
+vertical-align:middle;
+margin-right:10px;
+border-radius:6px;
+box-shadow:
+0 0 10px rgba(255,215,0,.35),
+0 0 18px rgba(255,215,0,.18);
+}
+
+    .spin-btn:active{transform:scale(.98)}
+
+    .msg{
+      margin-top:16px;
+      line-height:1.25;
+      font-weight:800;
+      text-align:center;
+      font-size:18px;
+      min-height:54px;
+    }
+@keyframes pulseBtn{
+  0%{box-shadow:0 4px 14px rgba(255,215,0,.35),0 0 12px rgba(255,215,0,.22);}
+  50%{box-shadow:0 4px 18px rgba(255,215,0,.65),0 0 28px rgba(255,215,0,.45);}
+  100%{box-shadow:0 4px 14px rgba(255,215,0,.35),0 0 12px rgba(255,215,0,.22);}
+}
+.pulse{
+animation:pulseBtn 1.2s ease;
+}
+   .msg.win.small{
+  color:#8fffad;
+  text-shadow:0 0 8px rgba(92,255,141,.18);
+}
+
+.msg.win.big{
+  color:#ffd84d;
+  text-shadow:
+    0 0 16px rgba(255,216,77,.75),
+    0 0 34px rgba(255,216,77,.45);
+  animation:gainFlash .9s ease;
+}
+.big-win-title{
+animation: gainFlash 1.2s ease;
+font-size: 38px;
+  font-size:28px;
+  font-weight:900;
+  color:#ffd84d;
+  text-shadow:
+    0 0 10px rgba(255,216,77,.75),
+    0 0 22px rgba(255,216,77,.45);
+  letter-spacing:1px;
+  margin-bottom:6px;
+}
+
+.big-win-points{
+  font-size:30px;
+  font-weight:900;
+  color:#7dff7d;
+  text-shadow:
+    0 0 10px rgba(125,255,125,.7),
+    0 0 22px rgba(125,255,125,.4);
+}
+@keyframes gainFlash{
+  0%{transform:scale(1); filter:brightness(2.1);}
+  40%{transform:scale(1.18); filter:brightness(1.8);}
+  100%{transform:scale(1); filter:brightness(1);}
+}
+.record-title{
+  font-size:28px;
+  font-weight:900;
+  color:#ffd84d;
+  text-shadow:0 0 14px rgba(255,216,77,.75);
+}
+
+.record-score{
+  font-size:42px;
+  font-weight:900;
+  color:#ffd84d;
+  text-shadow:
+    0 0 14px rgba(255,216,77,.8),
+    0 0 30px rgba(255,216,77,.5);
+}
+
+    .msg.lose{
+      color:#ff6b6b;
+      text-shadow:0 0 12px rgba(255,107,107,.28);
+animation:loseShake .35s ease;
+    }
+@keyframes loseShake{
+  0%{transform:translateX(0);}
+  25%{transform:translateX(-4px);}
+  50%{transform:translateX(4px);}
+  75%{transform:translateX(-2px);}
+  100%{transform:translateX(0);}
+}
+
+    .muted{color:var(--muted)}
+
+    .mono{
+      font-size:28px;
+      font-weight:900;
+    }
+
+    .panels{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      margin-top:18px;
+    }
+.brand-card{
+margin:0 auto 14px;
+  padding:12px;
+  max-width:320px;
+  text-align:center;
+  border-radius:18px;
+  background:linear-gradient(180deg,#151515,#0c0c0c);
+  border:1px solid rgba(255,215,0,.25);
+  box-shadow:
+    0 0 18px rgba(255,215,0,.12),
+    inset 0 0 12px rgba(255,215,0,.08);
+}
+
+.brand-title{
+  color:#ffd84d;
+  font-weight:900;
+  letter-spacing:.12em;
+  font-size:18px;
+}
+
+.brand-dice{
+  margin-top:6px;
+  color:#fff3bf;
+  font-size:20px;
+  text-shadow:
+    0 0 10px rgba(255,215,0,.35);
+}
+.brand-duo{
+  margin-top:6px;
+  color:#ffd84d;
+  font-size:13px;
+  letter-spacing:.08em;
+  opacity:.9;
+}
+
+.brand-sub{
+.brand-signature{
+  display:block;
+  margin-top:6px;
+  font-size:10px;
+  letter-spacing:.08em;
+  color:rgba(255,215,0,.55);
+}
+  margin-top:6px;
+  color:#cfcfcf;
+  font-size:12px;
+  opacity:.82;
+}
+
+    .panel{
+      background:linear-gradient(180deg,#111723,#0d121b);
+      border:1px solid rgba(255,216,77,.16);
+      border-radius:16px;
+      padding:14px;
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .k{
+      color:var(--gold);
+      font-weight:900;
+      margin-bottom:10px;
+      letter-spacing:.04em;
+    }
+
+    ol{
+      margin:0;
+      padding-left:18px;
+    }
+
+    li{margin:5px 0}
+
+    #historyList{
+      margin:0;
+      padding-left:18px;
+    }
+
+    @media (max-width:700px){
+      body{padding:10px}
+      .wrap{padding:14px}
+      .title{font-size:34px}
+      .board{gap:8px}
+      .slot{height:58px;font-size:24px}
+      .spin-btn{font-size:16px;padding:12px 20px}
+      .panels{grid-template-columns:1fr}
+      .pill{min-width:96px;font-size:13px}
+      .pill b,.pill strong{font-size:20px}
+    }
+  
+/* ===== INTRO LETTO V4.1 ===== */
+#introOverlay{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255,216,77,.10), transparent 26%),
+    linear-gradient(180deg,#020305 0%,#07090e 55%,#000 100%);
+  color:#ffd84d;
+  font-family:Arial,Helvetica,sans-serif;
+  transition:opacity .85s ease, visibility .85s ease;
+}
+#introOverlay::before{
+  content:"";
+  position:absolute;
+  width:620px;
+  height:620px;
+  border-radius:50%;
+  border:1px solid rgba(255,216,77,.10);
+  box-shadow:
+    0 0 80px rgba(255,216,77,.08),
+    inset 0 0 80px rgba(255,216,77,.04);
+  animation:introHalo 3.8s ease-in-out infinite;
+}
+#introOverlay.hide{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+.intro-stage{
+  position:absolute;
+  width:min(92vw,760px);
+  text-align:center;
+  opacity:0;
+  transform:translateY(12px) scale(.98);
+}
+.intro-stage.show{
+  animation:introStageIn .75s ease forwards;
+}
+.intro-stage.leave{
+  animation:introStageOut .55s ease forwards;
+}
+.intro-alpha{
+  font-size:clamp(42px,8vw,78px);
+  font-weight:900;
+  letter-spacing:.09em;
+  color:#ffd84d;
+  text-shadow:
+    0 0 12px rgba(255,216,77,.95),
+    0 0 38px rgba(255,216,77,.52),
+    0 0 72px rgba(255,216,77,.22);
+}
+.intro-logo{
+  width:280px;
+  max-width:72vw;
+  height:auto;
+  object-fit:contain;
+  filter:drop-shadow(0 0 18px rgba(255,216,77,.55));
+  animation:introLogoZoom 4s ease-in-out forwards;
+}
+@keyframes introLogoZoom{
+  0%{
+    transform:scale(1);
+    opacity:1;
+  }
+
+  70%{
+    transform:scale(1.18);
+    opacity:1;
+  }
+
+  100%{
+    transform:scale(2.00);
+    opacity:0;
+  }
+}
+.intro-present{
+  margin-top:12px;
+  color:#f1f1f1;
+  font-size:clamp(15px,2.5vw,22px);
+  letter-spacing:.35em;
+  text-transform:uppercase;
+  opacity:.86;
+}
+.intro-letto{
+  font-size:clamp(54px,10vw,96px);
+  font-weight:900;
+  letter-spacing:.13em;
+  color:#ffd84d;
+  text-shadow:
+    0 0 14px rgba(255,216,77,.95),
+    0 0 42px rgba(255,216,77,.55);
+}
+.intro-rule{
+  width:min(420px,72vw);
+  height:1px;
+  margin:20px auto;
+  background:linear-gradient(90deg,transparent,#ffd84d,transparent);
+  box-shadow:0 0 12px rgba(255,216,77,.65);
+}
+.intro-dice-title{
+  color:#fff3bf;
+  font-size:clamp(22px,4vw,34px);
+  font-weight:900;
+  letter-spacing:.08em;
+}
+.intro-dice-sub{
+  margin-top:10px;
+  color:#f2f2f2;
+  font-size:clamp(15px,2.4vw,21px);
+  letter-spacing:.04em;
+}
+.intro-dice-icons{
+  margin-top:20px;
+  display:flex;
+  justify-content:center;
+  gap:24px;
+  font-size:46px;
+  filter:drop-shadow(0 0 16px rgba(255,216,77,.6));
+}
+.intro-dice-icons img{
+  width:160px;
+  max-width:38vw;
+  height:auto;
+  object-fit:contain;
+}
+#introStage3.show .dice-vowel{
+  animation:diceRollLeft 1s ease-out;
+}
+
+#introStage3.show .dice-cons{
+  animation:diceRollRight 1s ease-out .6s both;
+}
+.intro-skip{
+  position:absolute;
+  right:18px;
+  bottom:16px;
+  z-index:2;
+  border:1px solid rgba(255,216,77,.45);
+  border-radius:999px;
+  background:rgba(0,0,0,.38);
+  color:#ffe88d;
+  padding:8px 14px;
+  font-size:12px;
+  letter-spacing:.08em;
+  cursor:pointer;
+}
+#introRulesBtn{
+  right:95px;
+}
+#introRulesPanel{
+  display:none;
+  position:absolute;
+  inset:0;
+  z-index:20;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.82);
+  padding:20px;
+}
+
+#introRulesPanel.show{
+  display:flex;
+}
+
+.rules-content{
+  width:min(520px,90vw);
+  padding:24px;
+  border:1px solid rgba(255,216,77,.6);
+  border-radius:18px;
+  background:#090909;
+  color:#f7f1df;
+  text-align:left;
+  box-shadow:0 0 28px rgba(255,216,77,.25);
+}
+
+.rules-content h2{
+  margin-top:0;
+  color:#ffd84d;
+  text-align:center;
+}
+
+.rules-content p{
+  margin:12px 0;
+  line-height:1.4;
+}
+
+#introRulesClose{
+  display:block;
+  margin:20px auto 0;
+  padding:8px 18px;
+  border:1px solid rgba(255,216,77,.6);
+  border-radius:999px;
+  background:transparent;
+  color:#ffd84d;
+  cursor:pointer;
+}
+@keyframes introStageIn{
+  from{opacity:0;transform:translateY(12px) scale(.98);filter:blur(5px)}
+  to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+@keyframes introStageOut{
+  from{opacity:1;transform:translateY(0) scale(1)}
+  to{opacity:0;transform:translateY(-10px) scale(1.015);filter:blur(4px)}
+}
+@keyframes introHalo{
+  0%,100%{transform:scale(.96);opacity:.55}
+  50%{transform:scale(1.04);opacity:1}
+}
+@media (max-width:700px){
+  #introOverlay::before{width:420px;height:420px}
+  .intro-present{letter-spacing:.22em}
+  .intro-skip{right:12px;bottom:12px}
+}@keyframes diceRollLeft{
+  0%{
+    transform:translateX(-220px) translateY(-35px) rotate(-720deg);
+    opacity:0;
+  }
+
+  70%{
+    transform:translateX(12px) translateY(0) rotate(25deg);
+    opacity:1;
+  }
+
+  85%{
+    transform:translateX(-6px) translateY(-10px) rotate(-12deg);
+  }
+
+  100%{
+    transform:translateX(0) translateY(0) rotate(0deg);
+    opacity:1;
+  }
+}
+
+@keyframes diceRollRight{
+  0%{
+    transform:translateX(120px) rotate(360deg);
+    opacity:0;
+  }
+  100%{
+    transform:translateX(0) rotate(0deg);
+    opacity:1;
+  }
+}
+#introStart{
+  z-index:10;
+  pointer-events:auto;
+}
+
+#introStartBtn{
+  position:relative;
+  z-index:11;
+  pointer-events:auto;
+  cursor:pointer;
+}
+/* ===== FIN INTRO LETTO V4.1 ===== */
+
+</style>
+</head>
+<body>
+<audio id="introAudio" src="./intro-letto.mp3" preload="auto"></audio>
+  <div id="introOverlay" aria-label="Introduction LETTO">
+    <section class="intro-stage show" id="introStart">
+  <button type="button" id="introStartBtn">DÉCOUVRIR LETTO</button>
+</section>
+    <section class="intro-stage" id="introStage1">
+      <img src="Logo.jpg" alt="Logo ALPHAZARD" class="intro-logo">
+<div class="intro-present">présente</div>
+    </section>
+
+    <section class="intro-stage" id="introStage2">
+      <div class="intro-letto">LETTO</div>
+      <div class="intro-rule"></div>
+      <div class="intro-present intro-rules-short" style="margin-top:0">Lance les ALPHADÉS • Observe les 6 lettres • Gagne des points</div>
+    </section>
+
+    <section class="intro-stage" id="introStage3">
+      <div class="intro-dice-title">LES ALPHADÉS</div>
+      <div class="intro-dice-icons">
+  <img src="IMAGES/de-voyelles.png" alt="Dé des voyelles" class="dice-vowel">
+  <img src="IMAGES/de-consonnes.png" alt="Dé des consonnes" class="dice-cons">
+</div>
+      <div class="intro-dice-sub">D6 Voyelles • D20 Consonnes</div>
+    </section>
+<button class="intro-skip" id="introRulesBtn" type="button">RÈGLES</button>
+    <button class="intro-skip" id="introSkip" type="button">PASSER</button>
+    <div id="introRulesPanel">
+  <div class="rules-content">
+    <h2>RÈGLES DE LETTO</h2>
+
+    <p>🎯 Observe les 6 lettres tirées par les ALPHADÉS.</p>
+    <p>✨ Doubles, équilibres et suites rapportent des points.</p>
+    <p>🔥 Les combinaisons spéciales offrent des gains supérieurs.</p>
+    <p>⭐ Réalise LETTO pour gagner 120 points.</p>
+    <p>🍀 Un BONUS LETTO peut apparaître exceptionnellement.</p>
+
+    <button type="button" id="introRulesClose">FERMER</button>
+  </div>
+</div>
+  </div>
+
+
+  <div class="wrap">
+    <div class="header">
+      <div class="logo-wrap">
+  <img src="IMAGES/logo.jpg" class="top-logo">
+</div>
+      <div class="title">LETTO</div>
+      
+    </div>
+
+    <div class="top">
+      <div class="pill">SCORE<b id="scoreEl">0</b></div>
+      <div class="pill">PARTIES<b id="playsEl">0</b></div>
+    </div>
+    <div id="roundDisplay">Manche : 1 / 10</div>
+
+    <div class="board board-entrance" id="board">
+      <div class="slot">?</div>
+      <div class="slot">?</div>
+      <div class="slot">?</div>
+      <div class="slot">?</div>
+      <div class="slot">?</div>
+      <div class="slot">?</div>
+    </div>
+
+    <div class="actions">
+      <div style="text-align:center; margin-bottom:8px; font-weight:bold;">
+Objectif : Jusqu’où tu peux aller ? 👀
+<div id="rankDisplay">🏆 GRADE : Débutant</div>
+</div>
+      <input 
+  id="playerInput" 
+  placeholder="Ton pseudo..." 
+  style="
+    margin-bottom:10px;
+    padding:8px;
+    border-radius:8px;
+    border:none;
+    text-align:center;
+    font-weight:bold;
+  "
+/>
+     <button id="playBtn" class="spin-btn">LANCER</button>
+    </div>
+    <div id="msg" class="msg muted">
+</div>
+<div class="brand-card">
+  <div class="brand-title">ALPHADÉS</div>
+<div class="brand-duo">D6 Voyelles • D20 Consonnes</div>
+<div style="display:flex; justify-content:center; gap:15px; margin:10px 0;">
+<img src="IMAGES/de-voyelles.png" style="width:90px; filter:drop-shadow(0 0 12px gold);">
+<img src="IMAGES/de-consonnes.png" style="width:90px; filter:drop-shadow(0 0 12px gold);">
+</div>
+  <div class="brand-sub">
+Dés alphabétiques officiels<br>
+<span class="brand-signature">
+Création originale •  Joris Justin JOLY • 2011
+</span>
+</div>
+</div>
+    <div class="panels">
+      <div class="panel">
+        <div class="k">📜 RÈGLES LETTO</div>
+        <ol>
+  <li>💎 3 paires identiques → +500</li>
+  <li>⭐ LETTO + 1 lettre → +120</li>
+  <li>🔥 Palindrome (ex : ABCCBA) → +80</li>
+  <li>⚡ Suite (3 lettres ou +) → +10</li>
+  <li>✨ Double lettre consécutive → +2</li>
+  <li>🎯 3 voyelles / 3 consonnes → +1</li>
+  <li>🍀 Sinon → 0</li>
+</ol>
+      </div>
+
+      <div class="panel">
+        <div class="k">🧾 HISTORIQUE</div>
+        <ol id="historyList">
+          <li>En attente...</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3"></audio>
+<audio id="loseSound" src="https://assets.mixkit.co/active_storage/sfx/2958/2958-preview.mp3"></audio>
+
+  <script>
+    const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    const VOWELS = new Set(["A","E","I","O","U","Y"]);
+
+    const slots = [...document.querySelectorAll(".slot")];
+    const playBtn = document.getElementById("playBtn");
+    const msgEl = document.getElementById("msg");
+    const scoreEl = document.getElementById("scoreEl");
+    const playsEl = document.getElementById("playsEl");
+    const bestEl = document.getElementById("bestEl");
+    const historyList = document.getElementById("historyList");
+    const winSound = document.getElementById("winSound");
+    const loseSound = document.getElementById("loseSound");
+
+    let score = 0;
+    let plays = 0;
+    let gameOver = false;
+const roundDisplay = document.getElementById("roundDisplay");
+    let best = Number(localStorage.getItem("letto_best") || 0);
+    
+
+    function randLetter(){
+      return LETTERS[Math.floor(Math.random() * LETTERS.length)];
+    }
+
+    function drawLetters(){
+      return Array.from({length:6}, randLetter);
+    }
+
+    function straight(a){
+      const vals = a.map(l => l.charCodeAt(0));
+      let run = 1;
+      for(let i=1;i<vals.length;i++){
+        if(vals[i] === vals[i-1] + 1){
+          run++;
+          if(run >= 3) return true;
+        } else {
+          run = 1;
+        }
+      }
+      return false;
+    }
+
+    function double(a){
+      for(let i=0;i<a.length-1;i++){
+        if(a[i] === a[i+1]) return true;
+      }
+      return false;
+    }
+
+    function balance(a){
+      const v = a.filter(l => VOWELS.has(l)).length;
+      return v === 3;
+    }
+
+    function evaluate(a){
+      const pair1 = a[0] + a[1];
+      const pair2 = a[2] + a[3];
+      const pair3 = a[4] + a[5];
+
+      if(pair1 === pair2 && pair2 === pair3){
+        return ["💎 3 PAIRES IDENTIQUES", 500, true];
+      }
+
+      const first5 = a.slice(0,5).join("");
+      if(first5 === "LETTO"){
+        return ["⭐ LETTO", 120, true];
+      }
+
+      const reversed = [...a].reverse().join("");
+      if(a.join("") === reversed){
+        return ["🔥 Palindrome", 80, true];
+      }
+
+      if(straight(a)){
+        return ["⚡ Suite", 10, false];
+      }
+
+      if(double(a)){
+        return ["✨ Double", 2, false];
+      }
+
+      if(balance(a)){
+        return ["🎯 Équilibre", 1, false];
+      }
+
+      return ["🍀 Retente ta chance", 0, false];
+    }
+
+    function render(draw, gain){
+      slots.forEach((s,i)=>{
+        s.textContent = draw[i];
+        s.className = "slot spin";
+        if(gain > 0){
+          s.classList.add("win");
+        } else {
+          s.classList.add("lose");
+        }
+      });
+    }
+
+    function addHistory(draw, title, gain){
+      const li = document.createElement("li");
+      li.textContent = `${draw.join("")} — ${title}${gain > 0 ? " (+" + gain + ")" : ""}`;
+      if(historyList.children.length === 1 && historyList.children[0].textContent === "En attente..."){
+        historyList.innerHTML = "";
+      }
+      historyList.prepend(li);
+      while(historyList.children.length > 8){
+        historyList.removeChild(historyList.lastChild);
+      }
+    }
+
+   playBtn.onclick = function(){
+    if(gameOver){
+  gameOver = false;
+  score = 0;
+  scoreEl.textContent = "0";
+  plays = 0;
+  playsEl.textContent = "0";
+roundDisplay.textContent = "Manche : 0 / 10";
+  playBtn.textContent = "LANCER";
+  msgEl.innerHTML = "";
+msgEl.className = "msg muted";
+  return;
+}
+     winSound.currentTime = 0;
+loseSound.currentTime = 0;
+  winSound.volume = 1;
+  loseSound.volume = 1;
+  playBtn.disabled = true;
+
+  slots.forEach(s => {
+    s.className = "slot";
+  });
+
+  let spins = 12;
+
+  const anim = setInterval(() => {
+    slots.forEach(s => {
+      s.textContent = randLetter();
+      s.className = "slot spin";
+    });
+
+    spins--;
+
+    if (spins <= 0) {
+      clearInterval(anim);
+
+      const draw = drawLetters();
+      let [title, gain] = evaluate(draw);
+
+  
+plays++;
+
+if(plays > 10){
+
+  if(score > best){
+    best = score;
+    bestEl.textContent = String(best);
+    localStorage.setItem("letto_best", String(best));
+  }
+
+  alert("🏁 PARTIE TERMINÉE — SCORE FINAL : " + score);
+  playBtn.textContent = "NOUVELLE PARTIE";
+  gameOver = true;
+  playBtn.disabled = false;
+return;
+}
+
+roundDisplay.textContent = "Manche : " + plays + " / 10";
+const winSound = new Audio("https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3");
+  const loseSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2958/2958-preview.mp3");
+ loseSound.volume = 0.55;
+  // son de relance désactivé pour éviter le ralentissement
+ 
+      playsEl.textContent = String(plays);
+if(Math.random() < 0.04){
+  gain += 10;
+  title = "⭐ BONUS LETTO";
+}
+render(draw, gain);
+
+      if (gain > 0) {
+        score += gain;
+        scoreEl.textContent = String(score);
+if(gain >= 10){
+  const wrap = document.querySelector(".wrap");
+  wrap.classList.remove("jackpotFlash");
+  void wrap.offsetWidth;
+  wrap.classList.add("jackpotFlash");
+}
+if(score >= 200){
+  document.getElementById("rankDisplay").innerHTML = "👑 GRADE : ALPHAZARD";
+}
+else if(score >= 100){
+  document.getElementById("rankDisplay").innerHTML = "🔥 GRADE : MASTER";
+}
+else if(score >= 50){
+  document.getElementById("rankDisplay").innerHTML = "⚡ GRADE : Expert";
+}
+else if(score >= 20){
+  document.getElementById("rankDisplay").innerHTML = "🎯 GRADE : Challenger";
+}
+        msgEl.className = title.includes(title.includes("PERFORMANCE LETTO")) ? "msg win big" : "msg win small";
+msgEl.innerHTML = `
+<div class="big-win-title">GAGNÉ — ${title}</div>
+<div class="big-win-points">+${gain} points</div>
+`;
+        winSound.currentTime = 0;
+        winSound.play().catch(()=>{});
+playBtn.classList.add("pulse");
+
+setTimeout(() => {
+  playBtn.classList.remove("pulse");
+}, 1200);
+      } else {
+        msgEl.className = "msg lose";
+        msgEl.innerHTML = `<b>${title}</b><br><span class="muted">Clique LANCER</span>`;
+        loseSound.currentTime = 0;
+        loseSound.play().catch(()=>{});
+      }
+
+      if (score > best) {
+        best = score;
+        localStorage.setItem("letto_best", String(best));
+msgEl.innerHTML = `
+  <div class="record-title">🏆 NOUVEAU RECORD !</div>
+  <div class="record-score">${best}</div>
+`;
+      }
+     
+
+      addHistory(draw, title, gain);
+      playBtn.disabled = false;
+
+setTimeout(() => {
+  playBtn.disabled = false;
+}, 300);
+    }
+  }, 80);
+};
+ const playerInput = document.getElementById("playerInput");
+
+if (playerInput) {
+  playerInput.value = localStorage.getItem("letto_player") || "";
+
+  playerInput.addEventListener("input", () => {
+    localStorage.setItem("letto_player", playerInput.value);
+  });
+}
+  </script>
+
+<script>
+(() => {
+  const overlay = document.getElementById("introOverlay");
+  const skip = document.getElementById("introSkip");
+  const startBtn = document.getElementById("introStartBtn");
+const startScreen = document.getElementById("introStart");
+const rulesBtn = document.getElementById("introRulesBtn");
+const rulesPanel = document.getElementById("introRulesPanel");
+const rulesClose = document.getElementById("introRulesClose");
+  const introSound = document.getElementById("introAudio");
+introSound.volume = 0.35;
+  const stages = [
+    document.getElementById("introStage1"),
+    document.getElementById("introStage2"),
+    document.getElementById("introStage3")
+  ];
+
+  const timers = [];
+  let finished = false;
+
+  function later(fn, delay){
+    const id = setTimeout(fn, delay);
+    timers.push(id);
+  }
+
+  function switchStage(fromIndex, toIndex){
+    const from = stages[fromIndex];
+    const to = stages[toIndex];
+    if (!from || !to || finished) return;
+    from.classList.remove("show");
+    from.classList.add("leave");
+    later(() => {
+      to.classList.add("show");
+    }, 350);
+  }
+
+  function finishIntro(){
+    if (finished) return;
+    finished = true;
+    timers.forEach(clearTimeout);
+    overlay.classList.add("hide");
+    setTimeout(() => overlay.remove(), 900);
+  }
+
+  startBtn.addEventListener("click", () => {
+    introSound.pause();
+introSound.currentTime = 0;
+introSound.volume = 1;
+introSound.load();
+introSound.play();
+
+  startScreen.classList.remove("show");
+  startScreen.classList.add("leave");
+
+  setTimeout(() => {
+    startScreen.style.display = "none";
+    setTimeout(() => {
+  startScreen.style.display = "none";
+
+  stages[0].querySelector(".intro-logo").style.animation = "none";
+  stages[0].querySelector(".intro-logo").offsetHeight;
+  stages[0].querySelector(".intro-logo").style.animation = "";
+
+  stages[0].classList.add("show");
+
+  later(() => switchStage(0,1), 1800);
+  later(() => switchStage(1,2), 4200);
+  later(finishIntro, 9000);
+}, 350);
+    stages[0].classList.add("show");
+
+    later(() => switchStage(0,1), 1800);
+    later(() => switchStage(1,2), 4200);
+    later(finishIntro, 9000);
+  }, 350);
+});
+rulesBtn.addEventListener("click", () => {
+  rulesPanel.classList.add("show");
+});
+
+rulesClose.addEventListener("click", () => {
+  rulesPanel.classList.remove("show");
+});
+  skip.addEventListener("click", finishIntro);
+})();
+</script>
+
+</body>
+</html>
