@@ -1115,6 +1115,9 @@ msgEl.innerHTML = `
 <div class="big-win-title">GAGNÉ — ${title}</div>
 <div class="big-win-points">+${gain} points</div>
 `;
+if (gain <= 2) {
+  msgEl.innerHTML += "<div>👀 pas mal... continue comme ça.</div>";
+}
         winSound.currentTime = 0;
         winSound.play().catch(()=>{});
 playBtn.classList.add("pulse");
