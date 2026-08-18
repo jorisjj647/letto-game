@@ -1118,6 +1118,9 @@ msgEl.innerHTML = `
 if (gain <= 2) {
   msgEl.innerHTML += "<div>👀 pas mal... continue comme ça.</div>";
 }
+else if (gain >= 5 && !title.includes("BONUS LETTO")) {
+  msgEl.innerHTML += "<div>😳 Là... tu commences à m'intéresser.</div>";
+}
         winSound.currentTime = 0;
         winSound.play().catch(()=>{});
 playBtn.classList.add("pulse");
