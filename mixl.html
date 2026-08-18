@@ -709,8 +709,18 @@ margin-bottom:14px;
 </div>
 
 <button onclick="document.getElementById('mixlOnboarding').style.display='none'">COMMENCER</button>
+<button id="rulesBtn" type="button" onclick="playBonus();toggleRules()">DÉCOUVRIR LES RÈGLES</button>
+<div id="rulesPanel" style="display:none;">
+<h2>COMMENT JOUER ?</h2>
+<div>1. Choisis une carte.</div>
+<div>2. Clique sur PIOCHER.</div>
+<div>3. le MIXL Token tiré rejoint automatiquement sa case.</div>
+<div>4. 1 ligne horizontale complète = BONUS.</DIV>
+  <DIV>5. 2 lignes sur une même carte = MIXL.</div>
+    </div>
     <div class="onboarding-tagline">Simple à apprendre. Plaisant à rejouer.</div>
   </div>
+
 </div>
 <header>
 <div style="color:var(--gold);font-weight:bold">ALPHAZARD</div>
@@ -805,6 +815,29 @@ Clique sur VALIDER MIXL pour confirmer ta victoire.
 </div>
 </div>
 <script>
+  function toggleRules(){
+    const panel=document.getElementById("rulesPanel");
+    const button=document.getElementById("rulesBtn");
+    panel.style.display = panel.style.display === "none" ? "block" : "none";
+    button.innerText = panel.style.display === "block" ? "MASQUER LES RÈGLES" : "DÉCOUVRIR LES RÈGLES";
+  }
+  let introPlayed=false;
+  function playIntro(){
+    if(introPlayed)return;
+    introPlayed=true;
+    const ctx=getMixlAudioCtx();
+    const o=ctx.createOscillator();
+    const g=ctx.createGain();
+    o.type="triangle";
+    o.frequency.value=523.25;
+    g.gain.setValueAtTime(0.0001,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.12,ctx.currentTime+0.03); 
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.35);
+    o.connect(g);
+    g.connect(ctx.destination);
+    o.start();
+    o.stop(ctx.currentTime+0.4);
+  }
 let selectedPlayers=1;
 
 function setPlayers(n){
