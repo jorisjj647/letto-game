@@ -788,7 +788,7 @@ by Justin Joris JOLY
 <button id="draw" onclick="drawToken()">PIOCHER</button>
 <div class="actionRow">
 <button id="reset" onclick="resetGame()">REJOUER</button>
-<button id="validateBtn" onclick="validateMixl()">VICTOIRE</button>
+<button id="validateBtn" onclick="validateMixl()">VALIDER MIXL</button>
 </div>
 </section>
 <section>
@@ -907,7 +907,8 @@ let selectedSoloCard=null;
 function shuffle(a){let arr=[...a];for(let i=arr.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
 function vowel(m){return m.slice(-1)}
 function fullSet(){let s=[];consonnes.forEach(c=>voyelles.forEach(v=>s.push(c+v)));return shuffle(s)}
-function resetGame(){selectedSoloCard=null;let set=fullSet();bag=[...set];cards=[];drawn=0;gameOver=false;bonusShown={};readyCard=null;readyRows=[];for(let i=0;i<6;i++){cards.push(set.slice(i*20,(i+1)*20).map(m=>({mix:m,marked:false,win:false})))}document.getElementById("modal").style.display="none";document.getElementById("bonusAlert").classList.remove("show");document.getElementById("readyAlert").classList.remove("show");document.getElementById("validateBtn").classList.remove("show");document.getElementById("token").innerText="--";document.getElementById("token").style.borderColor="#777";render()}
+function resetGame(){
+  document.getElementById("reset").disabled=false;selectedSoloCard=null;let set=fullSet();bag=[...set];cards=[];drawn=0;gameOver=false;bonusShown={};readyCard=null;readyRows=[];for(let i=0;i<6;i++){cards.push(set.slice(i*20,(i+1)*20).map(m=>({mix:m,marked:false,win:false})))}document.getElementById("modal").style.display="none";document.getElementById("bonusAlert").classList.remove("show");document.getElementById("readyAlert").classList.remove("show");document.getElementById("validateBtn").classList.remove("show");document.getElementById("token").innerText="--";document.getElementById("token").style.borderColor="#777";render()}
 function countCompleteLines(card){let count=0;let rows=[];for(let r=0;r<5;r++){let s=r*4;let line=[card[s],card[s+1],card[s+2],card[s+3]];if(line.every(c=>c.marked)){count++;rows.push(r)}}return {count:count,rows:rows}}
 function showBonus(ci){
   let alert=document.getElementById("bonusAlert");
@@ -928,6 +929,7 @@ function showReady(ci){
   playMixlReady();
   showEvent("mixl","🏆 MIXL ! 🏆","Carte "+(ci+1),1800,ci);
   document.getElementById("validateBtn").classList.add("show");
+  document.getElementById("reset").disabled=true;
 }
 function selectSoloCard(ci){if(selectedPlayers!==1||drawn>0||gameOver)return;selectedSoloCard=ci;render()}
 function render(){document.getElementById("remaining").innerText=bag.length;document.getElementById("draws").innerText=drawn;let out=document.getElementById("cards");let drawBtn=document.getElementById("draw");out.innerHTML="";out.classList.toggle("solo-active",selectedPlayers===1&&selectedSoloCard!==null);if(selectedPlayers===1&&selectedSoloCard===null){document.getElementById("modeDisplay").innerText="Mode Solo : choisis ta carte";drawBtn.disabled=true;drawBtn.innerText="CHOISIS TA CARTE";drawBtn.classList.add("choose-card-pulse")}else{document.getElementById("modeDisplay").innerText="Mode : "+selectedPlayers+" joueur"+(selectedPlayers>1?"s":"");drawBtn.disabled=false;drawBtn.innerText="PIOCHER";drawBtn.classList.remove("choose-card-pulse")}cards.forEach((card,ci)=>{let info=countCompleteLines(card);let state="";if(readyCard===ci)state=" ready";else if(info.count>=1)state=" bonus";let div=document.createElement("div");let soloClass="";if(selectedPlayers===1){if(selectedSoloCard===null)soloClass=" solo-choice";else if(selectedSoloCard===ci)soloClass=" solo-selected";else soloClass=" solo-mini"}div.className="card"+state+soloClass;if(selectedPlayers===1&&drawn===0)div.onclick=()=>selectSoloCard(ci);let label="Lignes : "+info.count+" / 2";if(readyCard===ci)label+=" • MIXL prêt";else if(info.count==1)label+=" • BONUS";let playerLine=selectedPlayers===1?"":"<div class='bonusText'>"+getPlayerName(ci)+"</div>";div.innerHTML="<h2>Carte "+(ci+1)+"</h2>"+playerLine+"<div class='bonusText'>"+label+"</div><div class='grid'></div>";let grid=div.querySelector(".grid");card.forEach(cell=>{let el=document.createElement("div");el.className="cell"+(cell.marked?" marked":"")+(cell.win?" win":"");el.innerText=cell.mix;if(cell.marked){let v=vowel(cell.mix);el.style.background=colors[v];if(v==="I")el.style.color="#111"}grid.appendChild(el)});out.appendChild(div)})}
