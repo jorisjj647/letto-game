@@ -795,7 +795,7 @@ by Justin Joris JOLY
 <div style="text-align:center;font-weight:bold;color:gold;margin-bottom:8px;background:rgba(255,215,0,.12);
 box-shadow:0 0 12px rgba(255,215,0,.18);padding:6px 14px;border-radius:12px;border:1px solid rgba(255,215,0,.35);display:inline-block;margin-left:auto;margin-right:auto;"><span id="playerName" style="text-shadow:0 0 8px rgba(255,215,0,.65);">JOUEUR 1</span></div>
 
-
+<div id="pickPrompt" style="text-align:center;color:gold;font-weight:bold;margin-bottom:6px;"></div>
 <div id="cards" class="cards"></div>
 </section>
 </div>
@@ -886,6 +886,7 @@ render();
 }
 function getPlayerName(ci){
 let player=Math.floor(ci/(6/selectedPlayers))+1;
+if(cardOwners[ci]!==null) player=cardOwners[ci];
 
 if(player===1){
 return document.getElementById("pseudoInput").value || "Joueur 1";
@@ -904,6 +905,9 @@ const voyelles=["A","E","I","O","U","Y"];
 const colors={A:"#e53935",E:"#1e88e5",I:"#fdd835",O:"#fb8c00",U:"#43a047",Y:"#8e24aa"};
 let bag=[],cards=[],drawn=0,gameOver=false,bonusShown={},readyCard=null,readyRows=[];
 let selectedSoloCard=null;
+let cardOwners=[null,null,null,null,null,null];
+let currentPickingPlayer=1
+document.getElementById("reset").disabled=false;
 function shuffle(a){let arr=[...a];for(let i=arr.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
 function vowel(m){return m.slice(-1)}
 function fullSet(){let s=[];consonnes.forEach(c=>voyelles.forEach(v=>s.push(c+v)));return shuffle(s)}
@@ -932,7 +936,41 @@ function showReady(ci){
   document.getElementById("reset").disabled=true;
 }
 function selectSoloCard(ci){if(selectedPlayers!==1||drawn>0||gameOver)return;selectedSoloCard=ci;render()}
-function render(){document.getElementById("remaining").innerText=bag.length;document.getElementById("draws").innerText=drawn;let out=document.getElementById("cards");let drawBtn=document.getElementById("draw");out.innerHTML="";out.classList.toggle("solo-active",selectedPlayers===1&&selectedSoloCard!==null);if(selectedPlayers===1&&selectedSoloCard===null){document.getElementById("modeDisplay").innerText="Mode Solo : choisis ta carte";drawBtn.disabled=true;drawBtn.innerText="CHOISIS TA CARTE";drawBtn.classList.add("choose-card-pulse")}else{document.getElementById("modeDisplay").innerText="Mode : "+selectedPlayers+" joueur"+(selectedPlayers>1?"s":"");drawBtn.disabled=false;drawBtn.innerText="PIOCHER";drawBtn.classList.remove("choose-card-pulse")}cards.forEach((card,ci)=>{let info=countCompleteLines(card);let state="";if(readyCard===ci)state=" ready";else if(info.count>=1)state=" bonus";let div=document.createElement("div");let soloClass="";if(selectedPlayers===1){if(selectedSoloCard===null)soloClass=" solo-choice";else if(selectedSoloCard===ci)soloClass=" solo-selected";else soloClass=" solo-mini"}div.className="card"+state+soloClass;if(selectedPlayers===1&&drawn===0)div.onclick=()=>selectSoloCard(ci);let label="Lignes : "+info.count+" / 2";if(readyCard===ci)label+=" • MIXL prêt";else if(info.count==1)label+=" • BONUS";let playerLine=selectedPlayers===1?"":"<div class='bonusText'>"+getPlayerName(ci)+"</div>";div.innerHTML="<h2>Carte "+(ci+1)+"</h2>"+playerLine+"<div class='bonusText'>"+label+"</div><div class='grid'></div>";let grid=div.querySelector(".grid");card.forEach(cell=>{let el=document.createElement("div");el.className="cell"+(cell.marked?" marked":"")+(cell.win?" win":"");el.innerText=cell.mix;if(cell.marked){let v=vowel(cell.mix);el.style.background=colors[v];if(v==="I")el.style.color="#111"}grid.appendChild(el)});out.appendChild(div)})}
+function selectMultiCard(ci){
+  if(selectedPlayers===1 || drawn>0 || gameOver)return;
+  const maxCards=6/selectedPlayers;
+  const ownedCount=cardOwners.filter(owner=>owner===currentPickingPlayer).length;
+  if(ownedCount>=maxCards)return;
+  if(cardOwners[ci]!==null)return;
+  cardOwners[ci]=currentPickingPlayer;
+  if(ownedCount+1>=maxCards && currentPickingPlayer<selectedPlayers){
+    currentPickingPlayer++;
+  }
+  render();
+}
+
+
+  function updatePickPrompt(){
+    const p=document.getElementById("pickPrompt");
+    if(!p)return;
+    if(selectedPlayers===1){
+      p.innerText="";
+      return;
+    }
+    if(cardOwners.every(owner=>owner!==null)){
+      p.innerText="";
+      return;
+    }
+    const maxCards=6/selectedPlayers;
+    const name=currentPickingPlayer===1
+      ? (document.getElementById("pseudoInput").value || "Joueur 1")
+      : (document.getElementById("pseudo"+currentPickingPlayer)?.value || "Joueur"+currentPickingPlayer);
+
+    p.innerText=name.toUpperCase()+" : choisis "+maxCards+" carte"+(maxCards>1?"s":"");
+  }
+  
+
+function render(){document.getElementById("remaining").innerText=bag.length;document.getElementById("draws").innerText=drawn;let out=document.getElementById("cards");let pickPrompt=document.getElementById("pickPrompt");updatePickPrompt();let drawBtn=document.getElementById("draw");out.innerHTML="";out.classList.toggle("solo-active",selectedPlayers===1&&selectedSoloCard!==null);if(selectedPlayers===1&&selectedSoloCard===null){document.getElementById("modeDisplay").innerText="Mode Solo : choisis ta carte";drawBtn.disabled=true;drawBtn.innerText="CHOISIS TA CARTE";drawBtn.classList.add("choose-card-pulse")}else{document.getElementById("modeDisplay").innerText="Mode : "+selectedPlayers+" joueur"+(selectedPlayers>1?"s":"");drawBtn.disabled=false;drawBtn.innerText="PIOCHER";drawBtn.classList.remove("choose-card-pulse")}cards.forEach((card,ci)=>{let info=countCompleteLines(card);let state="";if(readyCard===ci)state=" ready";else if(info.count>=1)state=" bonus";let div=document.createElement("div");let soloClass="";if(selectedPlayers===1){if(selectedSoloCard===null)soloClass=" solo-choice";else if(selectedSoloCard===ci)soloClass=" solo-selected";else soloClass=" solo-mini"}div.className="card"+state+soloClass;if(selectedPlayers===1&&drawn===0)div.onclick=()=>selectSoloCard(ci);else if(selectedPlayers>1&&drawn===0)div.onclick=()=>selectMultiCard(ci);let label="Lignes : "+info.count+" / 2";if(readyCard===ci)label+=" • MIXL prêt";else if(info.count==1)label+=" • BONUS";let playerLine=selectedPlayers===1?"":"<div class='bonusText'>"+getPlayerName(ci)+"</div>";div.innerHTML="<h2>Carte "+(ci+1)+"</h2>"+playerLine+"<div class='bonusText'>"+label+"</div><div class='grid'></div>";let grid=div.querySelector(".grid");card.forEach(cell=>{let el=document.createElement("div");el.className="cell"+(cell.marked?" marked":"")+(cell.win?" win":"");el.innerText=cell.mix;if(cell.marked){let v=vowel(cell.mix);el.style.background=colors[v];if(v==="I")el.style.color="#111"}grid.appendChild(el)});out.appendChild(div)})}
 const pseudoInput=document.getElementById("pseudoInput");
 
 if(localStorage.getItem("mixlPseudo")){
