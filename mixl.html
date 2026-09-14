@@ -701,8 +701,15 @@ margin-bottom:14px;
     <h1><span class="m">M</span><span class="i">I</span><span class="x">X</span><span class="l">L</span></h1>
     <h2>Le jeu de société de l'alphabet</h2>
     <div class="onboarding-modes">
-      <div class="onboarding-mode"><strong>👤 SOLO</strong><span>Choisis une carte et tente de réaliser un MIXL avant les autres cartes.</span></div>
-      <div class="onboarding-mode"><strong>👥 MULTIJOUEUR</strong><span>Chaque joueur choisit une carte. Le premier à réaliser un MIXL gagne.</span></div>
+      <div class="onboarding-mode" onclick="setPlayers(1);document.getElementById('btn2').style.display='none';document.getElementById('btn3').style.display='none';document.getElementById('btn6').style.display='none';document.getElementById('mixlOnboarding').style.display='none'" style="cursor:pointer;">
+<strong>👤 SOLO</strong><br>
+Choisis une carte et tente de réaliser un MIXL avant les autres cartes.
+</div>
+
+<div class="onboarding-mode" onclick="setPlayers(2);document.getElementById('btn1').style.display='none';document.getElementById('btn2').style.display='inline-block';document.getElementById('btn3').style.display='inline-block';document.getElementById('btn6').style.display='inline-block';document.getElementById('mixlOnboarding').style.display='none'" style="cursor:pointer;">
+<strong>👥 MULTIJOUEUR</strong><br>
+Chaque joueur choisit une carte. Le premier à réaliser un MIXL gagne.
+</div>
     </div>
     <div class="onboarding-rules">
       <div>⭐ 1 ligne horizontale = <b>BONUS</b></div>
