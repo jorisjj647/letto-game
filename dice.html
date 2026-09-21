@@ -145,6 +145,11 @@ input {
   font-size: 26px;
 }
   @media (max-width: 600px) {
+    #lettresMobile {
+      position: sticky;
+      top: 5px;
+      z-index: 1000;
+    }
   body {
     padding-top: 5px;
     overflow-x: hidden;
@@ -296,6 +301,9 @@ input {
   margin: 0 8px;
   filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.45));
 }
+#lettresMobile {
+  min-height: 30px;
+}
 </style>
 </head>
 
@@ -335,7 +343,7 @@ input {
   Chaque lettre ne peut être utilisée qu’une seule fois.
 </div>
   <div id="lettresSaisie"></div>
-  <div id="lettresMobile"></div>
+  <div id="lettresMobile" style="color:#00ff66; font-size:24px;"></div>
 <input id="mot" style="color:#00ff66 !important; font-size:28px;" type="text" maxlength="7" placeholder="Tape ton mot" disabled>
   <button onclick="verifier()">VALIDER</button>
   
