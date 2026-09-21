@@ -335,12 +335,8 @@ input {
   Chaque lettre ne peut être utilisée qu’une seule fois.
 </div>
   <div id="lettresSaisie"></div>
+  <div id="lettresMobile"></div>
 <input id="mot" style="color:#00ff66 !important; font-size:28px;" type="text" maxlength="7" placeholder="Tape ton mot" disabled>
-<script>
-  document.getElemeneById("mot").addEventListener("focus", () => {
-    document.getElementById("zoneDes").scrollIntoView({ behavior: "smooth",block: "start" });
-  });
-</script>
   <button onclick="verifier()">VALIDER</button>
   
 
@@ -520,6 +516,7 @@ function roll() {
   dejaValide = false;
   nbLancers++;
   lettres = [];
+  document.getElementById("lettresMobile").textContent = "";
   document.getElementById("mot").disabled = true;
 
   for (let i = 0; i < 3; i++) {
@@ -533,6 +530,7 @@ document.getElementById("zoneDes").innerHTML = '<span id="lettresAnimees" style=
 for (let i = 0; i < lettres.length; i++) {
   setTimeout(() => {
     document.getElementById("lettresAnimees").textContent += lettres[i] + " ";
+    document.getElementById("lettresMobile").textContent += lettres[i] + " ";
     const letterSound = new Audio("dice-letter.mp3");
     letterSound.volume = 0.5; letterSound.play();
   }, i * 500);
