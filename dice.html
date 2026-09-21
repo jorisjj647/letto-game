@@ -336,6 +336,11 @@ input {
 </div>
   <div id="lettresSaisie"></div>
 <input id="mot" style="color:#00ff66 !important; font-size:28px;" type="text" maxlength="7" placeholder="Tape ton mot" disabled>
+<script>
+  document.getElemeneById("mot").addEventListener("focus", () => {
+    document.getElementById("zoneDes").scrollIntoView({ behavior: "smooth",block: "start" });
+  });
+</script>
   <button onclick="verifier()">VALIDER</button>
   
 
