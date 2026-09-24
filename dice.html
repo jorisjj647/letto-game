@@ -1,750 +1,801 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ALPHAZARD DICE</title>
+  <title>ALPHAZARD DICE</title>
 
-<style>
-body {
-  background: black;
-  color: gold;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  padding-top: 12px;
-}
-
-  
- h2 {
-  font-size: 42px;
-  text-shadow: 0 0 10px gold, 0 0 25px rgba(255, 215, 0, 0.7);
-}
-
-.zone {
-  margin: 30px auto;
-}
-
-.dice {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 140px;
-  height: 140px;
-  margin: 10px;
-  border: 2px solid gold;
-  box-shadow: 0 0 25px gold, 0 0 45px rgba(255, 215, 0, 0.5);
-  border-radius: 18px;
-  font-size: 60px;
-  color: gold;
-  box-shadow: 0 0 20px gold;
-  transition: 0.3s;
-}
-  #pseudo {
-  padding: 8px;
-  border-radius: 8px;
-  border: none;
-  margin-right: 10px;
-}
-
-button {
-  background: rgba(0, 0, 0, 0.85);
-  color: #f5d76e;
-  border: 1px solid #d4af37;
-  padding: 8px 14px;
-  margin: 4px;
-  border-radius: 12px;
-  font-size: 14px;
-  cursor: pointer;
-  font-weight: bold;
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
-  transition: 0.2s;
-}button:hover {
-  box-shadow: 0 0 12px gold;
-  transform: scale(1.05);
-}
-  button:active {
-  transform: scale(0.97);
-}
-  button:hover {
-  background: #d4af37;
-  color: #111;
-  transform: scale(1.04);
-}
-
-input {
-  padding: 11px;
-  font-size: 16px;
-  border-radius: 14px;
-  border: 1px solid #d4af37 !important;
-  background: rgba(15, 15, 15, 0.92) !important;
-  color: #f5d76e !important;
-  margin: 5px;
-  text-align: center;
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
-  -webkit-appearance: none;
-  appearance: none;
-}
-  input::placeholder {
-  color: #b89b3c;
-  opacity: 1;
-}
-
-#score, #resultat {
-  color: #ffe27a;
-  font-size: 22px;
-  font-weight: bold;
-  margin: 14px auto 8px auto;
-  text-align: center;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.35);
-}
-
-#score {
-  display: inline-block;
-  padding: 8px 18px;
-  border: 1px solid gold;
-  border-radius: 12px;
-  background: rgba(212, 175, 55, 0.08);
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
-}
-  .de.rolling {
-  animation: diceRoll 0.6s ease;
-}
-
-@keyframes diceRoll {
-  0% { transform: rotate(0deg) scale(1); }
-  25% { transform: rotate(12deg) scale(1.08); }
-  50% { transform: rotate(-12deg) scale(1.15); }
-  75% { transform: rotate(8deg) scale(1.08); }
-  100% { transform: rotate(0deg) scale(1); }
-}
-  .de {
-  animation: pop 0.3s ease;
-}
-
-@keyframes pop {
-  0% { transform: scale(0.5); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-#historique {
-  margin-top: 20px;
-  font-size: 22px;
-  color: gold;
-  text-shadow: 0 0 10px gold;
-}
-  img {
-  display: block;
-  margin: 20px auto 10px auto;
-  width: 280px;
-  max-width: 75%;
-  height: auto;
-}
-  h2 {
-  margin-top: 4px;
-  margin-bottom: 4px;
-  font-size: 26px;
-}
-  @media (max-width: 600px) {
-    #lettresMobile {
-      position: sticky;
-      top: 5px;
-      z-index: 1000;
+  <style>
+    body {
+      background: black;
+      color: gold;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 12px;
     }
-  body {
-    padding-top: 5px;
-    overflow-x: hidden;
-  }
 
-  img {
-    width: 220px;
-    max-width: 85%;
-    margin-top: 10px;
-  }
 
-  h2 {
-    font-size: 22px;
-    margin-top: 4px;
-    margin-bottom: 4px;
-  }
+    h2 {
+      font-size: 42px;
+      text-shadow: 0 0 10px gold, 0 0 25px rgba(255, 215, 0, 0.7);
+    }
 
-  input {
-    width: 36%;
-    max-width: 150px;
-    font-size: 15px;
-    padding: 8px;
-    margin: 5px auto;
-    display: block;
-  }
+    .zone {
+      margin: 30px auto;
+    }
 
-  button {
-    font-size: 12px;
-    padding: 5px 10px;
-    margin: 2px;
-  }
+    .dice {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 140px;
+      height: 140px;
+      margin: 10px;
+      border: 2px solid gold;
+      box-shadow: 0 0 25px gold, 0 0 45px rgba(255, 215, 0, 0.5);
+      border-radius: 18px;
+      font-size: 60px;
+      color: gold;
+      box-shadow: 0 0 20px gold;
+      transition: 0.3s;
+    }
 
-  #setupDuel {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: nowrap;
-}
+    #pseudo {
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      margin-right: 10px;
+    }
 
-  #zoneDes {
-    display: none;
-    font-size: 28px;
-    margin: 6px 0;
-    color: #00ff66;
-    font-weight: bold;
-    text-shadow:
-        0 0 5px #00ff66,
-        0 0 10px #00ff66,
-        0 0 15px #00ff66;
-}
+    button {
+      background: rgba(0, 0, 0, 0.85);
+      color: #f5d76e;
+      border: 1px solid #d4af37;
+      padding: 8px 14px;
+      margin: 4px;
+      border-radius: 12px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
+      transition: 0.2s;
+    }
 
-#lettresSaisie {
-  font-size: 30px;
-  margin: 6px 0 4px 0;
-  color: #00ff66;
-  font-weight: bold;
-  text-shadow: 0 0 8px #00ff66, 0 0 14px #00ff66;
-  min-height: 0px;
-}
+    button:hover {
+      box-shadow: 0 0 12px gold;
+      transform: scale(1.05);
+    }
 
-  #joueurActuel,
-#mancheActuelle,
-#timer {
-  color: #ffe27a;
-  font-weight: bold;
-  text-align: center;
-  line-height: 1.25;
-  text-shadow: 0 0 6px rgba(255, 215, 0, 0.25);
-}
-}
- #aideJeu {
-  color: #d4af37;
-  font-size: 15px;
-  margin: 8px auto;
-  max-width: 420px;
-  line-height: 1.4;
-  opacity: 0.9;
-}
- #statutJeu {
-  color: #ffe27a;
-  font-size: 18px;
-  font-weight: bold;
-  margin: 10px auto 4px auto;
-  text-align: center;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.35);
-}
-  .alphades {
-    width: 280px;
-    max-width: 80%;
-    margin: 8px auto;
-    display: block;
-    border-radius: 14px;
-    box-shadow: 0 0 18px rgba(212, 175, 55, 035);
-  }
-  @media (max-width: 700px) {
+    button:active {
+      transform: scale(0.97);
+    }
+
+    button:hover {
+      background: #d4af37;
+      color: #111;
+      transform: scale(1.04);
+    }
+
+    input {
+      padding: 11px;
+      font-size: 16px;
+      border-radius: 14px;
+      border: 1px solid #d4af37 !important;
+      background: rgba(15, 15, 15, 0.92) !important;
+      color: #f5d76e !important;
+      margin: 5px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input::placeholder {
+      color: #b89b3c;
+      opacity: 1;
+    }
+
+    #score,
+    #resultat {
+      color: #ffe27a;
+      font-size: 22px;
+      font-weight: bold;
+      margin: 14px auto 8px auto;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.35);
+    }
+
+    #score {
+      display: inline-block;
+      padding: 8px 18px;
+      border: 1px solid gold;
+      border-radius: 12px;
+      background: rgba(212, 175, 55, 0.08);
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+    }
+
+    .de.rolling {
+      animation: diceRoll 0.6s ease;
+    }
+
+    @keyframes diceRoll {
+      0% {
+        transform: rotate(0deg) scale(1);
+      }
+
+      25% {
+        transform: rotate(12deg) scale(1.08);
+      }
+
+      50% {
+        transform: rotate(-12deg) scale(1.15);
+      }
+
+      75% {
+        transform: rotate(8deg) scale(1.08);
+      }
+
+      100% {
+        transform: rotate(0deg) scale(1);
+      }
+    }
+
+    .de {
+      animation: pop 0.3s ease;
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    #historique {
+      margin-top: 20px;
+      font-size: 22px;
+      color: gold;
+      text-shadow: 0 0 10px gold;
+    }
+
+    img {
+      display: block;
+      margin: 20px auto 10px auto;
+      width: 280px;
+      max-width: 75%;
+      height: auto;
+    }
+
+    h2 {
+      margin-top: 4px;
+      margin-bottom: 4px;
+      font-size: 26px;
+    }
+
+    @media (max-width: 600px) {
+      #lettresMobile {
+        position: sticky;
+        top: 5px;
+        z-index: 1000;
+      }
+
+      body {
+        padding-top: 5px;
+        overflow-x: hidden;
+      }
+
+      img {
+        width: 220px;
+        max-width: 85%;
+        margin-top: 10px;
+      }
+
+      h2 {
+        font-size: 22px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+      }
+
+      input {
+        width: 36%;
+        max-width: 150px;
+        font-size: 15px;
+        padding: 8px;
+        margin: 5px auto;
+        display: block;
+      }
+
+      button {
+        font-size: 12px;
+        padding: 5px 10px;
+        margin: 2px;
+      }
+
+      #setupDuel {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: nowrap;
+      }
+
+      #zoneDes {
+        display: none;
+        font-size: 28px;
+        margin: 6px 0;
+        color: #00ff66;
+        font-weight: bold;
+        text-shadow:
+          0 0 5px #00ff66,
+          0 0 10px #00ff66,
+          0 0 15px #00ff66;
+      }
+
+      #lettresSaisie {
+        font-size: 30px;
+        margin: 6px 0 4px 0;
+        color: #00ff66;
+        font-weight: bold;
+        text-shadow: 0 0 8px #00ff66, 0 0 14px #00ff66;
+        min-height: 0px;
+      }
+
+      #joueurActuel,
+      #mancheActuelle,
+      #timer {
+        color: #ffe27a;
+        font-weight: bold;
+        text-align: center;
+        line-height: 1.25;
+        text-shadow: 0 0 6px rgba(255, 215, 0, 0.25);
+      }
+    }
+
+    #aideJeu {
+      color: #d4af37;
+      font-size: 15px;
+      margin: 8px auto;
+      max-width: 420px;
+      line-height: 1.4;
+      opacity: 0.9;
+    }
+
+    #statutJeu {
+      color: #ffe27a;
+      font-size: 18px;
+      font-weight: bold;
+      margin: 10px auto 4px auto;
+      text-align: center;
+      text-shadow: 0 0 8px rgba(255, 215, 0, 0.35);
+    }
+
     .alphades {
-      width: 210px;
-      max-width: 85%;
-      margin: 5px auto 8px auto;
+      width: 280px;
+      max-width: 80%;
+      margin: 8px auto;
+      display: block;
+      border-radius: 14px;
+      box-shadow: 0 0 18px rgba(212, 175, 55, 035);
     }
-  }
-  .titreDice {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    margin: 8px auto;
-    text-align: center;
-  }
-  
-  .deIcone {
-    border: 1px solid gold;
-    padding: 4px 8px;
-    border-radius: 6px;
-    color: gold;
-  }
-  #signatureAlphades {
-  color: #d4af37;
-  font-size: 13px;
-  margin: 4px auto 10px auto;
-  opacity: 0.85;
-  text-align: center;
-}
-  #versionTest {
-  color: #d4af37;
-  font-size: 12px;
-  opacity: 0.7;
-  margin: 2px auto 10px auto;
-  text-align: center;
-}
-  #regles {
-  max-width: 420px;
-  margin: 12px auto;
-  padding: 14px;
-  border: 1px solid gold;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.65);
-  color: #ffe27a;
-  box-shadow: 0 0 14px rgba(212, 175, 55, 0.25);
-  line-height: 1.45;
-}
-  .deTitre {
-  width: 64px;
-  height: 64px;
-  object-fit: contain;
-  vertical-align: middle;
-  margin: 0 8px;
-  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.45));
-}
-#lettresMobile {
-  min-height: 0px;
-}
-</style>
+
+    @media (max-width: 700px) {
+      .alphades {
+        width: 210px;
+        max-width: 85%;
+        margin: 5px auto 8px auto;
+      }
+    }
+
+    .titreDice {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      margin: 8px auto;
+      text-align: center;
+    }
+
+    .deIcone {
+      border: 1px solid gold;
+      padding: 4px 8px;
+      border-radius: 6px;
+      color: gold;
+    }
+
+    #signatureAlphades {
+      color: #d4af37;
+      font-size: 13px;
+      margin: 4px auto 10px auto;
+      opacity: 0.85;
+      text-align: center;
+    }
+
+    #versionTest {
+      color: #d4af37;
+      font-size: 12px;
+      opacity: 0.7;
+      margin: 2px auto 10px auto;
+      text-align: center;
+    }
+
+    #regles {
+      max-width: 420px;
+      margin: 12px auto;
+      padding: 14px;
+      border: 1px solid gold;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.65);
+      color: #ffe27a;
+      box-shadow: 0 0 14px rgba(212, 175, 55, 0.25);
+      line-height: 1.45;
+    }
+
+    .deTitre {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      vertical-align: middle;
+      margin: 0 8px;
+      filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.45));
+    }
+
+    #lettresMobile {
+      min-height: 0px;
+    }
+  </style>
 </head>
 
 <body>
-
-<img src="logo.jpg" alt="ALPHAZARD LETTO" style="max-width: 420px; width: 90%; margin-bottom: 20px; border-radius: 12px;">
- <div class="titreDice">
-   <span class="deIcone">D6</span>
-<img class="deTitre" src="de-voyelles.png" alt="Dé voyelles ALPHADÉS">
-<h2>ALPHAZARD DICE</h2>
-<img class="deTitre" src="de-consonnes.png" alt="Dé consonnes ALPHADÉS">
-<span class="deIcone">D20</span>
- </div>
+  <div id="introDuel" style="display:block;">
+    <h2>ALPHAZARD LETTO</h2>
+    <p> 2 joueurs ∙ 3 manches chacun ∙ 15 secondes.</p>
+    <p><strong>Forme un mot de 3 à 7 lettres</strong></p>
+      <p><strong>Lance ∙ Observe ∙ Compose ∙ Valide.</p>
+      <button type="button" onclick="entrerDansDuel()">ENTRER DANS LE DUEL</button>
+  </div>
+  <img src="logo.jpg" alt="ALPHAZARD LETTO"
+    style="max-width: 420px; width: 90%; margin-bottom: 20px; border-radius: 12px;">
+  <div class="titreDice">
+    <span class="deIcone">D6</span>
+    <img class="deTitre" src="de-voyelles.png" alt="Dé voyelles ALPHADÉS">
+    <h2>ALPHAZARD DICE</h2>
+    <img class="deTitre" src="de-consonnes.png" alt="Dé consonnes ALPHADÉS">
+    <span class="deIcone">D20</span>
+  </div>
   <div id="signatureAlphades">ALPHADÉS — dés alphabétiques créés par Joris Justin JOLY depuis 2011</div>
   <div id="versionTest">Version test — duel local — améliorations en cours</div>
 
-<div id="zoneDes"></div>
+  <div id="zoneDes"></div>
 
-<div id="historique"></div>
-<div id="setupDuel">
-  <input id="joueur1" type="text" placeholder="Joueur 1">
-  <input id="joueur2" type="text" placeholder="Joueur 2">
-  <button onclick="commencerDuel()">NOUVEAU DUEL</button>
-</div>
-<div id="statutJeu">🎯 Prêt pour le duel</div>
-<div id="joueurActuel">Tour de : aucun</div>
-<div id="mancheActuelle">Manche : 0 / 3</div>
+  <div id="historique"></div>
+  <div id="setupDuel">
+    <input id="joueur1" type="text" placeholder="Joueur 1">
+    <input id="joueur2" type="text" placeholder="Joueur 2">
+    <button onclick="commencerDuel()">NOUVEAU DUEL</button>
+  </div>
+  <div id="statutJeu">🎯 Prêt pour le duel</div>
+  <div id="joueurActuel">Tour de : aucun</div>
+  <div id="mancheActuelle">Manche : 0 / 3</div>
   <div id="timer">Temps : 15</div>
 
-<button onclick="roll()">LANCER</button>
-<button onclick="resetGame()">RELANCER MANCHE</button>
+  <button onclick="roll()">LANCER</button>
+  <button onclick="resetGame()">RELANCER MANCHE</button>
   <button onclick="afficherRegles()">RÈGLES</button>
 
 
-<div id="aideJeu">
-  Forme un mot de 3 à 7 lettres.<br>
-  Chaque lettre ne peut être utilisée qu’une seule fois.
-</div>
+  <div id="aideJeu">
+    Forme un mot de 3 à 7 lettres.<br>
+    Chaque lettre ne peut être utilisée qu’une seule fois.
+  </div>
   <div id="lettresSaisie"></div>
   <div id="lettresMobile" style="color:#00ff66; font-size:24px;"></div>
-<input id="mot" style="color:#00ff66 !important; font-size:24px; width:72%; max-width:320px; padding: 12px 16px; border-radius:18px; text-align:center;" maxlength="7" placeholder="Tape ton mot" disabled>
+  <input id="mot"
+    style="color:#00ff66 !important; font-size:24px; width:72%; max-width:320px; padding: 12px 16px; border-radius:18px; text-align:center;"
+    maxlength="7" placeholder="Tape ton mot" disabled>
   <button onclick="verifier()">VALIDER</button>
-  
 
-<div id="resultat"></div>
+
+  <div id="resultat"></div>
   <div id="score">Score : 0</div>
   <div id="classement"></div>
   <div id="regles" style="display:none; margin-top:20px; color:gold;">
-  <h3>Règles rapides</h3>
-  <p>1. Entre tes pseudos.</p>
-  <p>2. Clique sur LANCER pour obtenir des lettres.</p>
-  <p>3. Forme un mot avec les lettres affichées.</p>
-  <p>4. Clique sur VALIDER pour marquer des points.</p>
-  <p>5. RESET lance une nouvelle manche.</p>
-  <p>Le joueur avec le meilleur score gagne.</p>
-    <p>⚠️ Version test : les lettres du tirage sont contrôlées. Le dictionnaire français complet sera intégré dans une prochaine mise à jour.</p>
-</div>
+    <h3>Règles rapides</h3>
+    <p>1. Entre tes pseudos.</p>
+    <p>2. Clique sur LANCER pour obtenir des lettres.</p>
+    <p>3. Forme un mot avec les lettres affichées.</p>
+    <p>4. Clique sur VALIDER pour marquer des points.</p>
+    <p>5. RESET lance une nouvelle manche.</p>
+    <p>Le joueur avec le meilleur score gagne.</p>
+    <p>⚠️ Version test : les lettres du tirage sont contrôlées. Le dictionnaire français complet sera intégré dans une
+      prochaine mise à jour.</p>
+  </div>
 
-<script>
-  const winSound = new Audio("win.mp3");
-  const clickSound = new Audio("lose.mp3");
-let score = 0;
-let nbLancers = 0;
-let maxLancers = 3;
-let dejaValide = false;
-let lettres = [];
-let joueurs = {};
+  <script>
+    const winSound = new Audio("win.mp3");
+    const clickSound = new Audio("lose.mp3");
+    let score = 0;
+    let nbLancers = 0;
+    let maxLancers = 3;
+    let dejaValide = false;
+    let lettres = [];
+    let joueurs = {};
 
-let duelActif = false;
-let joueursDuel = [];
-let joueurIndex = 0;
-let manchesJouees = [0, 0];
-let manchesMax = 3;
-  let tempsRestant = 15;
-let timerInterval = null;
-  let dictionnairePret = false;
+    let duelActif = false;
+    let joueursDuel = [];
+    let joueurIndex = 0;
+    let manchesJouees = [0, 0];
+    let manchesMax = 3;
+    let tempsRestant = 15;
+    let timerInterval = null;
+    let dictionnairePret = false;
 
-const voyelles = ["A","E","I","O","U","Y"];
- const dictionnaire = [
-"CHAT",
-"CHIEN",
-"MAISON",
-"ARBRE",
-"TABLE",
-"JARDIN",
-"ROUGE",
-"VERT",
-"BONJOUR",
-"ALPHAZARD",
-"PORTE",
-"FENETRE",
-"VOITURE",
-"CAMION",
-"VELO",
-"TRAIN",
-"AVION",
-"BATEAU",
-"LIVRE",
-"CAHIER",
-"ECOLE",
-"CLASSE",
-"ELEVE",
-"PROF",
-"SOLEIL",
-"LUNE",
-"ETOILE",
-"MER",
-"PLAGE",
-"SABLE",
-"MONTAGNE",
-"FORET",
-"FLEUR",
-"POMME",
-"POIRE",
-"ORANGE",
-"BANANE",
-"RAISIN",
-"TENNIS",
-"FOOT",
-"RUGBY",
-"PIZZA",
-"JAZZ",
-"PARKING",
-"WEEKEND"
-];
+    const voyelles = ["A", "E", "I", "O", "U", "Y"];
+    const dictionnaire = [
+      "CHAT",
+      "CHIEN",
+      "MAISON",
+      "ARBRE",
+      "TABLE",
+      "JARDIN",
+      "ROUGE",
+      "VERT",
+      "BONJOUR",
+      "ALPHAZARD",
+      "PORTE",
+      "FENETRE",
+      "VOITURE",
+      "CAMION",
+      "VELO",
+      "TRAIN",
+      "AVION",
+      "BATEAU",
+      "LIVRE",
+      "CAHIER",
+      "ECOLE",
+      "CLASSE",
+      "ELEVE",
+      "PROF",
+      "SOLEIL",
+      "LUNE",
+      "ETOILE",
+      "MER",
+      "PLAGE",
+      "SABLE",
+      "MONTAGNE",
+      "FORET",
+      "FLEUR",
+      "POMME",
+      "POIRE",
+      "ORANGE",
+      "BANANE",
+      "RAISIN",
+      "TENNIS",
+      "FOOT",
+      "RUGBY",
+      "PIZZA",
+      "JAZZ",
+      "PARKING",
+      "WEEKEND"
+    ];
 
-const consonnes = [
-  "B","C","D","F","G",
-  "H","J","K","L","M",
-  "N","P","Q","R","S",
-  "T","V","W","X","Z"
-];
-  
-  function demarrerTimer() {
-  clearInterval(timerInterval);
+    const consonnes = [
+      "B", "C", "D", "F", "G",
+      "H", "J", "K", "L", "M",
+      "N", "P", "Q", "R", "S",
+      "T", "V", "W", "X", "Z"
+    ];
 
-  tempsRestant = 15;
-  document.getElementById("timer").innerHTML = "Temps : " + tempsRestant;
+    function demarrerTimer() {
+      clearInterval(timerInterval);
 
-  timerInterval = setInterval(function() {
-    tempsRestant--;
-    document.getElementById("timer").innerHTML = "Temps : " + tempsRestant;
+      tempsRestant = 15;
+      document.getElementById("timer").innerHTML = "Temps : " + tempsRestant;
 
-    if (tempsRestant <= 0) {
-  clearInterval(timerInterval);
-  dejaValide = true;
+      timerInterval = setInterval(function () {
+        tempsRestant--;
+        document.getElementById("timer").innerHTML = "Temps : " + tempsRestant;
 
-  let pseudo = joueursDuel[joueurIndex];
+        if (tempsRestant <= 0) {
+          clearInterval(timerInterval);
+          dejaValide = true;
 
-  joueurs[pseudo].parties += 1;
-  manchesJouees[joueurIndex] += 1;
+          let pseudo = joueursDuel[joueurIndex];
 
-  document.getElementById("resultat").innerHTML = "⏱ Temps écoulé ! Manche perdue";
-  document.getElementById("resultat").style.color = "red";
+          joueurs[pseudo].parties += 1;
+          manchesJouees[joueurIndex] += 1;
 
-  afficherClassement();
+          document.getElementById("resultat").innerHTML = "⏱ Temps écoulé ! Manche perdue";
+          document.getElementById("resultat").style.color = "red";
 
-  setTimeout(passerAuJoueurSuivant, 1200);
-}
-  }, 1000);
-}
+          afficherClassement();
 
-function arreterTimer() {
-  clearInterval(timerInterval);
-}
-
-function tirer(tableau) {
-  return tableau[Math.floor(Math.random() * tableau.length)];
-}
-
-function commencerDuel() {
-  let j1 = document.getElementById("joueur1").value.trim();
-  let j2 = document.getElementById("joueur2").value.trim();
-
-  if (j1 === "" || j2 === "") {
-    alert("Entre le nom des 2 joueurs !");
-    return;
-  }
-
-  duelActif = true;
-  joueursDuel = [j1, j2];
-  joueurIndex = 0;
-  manchesJouees = [0, 0];
-  score = 0;
-  joueurs = {};
-
-  joueurs[j1] = { score: 0, parties: 0 };
-  joueurs[j2] = { score: 0, parties: 0 };
-
-  lettres = [];
-  nbLancers = 0;
-  dejaValide = false;
-
-  document.getElementById("zoneDes").innerHTML = "";
-  document.getelementById("lettresMobile").innerHTML="";
-document.getElementById("lettresSaisie").innerHTML = "Lance les ALPHADÉS";
-  document.getElementById("mot").value = "";
-  document.getElementById("score").innerHTML = "";
-  document.getElementById("resultat").innerHTML = "Duel lancé !";
-  document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueursDuel[joueurIndex];
-  document.getElementById("mancheActuelle").innerHTML = "Manche : 1 / " + manchesMax;
-  document.getElementById("score").innerHTML = "Score : 0";
-
-  afficherClassement();
-}
-
-function roll() {
-  
-  if (!duelActif) {
-    alert("Commence le duel d'abord !");
-    return;
-  }
-
-  if (nbLancers >= maxLancers) {
-    alert("Maximum 3 lancers !");
-    return;
-  }
-
-  dejaValide = false;
-  nbLancers++;
-  lettres = [];
-  document.getElementById("lettresMobile").textContent = "";
-  document.getElementById("mot").disabled = true;
-
-  for (let i = 0; i < 3; i++) {
-    lettres.push(tirer(voyelles));
-  }
-
-  for (let i = 0; i < 4; i++) {
-    lettres.push(tirer(consonnes));
-  }
-document.getElementById("zoneDes").innerHTML = '<span id="lettresAnimees" style="color:#00ff66; font-size:36px"></span>';
-for (let i = 0; i < lettres.length; i++) {
-  setTimeout(() => {
-    document.getElementById("lettresAnimees").textContent += lettres[i] + " ";
-    document.getElementById("lettresMobile").textContent += lettres[i] + " ";
-    const letterSound = new Audio("dice-letter.mp3");
-    letterSound.volume = 0.5; letterSound.play();
-  }, i * 500);
-  }
-  setTimeout(() => {
-    document.getElementById("mot").disabled = false;
-  }, lettres.lenght * 500);
-
-  setTimeout(demarrerTimer, lettres.length * 500);
-  document.getElementById("lettresSaisie").innerHTML = document.getElementById("zoneDes").innerHTML;
- 
-  document.getElementById("resultat").innerHTML = "Lancer " + nbLancers + " / 3";
-  
-}
-
-function verifier() {
-  if (!duelActif) {
-    alert("Commence le duel d'abord !");
-    return;
-  }
-
-  if (dejaValide) {
-    alert("Tu as déjà validé ce tirage !");
-    return;
-  }
-
-  if (lettres.length === 0) {
-    alert("Lance les dés d'abord !");
-    return;
-  }
-
-  let pseudo = joueursDuel[joueurIndex];
-  const mot = document.getElementById("mot").value.toUpperCase().trim();
-  const resultat = document.getElementById("resultat");
-
-  if (mot.length < 2) {
-    resultat.innerHTML = "❌ Mot trop court";
-    resultat.style.color = "red";
-    return;
-  }
-  if (false && !dictionnaire.includes(mot)) {
-  resultat.innerHTML = "❌ Mot inconnu";
-  resultat.style.color = "red";
-  return;
-}
-
-  let copie = [...lettres];
-
-  for (let lettre of mot) {
-    let index = copie.indexOf(lettre);
-
-    if (index === -1) {
-      resultat.innerHTML = "❌ Mot invalide";
-      new Audio("dice-error.mp3").play();
-      resultat.style.color = "red";
-      return;
+          setTimeout(passerAuJoueurSuivant, 1200);
+        }
+      }, 1000);
     }
 
-    copie.splice(index, 1);
-  }
-
-  let points = mot.length;
-
-if (mot.length === 5) points = 7;
-if (mot.length === 6) points = 10;
-if (mot.length === 7) points = 18;
-
-joueurs[pseudo].score += points;
-  joueurs[pseudo].parties += 1;
-  manchesJouees[joueurIndex] += 1;
-
-  score = joueurs[pseudo].score;
-  dejaValide = true;
-  arreterTimer();
-  const successSound = new Audio("dice-success.mp3");
-  successSound.volume = 1.0; successSound.play();
-
-  document.getElementById("score").innerHTML = "Score : " + score;
-  if (mot.length === 7) {
-  resultat.innerHTML = "🌟 ALPHAZARD ! 🌟<br>Mot de 7 lettres trouvé !<br>+18 points";
-} else {
-  resultat.innerHTML = "✅ +" + points + " points";
-}
-  resultat.style.color = "lightgreen";
-
-  afficherClassement();
-
-  setTimeout(passerAuJoueurSuivant, 1200);
-}
-
-function passerAuJoueurSuivant() {
-  if (!duelActif) return;
-
-  // Si les 2 joueurs ont joué 3 manches chacun : fin du duel
-  if (manchesJouees[0] >= manchesMax && manchesJouees[1] >= manchesMax) {
-    let j1 = joueursDuel[0];
-    let j2 = joueursDuel[1];
-
-    let score1 = joueurs[j1].score;
-    let score2 = joueurs[j2].score;
-
-let message = "";
-
-if (score1 > score2) {
-  winSound.play();
-  message += "👑🏆 VAINQUEUR DU DUEL 🏆👑<br><b>" + j1.toUpperCase() + " — " + score1 + " pts</b><br><br>";
-} else if (score2 > score1) {
-  winSound.play();
-  message += "👑🏆 VAINQUEUR DU DUEL 🏆👑<br><b>" + j2.toUpperCase() + " — " + score2 + " pts</b><br><br>";
-} else {
-  message += "🤝 ÉGALITÉ PARFAITE ! Aucun vainqueur<br><br>";
-}
-
-message += "🏁 FIN DU DUEL<br><br>";
-message += j1 + " : " + score1 + " pts<br>";
-message += j2 + " : " + score2 + " pts";
-
-    document.getElementById("resultat").innerHTML = message;
-    document.getElementById("resultat").style.color = "gold";
-    document.getElementById("joueurActuel").innerHTML = "Duel terminé";
-    document.getElementById("mancheActuelle").innerHTML = "Manche : 3 / 3";
-    document.getElementById("zoneDes").innerHTML = "";
-    document.getElementById("lettresSaisie").innerHTML = "Lance les ALPHADÉS";
-    document.getElementById("mot").value = "";
-    return;
-  }
-
-  // On cherche le prochain joueur qui n'a pas encore joué 3 manches
-  if (joueurIndex === 0) {
-    if (manchesJouees[1] < manchesMax) {
-      joueurIndex = 1;
+    function arreterTimer() {
+      clearInterval(timerInterval);
     }
-  } else {
-    if (manchesJouees[0] < manchesMax) {
+
+    function tirer(tableau) {
+      return tableau[Math.floor(Math.random() * tableau.length)];
+    }
+function entrerDansDuel() {
+  document.getElementById("introDuel").style.display = "none";
+}
+    function commencerDuel() {
+      let j1 = document.getElementById("joueur1").value.trim();
+      let j2 = document.getElementById("joueur2").value.trim();
+
+      if (j1 === "" || j2 === "") {
+        alert("Entre le nom des 2 joueurs !");
+        return;
+      }
+
+      duelActif = true;
+      joueursDuel = [j1, j2];
       joueurIndex = 0;
+      manchesJouees = [0, 0];
+      score = 0;
+      joueurs = {};
+
+      joueurs[j1] = { score: 0, parties: 0 };
+      joueurs[j2] = { score: 0, parties: 0 };
+
+      lettres = [];
+      nbLancers = 0;
+      dejaValide = false;
+
+      document.getElementById("zoneDes").innerHTML = "";
+      document.getelementById("lettresMobile").innerHTML = "";
+      document.getElementById("lettresSaisie").innerHTML = "Lance les ALPHADÉS";
+      document.getElementById("mot").value = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("resultat").innerHTML = "Duel lancé !";
+      document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueursDuel[joueurIndex];
+      document.getElementById("mancheActuelle").innerHTML = "Manche : 1 / " + manchesMax;
+      document.getElementById("score").innerHTML = "Score : 0";
+
+      afficherClassement();
     }
-  }
 
-  // Sécurité : si le joueur choisi a déjà fini ses 3 manches, on prend l'autre
-  if (manchesJouees[joueurIndex] >= manchesMax) {
-    joueurIndex = joueurIndex === 0 ? 1 : 0;
-  }
+    function roll() {
 
-  lettres = [];
-  nbLancers = 0;
-  dejaValide = false;
-  tempsRestant = 15;
+      if (!duelActif) {
+        alert("Commence le duel d'abord !");
+        return;
+      }
 
-  let joueur = joueursDuel[joueurIndex];
-  let manche = manchesJouees[joueurIndex] + 1;
+      if (nbLancers >= maxLancers) {
+        alert("Maximum 3 lancers !");
+        return;
+      }
 
-  document.getElementById("zoneDes").innerHTML = "";
-  document.getElementById("lettresMobile").innerHTML = "";
-document.getElementById("lettresSaisie").innerHTML = "Lance les ALPHADÉS";
-  document.getElementById("mot").value = "";
-  document.getElementById("timer").innerHTML = "Temps : 15";
-  document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueur;
-  document.getElementById("mancheActuelle").innerHTML = "Manche : " + manche + " / " + manchesMax;
-  document.getElementById("score").innerHTML = "Score : " + joueurs[joueur].score;
-  document.getElementById("resultat").innerHTML = "Au tour de " + joueur;
-  document.getElementById("resultat").style.color = "gold";
-}
+      dejaValide = false;
+      nbLancers++;
+      lettres = [];
+      document.getElementById("lettresMobile").textContent = "";
+      document.getElementById("mot").disabled = true;
 
-function resetGame() {
-  lettres = [];
-  nbLancers = 0;
-  dejaValide = false;
+      for (let i = 0; i < 3; i++) {
+        lettres.push(tirer(voyelles));
+      }
 
-  document.getElementById("zoneDes").innerHTML = "";
-document.getElementById("lettresSaisie").innerHTML = "Lance les ALPHADÉS";
-  document.getElementById("mot").value = "";
-  document.getElementById("resultat").innerHTML = "";
+      for (let i = 0; i < 4; i++) {
+        lettres.push(tirer(consonnes));
+      }
+      document.getElementById("zoneDes").innerHTML = '<span id="lettresAnimees" style="color:#00ff66; font-size:36px"></span>';
+      for (let i = 0; i < lettres.length; i++) {
+        setTimeout(() => {
+          document.getElementById("lettresAnimees").textContent += lettres[i] + " ";
+          document.getElementById("lettresMobile").textContent += lettres[i] + " ";
+          const letterSound = new Audio("dice-letter.mp3");
+          letterSound.volume = 0.5; letterSound.play();
+        }, i * 500);
+      }
+      setTimeout(() => {
+        document.getElementById("mot").disabled = false;
+      }, lettres.lenght * 500);
 
-  if (duelActif) {
-    let joueur = joueursDuel[joueurIndex];
-    let manche = manchesJouees[joueurIndex] + 1;
+      setTimeout(demarrerTimer, lettres.length * 500);
+      document.getElementById("lettresSaisie").innerHTML = document.getElementById("zoneDes").innerHTML;
 
-    document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueur;
-    document.getElementById("mancheActuelle").innerHTML = "Manche : " + manche + " / " + manchesMax;
-    document.getElementById("score").innerHTML = "Score : " + joueurs[joueur].score;
-  }
-}
+      document.getElementById("resultat").innerHTML = "Lancer " + nbLancers + " / 3";
 
-function afficherClassement() {
-  let html = "<h3>Classement</h3>";
+    }
 
-  for (let pseudo in joueurs) {
-    html += pseudo + " : " + joueurs[pseudo].score + " pts — " + joueurs[pseudo].parties + " partie(s)<br>";
-  }
+    function verifier() {
+      if (!duelActif) {
+        alert("Commence le duel d'abord !");
+        return;
+      }
 
-  document.getElementById("classement").innerHTML = html;
-}
+      if (dejaValide) {
+        alert("Tu as déjà validé ce tirage !");
+        return;
+      }
 
-function afficherRegles() {
-  const bloc = document.getElementById("regles");
-  bloc.style.display = bloc.style.display === "none" ? "block" : "none";
-}
-</script>
+      if (lettres.length === 0) {
+        alert("Lance les dés d'abord !");
+        return;
+      }
+
+      let pseudo = joueursDuel[joueurIndex];
+      const mot = document.getElementById("mot").value.toUpperCase().trim();
+      const resultat = document.getElementById("resultat");
+
+      if (mot.length < 2) {
+        resultat.innerHTML = "❌ Mot trop court";
+        resultat.style.color = "red";
+        return;
+      }
+      if (false && !dictionnaire.includes(mot)) {
+        resultat.innerHTML = "❌ Mot inconnu";
+        resultat.style.color = "red";
+        return;
+      }
+
+      let copie = [...lettres];
+
+      for (let lettre of mot) {
+        let index = copie.indexOf(lettre);
+
+        if (index === -1) {
+          resultat.innerHTML = "❌ Mot invalide";
+          new Audio("dice-error.mp3").play();
+          resultat.style.color = "red";
+          return;
+        }
+
+        copie.splice(index, 1);
+      }
+
+      let points = mot.length;
+
+      if (mot.length === 5) points = 7;
+      if (mot.length === 6) points = 10;
+      if (mot.length === 7) points = 18;
+
+      joueurs[pseudo].score += points;
+      joueurs[pseudo].parties += 1;
+      manchesJouees[joueurIndex] += 1;
+
+      score = joueurs[pseudo].score;
+      dejaValide = true;
+      arreterTimer();
+      const successSound = new Audio("dice-success.mp3");
+      successSound.volume = 1.0; successSound.play();
+
+      document.getElementById("score").innerHTML = "Score : " + score;
+      if (mot.length === 7) {
+        resultat.innerHTML = "🌟 ALPHAZARD ! 🌟<br>Mot de 7 lettres trouvé !<br>+18 points";
+      } else {
+        resultat.innerHTML = "✅ +" + points + " points";
+      }
+      resultat.style.color = "lightgreen";
+
+      afficherClassement();
+
+      setTimeout(passerAuJoueurSuivant, 1200);
+    }
+
+    function passerAuJoueurSuivant() {
+      if (!duelActif) return;
+
+      // Si les 2 joueurs ont joué 3 manches chacun : fin du duel
+      if (manchesJouees[0] >= manchesMax && manchesJouees[1] >= manchesMax) {
+        let j1 = joueursDuel[0];
+        let j2 = joueursDuel[1];
+
+        let score1 = joueurs[j1].score;
+        let score2 = joueurs[j2].score;
+
+        let message = "";
+
+        if (score1 > score2) {
+          winSound.play();
+          message += "👑🏆 VAINQUEUR DU DUEL 🏆👑<br><b>" + j1.toUpperCase() + " — " + score1 + " pts</b><br><br>";
+        } else if (score2 > score1) {
+          winSound.play();
+          message += "👑🏆 VAINQUEUR DU DUEL 🏆👑<br><b>" + j2.toUpperCase() + " — " + score2 + " pts</b><br><br>";
+        } else {
+          message += "🤝 ÉGALITÉ PARFAITE ! Aucun vainqueur<br><br>";
+        }
+
+        message += "🏁 FIN DU DUEL<br><br>";
+        message += j1 + " : " + score1 + " pts<br>";
+        message += j2 + " : " + score2 + " pts";
+
+        document.getElementById("resultat").innerHTML = message;
+        document.getElementById("resultat").style.color = "gold";
+        document.getElementById("joueurActuel").innerHTML = "Duel terminé";
+        document.getElementById("mancheActuelle").innerHTML = "Manche : 3 / 3";
+        document.getElementById("zoneDes").innerHTML = "";
+        document.getElementById("lettresSaisie").innerHTML = "Lance les ALPHADÉS";
+        document.getElementById("mot").value = "";
+        return;
+      }
+
+      // On cherche le prochain joueur qui n'a pas encore joué 3 manches
+      if (joueurIndex === 0) {
+        if (manchesJouees[1] < manchesMax) {
+          joueurIndex = 1;
+        }
+      } else {
+        if (manchesJouees[0] < manchesMax) {
+          joueurIndex = 0;
+        }
+      }
+
+      // Sécurité : si le joueur choisi a déjà fini ses 3 manches, on prend l'autre
+      if (manchesJouees[joueurIndex] >= manchesMax) {
+        joueurIndex = joueurIndex === 0 ? 1 : 0;
+      }
+
+      lettres = [];
+      nbLancers = 0;
+      dejaValide = false;
+      tempsRestant = 15;
+
+      let joueur = joueursDuel[joueurIndex];
+      let manche = manchesJouees[joueurIndex] + 1;
+
+      document.getElementById("zoneDes").innerHTML = "";
+      document.getElementById("lettresMobile").innerHTML = "";
+      document.getElementById("lettresSaisie").innerHTML = "Lance les ALPHADÉS";
+      document.getElementById("mot").value = "";
+      document.getElementById("timer").innerHTML = "Temps : 15";
+      document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueur;
+      document.getElementById("mancheActuelle").innerHTML = "Manche : " + manche + " / " + manchesMax;
+      document.getElementById("score").innerHTML = "Score : " + joueurs[joueur].score;
+      document.getElementById("resultat").innerHTML = "Au tour de " + joueur;
+      document.getElementById("resultat").style.color = "gold";
+    }
+    f
+    function resetGame() {
+      lettres = [];
+      nbLancers = 0;
+      dejaValide = false;
+
+      document.getElementById("zoneDes").innerHTML = "";
+      document.getElementById("lettresSaisie").innerHTML = "Lance les ALPHADÉS";
+      document.getElementById("mot").value = "";
+      document.getElementById("resultat").innerHTML = "";
+
+      if (duelActif) {
+        let joueur = joueursDuel[joueurIndex];
+        let manche = manchesJouees[joueurIndex] + 1;
+
+        document.getElementById("joueurActuel").innerHTML = "Tour de : " + joueur;
+        document.getElementById("mancheActuelle").innerHTML = "Manche : " + manche + " / " + manchesMax;
+        document.getElementById("score").innerHTML = "Score : " + joueurs[joueur].score;
+      }
+    }
+
+    function afficherClassement() {
+      let html = "<h3>Classement</h3>";
+
+      for (let pseudo in joueurs) {
+        html += pseudo + " : " + joueurs[pseudo].score + " pts — " + joueurs[pseudo].parties + " partie(s)<br>";
+      }
+
+      document.getElementById("classement").innerHTML = html;
+    }
+
+    function afficherRegles() {
+      const bloc = document.getElementById("regles");
+      bloc.style.display = bloc.style.display === "none" ? "block" : "none";
+    }
+  </script>
 </body>
+
 </html>
-
-
-
-
-
-
-
