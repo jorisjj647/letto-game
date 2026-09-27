@@ -640,7 +640,7 @@ function entrerDansDuel() {
       const mot = document.getElementById("mot").value.toUpperCase().trim();
       const resultat = document.getElementById("resultat");
 
-      if (mot.length < 2) {
+      if (mot.length < 3) {
         resultat.innerHTML = "❌ Mot trop court";
         resultat.style.color = "red";
         return;
@@ -666,10 +666,12 @@ function entrerDansDuel() {
         copie.splice(index, 1);
       }
 
-      let points = mot.length;
+      let points = 0;
 
-      if (mot.length === 5) points = 7;
-      if (mot.length === 6) points = 10;
+      if (mot.length === 3) points = 3;
+      if (mot.length === 4) points = 5;
+      if (mot.length === 5) points = 8;
+      if (mot.length === 6) points = 12;
       if (mot.length === 7) points = 18;
 
       joueurs[pseudo].score += points;
