@@ -360,7 +360,9 @@
     <p><strong>Forme un mot de 3 à 7 lettres</strong></p>
       <p><strong>Lance ∙ Observe ∙ Compose ∙ Valide.</p>
       <button type="button" onclick="entrerDansDuel()">ENTRER DANS LE DUEL</button>
+      <img src="logo.jpg" alt="ALPHAZARD LETTO" style="max-width:420px; width:90%; margin-top:20px; border-radius:18px;">
   </div>
+  <div id="jeuDuel" style="display:none;">
   <img src="logo.jpg" alt="ALPHAZARD LETTO"
     style="max-width: 420px; width: 90%; margin-bottom: 20px; border-radius: 12px;">
   <div class="titreDice">
@@ -417,7 +419,7 @@
     <p>⚠️ Version test : les lettres du tirage sont contrôlées. Le dictionnaire français complet sera intégré dans une
       prochaine mise à jour.</p>
   </div>
-
+</div>
   <script>
     const winSound = new Audio("win.mp3");
     const clickSound = new Audio("lose.mp3");
@@ -531,6 +533,7 @@
     }
 function entrerDansDuel() {
   document.getElementById("introDuel").style.display = "none";
+  document.getElementById("jeuDuel").style.display = "block";
 }
     function commencerDuel() {
       let j1 = document.getElementById("joueur1").value.trim();
