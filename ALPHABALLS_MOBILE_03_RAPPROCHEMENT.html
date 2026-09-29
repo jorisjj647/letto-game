@@ -1,0 +1,1092 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ALPHABALLS — 6+4 corrigé</title><style>:root{--g:#d6b15a;--g2:#f2d98d;--bg:#070707;--p:#111;--line:#5b4a26;--muted:#9c9076}*{box-sizing:border-box}body{margin:0;background:#000;color:#f7efd8;font-family:Arial,sans-serif}.wrap{max-width:1100px;margin:auto;padding:10px}.head,.panel{background:linear-gradient(#0a0a0a,#111);border:1px solid #3f351f;border-radius:14px;padding:10px}h1{font-size:21px;color:var(--g2);letter-spacing:.1em;margin:0 0 6px}.sub{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:1fr 1.2fr;gap:10px;margin-top:10px}.board{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin-top:12px}.col{border:1px solid var(--line);border-radius:12px;padding:7px;background:#0d0d0d}.colhead{display:flex;justify-content:space-between;color:var(--g2);font-weight:800;margin-bottom:6px}.letters{display:grid;grid-template-columns:repeat(2,1fr);gap:4px}.letters button{background:#111;color:#eee4c8;border:1px solid #4a4028;border-radius:6px;padding:7px 0;cursor:pointer}.letters button.sel{background:linear-gradient(#dfc06b,#ad8533);color:#080808;font-weight:800}.letters button.hit,.letters button.hit:disabled{background:linear-gradient(#fff4ba,#e2b44b)!important;color:#050505!important;font-weight:900!important;box-shadow:0 0 18px rgba(255,218,105,.95), inset 0 0 0 1px #fff7cf;border-color:#fff0a1!important;opacity:1!important;}.letters button:disabled{opacity:.4;cursor:not-allowed}.gold{color:var(--g2)}#phase{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:7px 12px;color:var(--g2);font-size:12px;margin-top:10px}.info{display:grid;grid-template-columns:1fr 1.6fr;gap:10px;margin-top:14px}.box{border:1px solid var(--line);border-radius:10px;padding:10px;background:#0d0d0d;font-size:14px}#action{width:100%;margin-top:14px;padding:9px;border-radius:11px;border:1px solid var(--g);background:linear-gradient(#ddbe69,#9e782a);color:#070707;font-weight:900;cursor:pointer}#action:disabled{opacity:.4;cursor:not-allowed}.machine{min-height:420px;border:1px solid #4d4022;border-radius:16px;padding:10px;text-align:center;background:radial-gradient(circle at 50% 30%,#1b1b1b,#080808 68%)}.globe{width:220px;height:220px;border:5px solid var(--g);border-radius:50%;margin:18px auto;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;padding:26px;gap:4px}.ball{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f4df91,#bf9635 68%,#765615);color:#050505;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;margin:auto}.dest{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:12px}.dest .v{color:var(--g2);font-weight:800;font-size:12px}.slot{border:1px solid var(--line);border-radius:10px;padding:8px 4px;margin-top:4px;font-weight:800}.msg{color:var(--muted);font-size:14px;margin-top:12px}.final{margin-top:14px;border:1px solid var(--g);border-radius:14px;padding:14px;text-align:center;display:none}.traveler{position:absolute;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f4df91,#bf9635 68%,#765615);color:#050505;border:2px solid #111;display:none;align-items:center;justify-content:center;font-weight:900;z-index:20;box-shadow:0 0 14px rgba(214,177,90,.35)}
+.machine{position:relative;overflow:hidden}
+.railV{position:absolute;left:50%;top:205px;width:6px;height:58px;transform:translateX(-50%);background:linear-gradient(#f2d98d,#806622);border-radius:6px}
+.railH{position:absolute;left:9%;right:9%;top:260px;height:7px;background:linear-gradient(90deg,#70591f,var(--g2),#70591f);border-radius:7px}
+.selector{position:absolute;left:50%;top:238px;width:44px;height:44px;border:2px solid var(--g);border-radius:50%;transform:translateX(-50%) rotate(0deg);transition:transform .45s ease;background:#111;z-index:5}
+.selector:after{content:'';position:absolute;left:50%;top:4px;width:3px;height:18px;transform:translateX(-50%);background:var(--g2);border-radius:3px}
+
+.globe.mixing{animation:globeShake .18s linear infinite alternate}
+.globe.mixing .ball{animation:ballJitter .22s ease-in-out infinite alternate}
+@keyframes globeShake{from{transform:translateX(-2px) rotate(-.4deg)}to{transform:translateX(2px) rotate(.4deg)}}
+@keyframes ballJitter{from{transform:translate(-2px,2px) rotate(-8deg)}to{transform:translate(2px,-2px) rotate(8deg)}}
+.gate{display:none}
+.gate.open{display:none}
+.slot.lockflash{animation:slotLock .46s ease-out}
+@keyframes slotLock{0%{transform:scale(.88);box-shadow:0 0 0 rgba(214,177,90,0)}55%{transform:scale(1.08);box-shadow:0 0 18px rgba(214,177,90,.45)}100%{transform:scale(1);box-shadow:0 0 0 rgba(214,177,90,0)}}
+@media(prefers-reduced-motion:reduce){.globe.mixing,.globe.mixing .ball,.slot.lockflash{animation:none}}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.board{grid-template-columns:repeat(3,1fr)}}
+
+/* Version compacte ordinateur : machine et bulletin visibles ensemble */
+@media(min-width:851px){
+  .wrap{padding-top:8px;padding-bottom:8px}
+  .head{padding:9px 13px}
+  h1{font-size:18px;margin-bottom:2px}
+  .grid{grid-template-columns:minmax(400px,.9fr) minmax(560px,1.1fr);align-items:start}
+  .panel{padding:9px}
+  .machine{padding:7px;min-height:300px}
+  .board{grid-template-columns:repeat(6,1fr);gap:4px}
+  .letters{gap:2px}
+  .letters button{padding:3px 0;font-size:10px;min-height:22px}
+  .col{padding:4px}
+  .colhead{margin-bottom:2px;font-size:12px}
+  .info{margin-top:6px;gap:5px}
+  .box{padding:6px;font-size:12px}
+  #action{margin-top:6px;padding:8px}
+  .final{margin-top:6px;padding:7px}
+  #finalText{font-size:21px!important}
+  .msg{margin-top:6px}
+}
+
+
+.stepper{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.step{border:1px solid #4a4028;border-radius:9px;padding:6px 8px;text-align:center;font-size:11px;color:#8f8266;background:#0d0d0d}
+.step strong{display:block;font-size:12px;color:#b8aa88}
+.step.active{border-color:var(--g);box-shadow:0 0 12px rgba(214,177,90,.14);color:#f3e6bc}
+.step.active strong{color:var(--g2)}
+.step.done{opacity:.65}
+.statusline{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:7px}
+.statuspill{border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:11px;color:var(--g2);background:#0b0b0b}
+.col.boosted{box-shadow:0 0 0 1px var(--g) inset}
+.col.boosted .colhead{color:var(--g2)}
+
+
+/* Mise en scène par phase */
+.phase-focus-base .machine-zone{opacity:.45;filter:saturate(.7)}
+.phase-focus-base .bulletin-zone{opacity:1}
+.phase-focus-boost .machine-zone{opacity:.55;filter:saturate(.8)}
+.phase-focus-boost .bulletin-zone{opacity:1}
+
+.phase-focus-draw .machine-zone{opacity:1;transform:scale(1.015);transform-origin:top center}
+.phase-focus-draw .board button{pointer-events:none}
+.machine-zone,.bulletin-zone{transition:opacity .35s ease,filter .35s ease,transform .35s ease}
+.phase-banner{margin:8px 0 6px;border:1px solid var(--g);border-radius:10px;padding:8px 10px;text-align:center;background:linear-gradient(180deg,#17130c,#0b0b0b);font-weight:900;color:var(--g2);letter-spacing:.06em}
+.phase-banner small{display:block;color:#9c9076;font-weight:600;letter-spacing:0;margin-top:2px}
+
+
+/* Corrections de lisibilité après test joueur */
+
+.phase-focus-draw #action{
+  opacity:1 !important;
+  filter:none !important;
+  box-shadow:0 0 18px rgba(214,177,90,.28);
+}
+.phase-focus-draw #action:not(:disabled){
+  background:linear-gradient(180deg,#f0cf73,#b98a2f);
+  color:#050505;
+  border-color:#f2d98d;
+}
+.phase-focus-done .bulletin-zone{
+  opacity:.72;
+  filter:none;
+}
+.phase-focus-done .machine-zone{
+  opacity:1;
+}
+.phase-focus-done #action{
+  opacity:1 !important;
+  filter:none !important;
+  background:linear-gradient(180deg,#f0cf73,#b98a2f);
+  color:#050505;
+  border-color:#f2d98d;
+  box-shadow:0 0 22px rgba(214,177,90,.32);
+}
+.memory{
+  margin-top:7px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:7px 9px;
+  background:#0b0b0b;
+  font-size:11px;
+}
+.memory-title{color:#9c9076;font-weight:700;margin-bottom:4px}
+.memory-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.memory-cell{border:1px solid #3e351f;border-radius:7px;padding:5px 3px;text-align:center}
+.memory-cell strong{display:block;color:var(--g2);font-size:11px}
+.memory-cell span{display:block;margin-top:2px;color:#f6ecd1;font-weight:800;font-size:11px}
+
+
+/* 3 corrections ciblées : CTA plus lumineux + direction réelle du sélecteur */
+#action{
+  opacity:1 !important;
+  filter:none !important;
+  background:linear-gradient(180deg,#ffe89a,#d7a93f) !important;
+  color:#050505 !important;
+  border:1px solid #ffe6a0 !important;
+  box-shadow:0 0 18px rgba(255,215,120,.45), inset 0 1px 0 rgba(255,255,255,.28);
+  text-shadow:0 1px 0 rgba(255,255,255,.22);
+}
+#action:not(:disabled):hover{
+  box-shadow:0 0 24px rgba(255,215,120,.65), inset 0 1px 0 rgba(255,255,255,.35);
+}
+#action:disabled{
+  opacity:.5 !important;
+  box-shadow:none !important;
+}
+.phase-focus-done #action{
+  background:linear-gradient(180deg,#fff0a9,#dcae42) !important;
+  box-shadow:0 0 24px rgba(255,215,120,.55) !important;
+}
+
+/* selector needle */
+.selector{
+  overflow:visible;
+}
+.selector:after{
+  height:19px;
+  top:3px;
+}
+
+
+/* FIX TEST JOUEUR — bouton réellement lumineux */
+.phase-focus-draw .bulletin-zone,
+.phase-focus-done .bulletin-zone{
+  opacity:1 !important;
+  filter:none !important;
+}
+.phase-focus-draw .bulletin-zone > .gold,
+.phase-focus-draw .bulletin-zone > .sub,
+
+.phase-focus-done .bulletin-zone > .gold,
+.phase-focus-done .bulletin-zone > .sub,
+.phase-focus-done .bulletin-zone .board,
+.phase-focus-done .bulletin-zone .info{
+  opacity:.72;
+}
+.phase-focus-draw #action,
+.phase-focus-done #action{
+  opacity:1 !important;
+  filter:none !important;
+  background:linear-gradient(180deg,#fff4b5 0%,#ffd95f 42%,#d8a42d 100%) !important;
+  color:#050505 !important;
+  border:2px solid #fff0a1 !important;
+  box-shadow:
+    0 0 10px rgba(255,224,120,.95),
+    0 0 26px rgba(255,196,61,.72),
+    inset 0 1px 0 rgba(255,255,255,.65) !important;
+  font-weight:1000;
+}
+
+/* FIX TEST JOUEUR — aiguille part du centre et pointe VERS la destination */
+.selector:after{
+  content:'';
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:4px;
+  height:30px;
+  transform:translateX(-50%);
+  transform-origin:top center;
+  background:#fff2bd;
+  border-radius:4px;
+  box-shadow:0 0 6px rgba(255,239,180,.65);
+}
+
+
+/* ÉCRAN DE PRÉSENTATION — habillage uniquement */
+#introScreen{position:fixed;inset:0;z-index:9999;background:radial-gradient(circle at 50% 25%,rgba(90,70,25,.16),transparent 34%),linear-gradient(180deg,#050505,#0b0b0b 72%,#050505);color:#f7efd8;display:flex;align-items:center;justify-content:center;padding:22px}
+.intro-card{width:min(980px,96vw);border:1px solid #5b4a26;border-radius:22px;padding:24px;background:linear-gradient(180deg,#101010,#090909);box-shadow:0 0 40px rgba(214,177,90,.10)}
+.intro-kicker{color:#d6b15a;font-weight:900;letter-spacing:.20em;font-size:12px;text-align:center}
+.intro-title{margin:8px 0 4px;color:#f2d98d;font-size:clamp(28px,4vw,48px);line-height:1;text-align:center;letter-spacing:.06em}
+.intro-sub{text-align:center;color:#a99d83;margin:8px auto 18px;max-width:700px;font-size:14px}
+.intro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.intro-step{border:1px solid #3f351f;border-radius:14px;padding:14px;background:#0b0b0b;text-align:center}
+.intro-step strong{display:block;color:#f2d98d;margin-bottom:5px}.intro-step span{color:#a99d83;font-size:12px;line-height:1.35}
+.intro-machine{display:flex;align-items:center;justify-content:center;gap:22px;margin:12px 0 18px}
+.intro-orb{width:150px;height:150px;border:4px solid #d6b15a;border-radius:50%;display:grid;grid-template-columns:repeat(5,1fr);padding:18px;gap:4px;background:radial-gradient(circle,#171717,#050505 72%)}
+.intro-orb b{width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:#050505;background:radial-gradient(circle at 35% 30%,#f4df91,#bf9635 68%,#765615)}
+.intro-copy{max-width:430px}.intro-copy h3{margin:0 0 8px;color:#f2d98d;font-size:20px}.intro-copy p{margin:0;color:#b9ad91;line-height:1.45;font-size:14px}
+#enterGame{width:100%;min-height:52px;border-radius:13px;border:1px solid #fff0a1;background:linear-gradient(180deg,#fff4b5 0%,#ffd95f 42%,#d8a42d 100%);color:#050505;font-weight:1000;letter-spacing:.06em;box-shadow:0 0 22px rgba(255,196,61,.38);cursor:pointer}
+.intro-note{margin-top:9px;text-align:center;font-size:11px;color:#80745e}
+@media(max-width:760px){.intro-grid{grid-template-columns:1fr}.intro-machine{flex-direction:column}}
+
+
+/* TRANSITION PREMIUM INTRO -> JEU */
+#introScreen{opacity:1;transition:opacity .55s ease,transform .55s ease}
+#introScreen.leaving{opacity:0;transform:scale(1.015);pointer-events:none}
+.wrap{opacity:0;transform:translateY(10px);transition:opacity .55s ease,transform .55s ease}
+body.game-ready .wrap{opacity:1;transform:translateY(0)}
+
+
+/* HABILLAGE MACHINE — visuel seulement, moteur inchangé */
+.machine{
+  background:
+    radial-gradient(circle at 50% 23%,rgba(217,178,76,.10),transparent 30%),
+    linear-gradient(180deg,#101010 0%,#080808 72%,#050505 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,224,137,.05),
+    inset 0 -18px 30px rgba(0,0,0,.65),
+    0 8px 28px rgba(0,0,0,.35);
+}
+.machine:before{
+  content:'';
+  position:absolute;
+  inset:8px;
+  border:1px solid rgba(214,177,90,.18);
+  border-radius:13px;
+  pointer-events:none;
+}
+.globe{
+  position:relative;
+  background:
+    radial-gradient(circle at 48% 45%,#181818 0%,#0a0a0a 68%,#040404 100%);
+  box-shadow:
+    inset 0 0 24px rgba(214,177,90,.07),
+    0 0 18px rgba(214,177,90,.10);
+}
+.globe:before{
+  content:'';
+  position:absolute;
+  inset:8px;
+  border-radius:50%;
+  border:1px solid rgba(255,224,139,.12);
+  pointer-events:none;
+}
+.globe:after{
+  content:'';
+  position:absolute;
+  left:50%;
+  bottom:-17px;
+  width:34px;
+  height:19px;
+  transform:translateX(-50%);
+  border:2px solid var(--g);
+  border-top:none;
+  border-radius:0 0 10px 10px;
+  background:#090909;
+  pointer-events:none;
+}
+.railV{box-shadow:0 0 7px rgba(214,177,90,.30);}
+.railH{box-shadow:0 0 7px rgba(214,177,90,.22);}
+.selector{
+  background:radial-gradient(circle,#171717 0%,#090909 70%);
+  box-shadow:0 0 0 2px rgba(214,177,90,.08),0 0 12px rgba(214,177,90,.20);
+}
+.traveler{
+  box-shadow:0 0 0 2px rgba(255,239,179,.18),0 0 18px rgba(214,177,90,.55);
+}
+.slot{background:linear-gradient(180deg,#101010,#080808);}
+.machine-zone>.gold{letter-spacing:.11em;}
+
+
+/* ÉTAPE MACHINE 2 — vraie zone de sortie */
+.exitChamber{
+  position:absolute;
+  left:50%;
+  top:183px;
+  width:54px;
+  height:49px;
+  transform:translateX(-50%);
+  z-index:7;
+  pointer-events:none;
+}
+.exitNeck{
+  position:absolute;
+  left:50%;
+  top:0;
+  width:30px;
+  height:20px;
+  transform:translateX(-50%);
+  border:2px solid var(--g);
+  border-top:none;
+  border-radius:0 0 9px 9px;
+  background:linear-gradient(180deg,#16130c,#080808);
+  box-shadow:0 4px 9px rgba(214,177,90,.15);
+}
+.exitCup{
+  position:absolute;
+  left:50%;
+  bottom:0;
+  width:48px;
+  height:28px;
+  transform:translateX(-50%);
+  border:2px solid #8f7432;
+  border-radius:7px 7px 13px 13px;
+  background:linear-gradient(180deg,#17130b,#080808);
+  box-shadow:inset 0 0 10px rgba(214,177,90,.10),0 0 9px rgba(214,177,90,.10);
+}
+.exitCup:after{
+  content:'SORTIE';
+  position:absolute;
+  left:50%;
+  bottom:-15px;
+  transform:translateX(-50%);
+  font-size:7px;
+  letter-spacing:.12em;
+  color:#806d43;
+}
+.exitBall{
+  position:absolute;
+  left:50%;
+  top:8px;
+  width:31px;
+  height:31px;
+  transform:translateX(-50%) scale(.72);
+  border-radius:50%;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:radial-gradient(circle at 35% 30%,#fff2b8,#d6ad45 58%,#8a651c);
+  color:#070707;
+  border:1px solid #ffe69a;
+  font-weight:1000;
+  font-size:15px;
+  box-shadow:0 0 15px rgba(255,214,91,.55);
+  z-index:10;
+}
+.exitBall.present{
+  display:flex;
+  animation:exitPresent .55s ease both;
+}
+@keyframes exitPresent{
+  0%{opacity:0;transform:translateX(-50%) translateY(-17px) scale(.55)}
+  65%{opacity:1;transform:translateX(-50%) translateY(4px) scale(1.05)}
+  100%{opacity:1;transform:translateX(-50%) translateY(6px) scale(1)}
+}
+
+
+/* ÉTAPE MACHINE 3 — prise en charge après la sortie */
+.transferArm{
+  position:absolute;
+  left:50%;
+  top:222px;
+  width:88px;
+  height:24px;
+  transform:translateX(-4px);
+  transform-origin:4px 12px;
+  z-index:6;
+  pointer-events:none;
+}
+.transferArmBar{
+  position:absolute;
+  left:0; top:9px;
+  width:70px; height:6px;
+  border:1px solid #8f7432;
+  border-radius:5px;
+  background:linear-gradient(180deg,#d6b15a,#735719);
+  box-shadow:0 0 7px rgba(214,177,90,.18);
+}
+.transferCradle{
+  position:absolute;
+  right:0; top:2px;
+  width:24px; height:20px;
+  border:2px solid #b9933d;
+  border-left:none;
+  border-radius:0 12px 12px 0;
+  opacity:.45;
+}
+.transferArm.catch{
+  animation:armCatch .7s ease-in-out both;
+}
+@keyframes armCatch{
+  0%{transform:translateX(-4px) rotate(0deg)}
+  45%{transform:translateX(-4px) rotate(-10deg)}
+  100%{transform:translateX(-4px) rotate(0deg)}
+}
+.exitBall.captured{
+  display:flex;
+  animation:captureMove .72s ease-in-out both;
+}
+@keyframes captureMove{
+  0%{opacity:1;transform:translateX(-50%) translateY(6px) scale(1)}
+  45%{opacity:1;transform:translateX(-18%) translateY(20px) scale(.95)}
+  100%{opacity:0;transform:translateX(115%) translateY(30px) scale(.86)}
+}
+
+
+/* ÉTAPE MACHINE 4 — transport mécanique vers la voyelle */
+.transportCarriage{
+  position:absolute;
+  left:50%;
+  top:252px;
+  width:34px;
+  height:27px;
+  transform:translateX(-50%);
+  z-index:9;
+  pointer-events:none;
+  opacity:0;
+}
+.transportCarriage.active{opacity:1}
+.carriageBody{
+  position:absolute;
+  inset:5px 0 0;
+  border:2px solid #b9933d;
+  border-radius:7px;
+  background:linear-gradient(180deg,#17130b,#080808);
+  box-shadow:0 0 9px rgba(214,177,90,.22);
+}
+.carriageWheel{
+  position:absolute;
+  bottom:-4px;
+  width:8px;height:8px;
+  border-radius:50%;
+  background:#d6b15a;
+  box-shadow:0 0 5px rgba(214,177,90,.35);
+}
+.carriageWheel.left{left:5px}
+.carriageWheel.right{right:5px}
+.carriageBall{
+  position:absolute;
+  left:50%;top:-7px;
+  width:25px;height:25px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 35% 30%,#fff2b8,#d6ad45 58%,#8a651c);
+  color:#070707;
+  border:1px solid #ffe69a;
+  font-size:12px;
+  font-weight:1000;
+  box-shadow:0 0 12px rgba(255,214,91,.5);
+}
+.transportTarget{
+  box-shadow:0 0 16px rgba(255,218,105,.45)!important;
+  border-color:#f2d98d!important;
+}
+
+
+/* ÉTAPE MACHINE 5 — arrivée et verrouillage physique */
+.slot{
+  position:relative;
+  overflow:visible;
+}
+.slot.arriving{
+  animation:slotReceive .55s ease both;
+}
+.slot.arriving:before{
+  content:'';
+  position:absolute;
+  inset:-5px;
+  border:1px solid #f0cf73;
+  border-radius:50%;
+  opacity:0;
+  animation:receiveRing .55s ease;
+}
+.slot.lockedBall{
+  border-color:#d6b15a;
+  box-shadow:inset 0 0 8px rgba(214,177,90,.20),0 0 8px rgba(214,177,90,.18);
+}
+.slot.winningLock{
+  background:linear-gradient(180deg,#fff0a6,#d5a83e)!important;
+  color:#050505!important;
+  border-color:#fff0a1!important;
+  box-shadow:0 0 20px rgba(255,218,105,.85),inset 0 0 0 1px #fff7cf!important;
+  animation:winningPulse .8s ease both;
+}
+@keyframes slotReceive{
+  0%{transform:scale(.82)}
+  60%{transform:scale(1.12)}
+  100%{transform:scale(1)}
+}
+@keyframes receiveRing{
+  0%{opacity:0;transform:scale(.65)}
+  45%{opacity:.95}
+  100%{opacity:0;transform:scale(1.35)}
+}
+@keyframes winningPulse{
+  0%{transform:scale(.92)}
+  45%{transform:scale(1.14)}
+  100%{transform:scale(1)}
+}
+
+
+/* ÉTAPE RESSENTI — célébration courte d'un MIX validé */
+.mixCelebration{
+  position:absolute;
+  left:50%;
+  top:53%;
+  transform:translate(-50%,-50%) scale(.75);
+  z-index:30;
+  display:none;
+  min-width:150px;
+  padding:10px 16px;
+  border:1px solid #ffe59a;
+  border-radius:12px;
+  background:linear-gradient(180deg,rgba(25,20,8,.96),rgba(7,7,7,.96));
+  color:#fff0b0;
+  text-align:center;
+  font-weight:1000;
+  letter-spacing:.05em;
+  box-shadow:0 0 25px rgba(255,211,87,.42);
+  pointer-events:none;
+}
+.mixCelebration.show{
+  display:block;
+  animation:mixCelebrate .85s ease both;
+}
+.mixCelebration strong{
+  display:block;
+  font-size:24px;
+  color:#ffe38b;
+  line-height:1.05;
+}
+.mixCelebration span{
+  display:block;
+  margin-top:3px;
+  font-size:10px;
+  color:#bcae8b;
+}
+@keyframes mixCelebrate{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.72)}
+  35%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}
+  70%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(.96)}
+}
+
+
+/* ESTHÉTIQUE 01 — présence du globe, moteur strictement inchangé */
+.machine{
+  background:
+    radial-gradient(circle at 50% 36%, rgba(214,177,90,.075), transparent 39%),
+    linear-gradient(180deg,#0c0c0b 0%,#070707 100%)!important;
+  border-color:rgba(214,177,90,.42)!important;
+  box-shadow:inset 0 0 24px rgba(214,177,90,.035)!important;
+}
+.machine:before{
+  border-color:rgba(214,177,90,.12)!important;
+}
+.globe{
+  transform:scale(1.09);
+  transform-origin:50% 52%;
+  border-color:#e0bd67!important;
+  box-shadow:
+    0 0 18px rgba(224,189,103,.18),
+    inset 0 0 26px rgba(224,189,103,.07)!important;
+}
+.ball{
+  background:linear-gradient(180deg,#f4d875 0%,#d8aa3e 100%)!important;
+  border-color:#f0d47a!important;
+  color:#171208!important;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.35),
+    0 0 7px rgba(229,190,86,.22)!important;
+}
+.machineTitle{
+  color:#e1c16e!important;
+  text-shadow:0 0 10px rgba(214,177,90,.12);
+}
+
+
+/* ESTHÉTIQUE 02 — zone de circulation plus premium, mécanique inchangée */
+.railV{
+  width:5px!important;
+  background:linear-gradient(90deg,#6f5723,#f0cf73 48%,#6f5723)!important;
+  box-shadow:0 0 9px rgba(214,177,90,.28)!important;
+  border-radius:5px;
+}
+.railH{
+  height:5px!important;
+  background:linear-gradient(180deg,#6f5723,#f0cf73 48%,#6f5723)!important;
+  box-shadow:0 0 9px rgba(214,177,90,.24)!important;
+  border-radius:5px;
+}
+.selector{
+  border-color:#e4c36c!important;
+  background:radial-gradient(circle,#17140d 0%,#080808 72%)!important;
+  box-shadow:0 0 0 3px rgba(214,177,90,.07),0 0 15px rgba(214,177,90,.25)!important;
+}
+.selector:after{
+  background:linear-gradient(180deg,#fff0ae,#d3a943)!important;
+  box-shadow:0 0 8px rgba(255,222,118,.5)!important;
+}
+.exitNeck,.exitCup{
+  border-color:#c7a34c!important;
+  background:linear-gradient(180deg,#1b160c,#090909)!important;
+}
+.transferArmBar{
+  background:linear-gradient(180deg,#e0bd67,#76591c)!important;
+  border-color:#b7933d!important;
+}
+.transferCradle{border-color:#d1ac52!important;}
+.transportCarriage .carriageBody{
+  border-color:#caa64c!important;
+  background:linear-gradient(180deg,#1a160d,#080808)!important;
+}
+.dest{
+  border-color:rgba(214,177,90,.28)!important;
+  background:linear-gradient(180deg,rgba(22,18,10,.82),rgba(7,7,7,.94))!important;
+  box-shadow:inset 0 0 10px rgba(214,177,90,.045)!important;
+}
+.vowel{
+  color:#f0d47a!important;
+  text-shadow:0 0 8px rgba(214,177,90,.18);
+}
+.slot{
+  border-color:#a8893e!important;
+  box-shadow:inset 0 0 7px rgba(214,177,90,.06)!important;
+}
+
+
+/* ESTHÉTIQUE 03 — harmonie machine + bulletin, sans toucher au moteur */
+.grid{
+  gap:14px!important;
+  align-items:stretch!important;
+}
+.panel{
+  border-color:rgba(214,177,90,.38)!important;
+  background:linear-gradient(180deg,#0d0d0c,#080808)!important;
+  box-shadow:inset 0 0 18px rgba(214,177,90,.025)!important;
+}
+.machine-zone,.bulletin-zone{
+  border-radius:16px!important;
+}
+.machine-zone>.gold,
+.bulletin-zone>.gold{
+  color:#e2c36f!important;
+  letter-spacing:.09em;
+  text-shadow:0 0 8px rgba(214,177,90,.10);
+}
+.bulletin-zone .sub,
+.machine-zone .sub{
+  color:#8f856e!important;
+}
+.board{
+  gap:7px!important;
+}
+.col{
+  border-color:rgba(214,177,90,.27)!important;
+  background:linear-gradient(180deg,#0d0c09,#080808)!important;
+  box-shadow:inset 0 0 10px rgba(214,177,90,.025);
+}
+.col .vowel{
+  color:#e6c96f!important;
+}
+.info{
+  border-color:rgba(214,177,90,.26)!important;
+  background:linear-gradient(180deg,#0d0c09,#080808)!important;
+}
+#action{
+  border-radius:11px!important;
+}
+.phase-banner{
+  border-color:rgba(214,177,90,.52)!important;
+  background:linear-gradient(180deg,#151109,#090909)!important;
+  box-shadow:inset 0 0 12px rgba(214,177,90,.035);
+}
+
+
+/* ESTHÉTIQUE 05 — finition typographique, moteur inchangé */
+h1{letter-spacing:.055em!important;text-shadow:0 0 12px rgba(214,177,90,.12);}
+.phase-banner{letter-spacing:.075em!important;}
+.phase-banner small{letter-spacing:.015em!important;line-height:1.35;}
+.machine-zone>.gold,.bulletin-zone>.gold{font-size:13px!important;font-weight:900!important;}
+.machine-zone>.sub,.bulletin-zone>.sub{font-size:10px!important;line-height:1.35;}
+.vowel{font-weight:1000!important;letter-spacing:.04em;}
+.info{line-height:1.4!important;}
+#action{letter-spacing:.055em!important;font-weight:1000!important;}
+
+
+/* CORRECTION BULLETIN — lisible à 100 % du début à la fin */
+.bulletin-zone,
+.bulletin-zone .board,
+.bulletin-zone .info,
+.bulletin-zone .col{
+  opacity:1!important;
+  filter:none!important;
+}
+.bulletin-zone .cell{
+  opacity:1!important;
+}
+/* Les classes de gain déjà présentes conservent leur éclat supérieur. */
+
+
+/* ESTHÉTIQUE 06 — finition du résultat final, mécanique inchangée */
+.result{
+  border-color:rgba(224,189,103,.48)!important;
+  background:
+    radial-gradient(circle at 50% 30%,rgba(214,177,90,.08),transparent 62%),
+    linear-gradient(180deg,#11100c,#080808)!important;
+  box-shadow:
+    inset 0 0 18px rgba(214,177,90,.035),
+    0 0 14px rgba(214,177,90,.045)!important;
+  border-radius:13px!important;
+}
+.result .gold{
+  letter-spacing:.08em!important;
+  color:#e7c970!important;
+}
+.result strong,
+.result b{
+  text-shadow:0 0 10px rgba(230,195,100,.20);
+}
+
+
+/* ESTHÉTIQUE 07 — finition du bouton d'action, moteur inchangé */
+#action{
+  min-height:42px!important;
+  border:1px solid rgba(255,224,135,.72)!important;
+  background:linear-gradient(180deg,#f1cf68 0%,#d6a928 52%,#b98a12 100%)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.32),
+    inset 0 -1px 0 rgba(86,55,0,.28),
+    0 4px 13px rgba(214,169,40,.15)!important;
+  text-shadow:0 1px 0 rgba(255,239,179,.32)!important;
+  transition:transform .12s ease,box-shadow .12s ease,filter .12s ease!important;
+}
+#action:hover:not(:disabled){
+  filter:brightness(1.055)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.38),
+    inset 0 -1px 0 rgba(86,55,0,.25),
+    0 5px 17px rgba(214,169,40,.22)!important;
+}
+#action:active:not(:disabled){
+  transform:translateY(1px)!important;
+}
+
+
+/* ESTHÉTIQUE 08 — finition des 6 stations voyelles, moteur inchangé */
+.dest{
+  border-radius:12px!important;
+  padding-top:8px!important;
+  transition:box-shadow .22s ease,border-color .22s ease,background .22s ease!important;
+}
+.dest .vowel{
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  min-width:26px;
+  height:26px;
+  border-radius:50%;
+  border:1px solid rgba(224,189,103,.34);
+  background:radial-gradient(circle,#17130b 0%,#090909 72%);
+  box-shadow:inset 0 0 7px rgba(214,177,90,.06);
+  margin-bottom:4px;
+}
+.slot{
+  border-radius:50%!important;
+  background:radial-gradient(circle,#11100d 0%,#070707 72%)!important;
+}
+.dest:has(.slot:not(:empty)){
+  border-color:rgba(224,189,103,.42)!important;
+  box-shadow:inset 0 0 12px rgba(214,177,90,.05),0 0 8px rgba(214,177,90,.045)!important;
+}
+
+
+/* ESTHÉTIQUE 09 — finition du globe/réservoir, moteur inchangé */
+.globe{
+  background:
+    radial-gradient(circle at 38% 28%,rgba(255,235,170,.055),transparent 24%),
+    radial-gradient(circle at 50% 52%,#17140d 0%,#0a0a09 64%,#050505 100%)!important;
+  box-shadow:
+    inset 0 0 30px rgba(214,177,90,.085),
+    inset 0 -12px 22px rgba(0,0,0,.46),
+    0 0 20px rgba(214,177,90,.17)!important;
+}
+.globe:before{
+  border-color:rgba(255,226,139,.20)!important;
+  box-shadow:inset 0 0 10px rgba(255,224,139,.025);
+}
+.ball{
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.38),
+    inset 0 -2px 3px rgba(101,70,12,.20),
+    0 2px 5px rgba(0,0,0,.38),
+    0 0 7px rgba(229,190,86,.22)!important;
+}
+.ball:after{
+  content:'';
+  position:absolute;
+  width:28%;
+  height:18%;
+  left:24%;
+  top:17%;
+  border-radius:50%;
+  background:rgba(255,255,255,.23);
+  transform:rotate(-20deg);
+  pointer-events:none;
+}
+
+
+/* ESTHÉTIQUE 09 — correction reflet ALPHABALLS */
+.ball:after{
+  display:none!important;
+  content:none!important;
+}
+
+
+/* ESTHÉTIQUE 09 — suppression robuste de la tache blanche */
+.ball::before,
+.ball::after,
+.globe .ball::before,
+.globe .ball::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+.globe::after{
+  content:none!important;
+  display:none!important;
+}
+
+
+/* ESTHÉTIQUE 10 — finition de la sortie mécanique, moteur inchangé */
+.exitChamber{
+  filter:drop-shadow(0 4px 5px rgba(0,0,0,.45));
+}
+.exitNeck{
+  border-color:#d0aa50!important;
+  background:linear-gradient(180deg,#211b0f 0%,#0b0a08 100%)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,230,155,.10),
+    0 3px 8px rgba(0,0,0,.35)!important;
+}
+.exitCup{
+  border-color:#b99543!important;
+  background:linear-gradient(180deg,#1d180e 0%,#090908 100%)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,230,155,.08),
+    inset 0 -4px 8px rgba(0,0,0,.30),
+    0 0 8px rgba(214,177,90,.10)!important;
+}
+.exitCup:after{
+  color:#a28a55!important;
+  letter-spacing:.15em!important;
+}
+.transferArmBar{
+  box-shadow:
+    inset 0 1px 0 rgba(255,239,185,.18),
+    0 2px 5px rgba(0,0,0,.35),
+    0 0 6px rgba(214,177,90,.12)!important;
+}
+.transferCradle{
+  box-shadow:0 0 6px rgba(214,177,90,.10);
+}
+
+
+/* ESTHÉTIQUE 11 — continuité du parcours, moteur inchangé */
+.railV,.railH{
+  border:1px solid rgba(255,225,137,.20)!important;
+  background:linear-gradient(180deg,#4f3d17 0%,#d5ad4b 48%,#6f5520 100%)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,242,191,.20),
+    0 0 8px rgba(214,177,90,.18)!important;
+}
+.selector{
+  border-width:2px!important;
+  border-color:#d8b45a!important;
+  box-shadow:
+    inset 0 0 9px rgba(214,177,90,.08),
+    0 0 11px rgba(214,177,90,.18)!important;
+}
+.transportCarriage{
+  filter:drop-shadow(0 3px 4px rgba(0,0,0,.42));
+}
+.carriageBody{
+  border-color:#cba54a!important;
+  background:linear-gradient(180deg,#1c170d,#080808)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,235,171,.10),
+    0 0 7px rgba(214,177,90,.12)!important;
+}
+.carriageWheel{
+  box-shadow:
+    inset 0 1px 0 rgba(255,245,202,.30),
+    0 0 5px rgba(214,177,90,.30)!important;
+}
+
+
+/* ESTHÉTIQUE 12 — respiration générale, aucune mécanique modifiée */
+.wrap{
+  padding-bottom:18px!important;
+}
+.grid{
+  gap:16px!important;
+}
+.machine-zone,
+.bulletin-zone{
+  padding-top:13px!important;
+  padding-bottom:13px!important;
+}
+.phase-banner{
+  padding-top:9px!important;
+  padding-bottom:9px!important;
+}
+.info{
+  margin-top:9px!important;
+  padding-top:9px!important;
+  padding-bottom:9px!important;
+}
+.result{
+  margin-top:10px!important;
+}
+
+
+/* MOBILE 01 — affichage proportionnel réduit sur petit écran */
+@media (max-width:700px){
+  html{zoom:.82;}
+  body{min-width:0!important;overflow-x:hidden!important;}
+}
+
+
+/* MOBILE 02 — accueil légèrement agrandi + bulletin 6 colonnes simultanées */
+@media (max-width:700px){
+  html{zoom:.85!important;}
+
+  /* Le bulletin conserve A E I O U Y sur une seule ligne */
+  .board{
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    gap:3px!important;
+  }
+  .col{
+    min-width:0!important;
+    padding:3px!important;
+    border-radius:7px!important;
+  }
+  .colhead{
+    font-size:11px!important;
+    margin-bottom:3px!important;
+  }
+  .letters{
+    gap:2px!important;
+  }
+  .letters button{
+    min-width:0!important;
+    padding:5px 0!important;
+    font-size:10px!important;
+    border-radius:4px!important;
+  }
+
+  /* Les informations sous le bulletin restent compactes */
+  .info{
+    grid-template-columns:1fr 1.5fr!important;
+    gap:4px!important;
+    margin-top:7px!important;
+  }
+  .box{
+    padding:6px!important;
+    font-size:11px!important;
+  }
+  #action{
+    margin-top:7px!important;
+    padding:8px!important;
+  }
+}
+
+@media (max-width:700px){
+.wrap{padding-top:5px!important;padding-bottom:8px!important}
+.head{padding-top:7px!important;padding-bottom:7px!important}
+.stepper{margin-top:5px!important}
+.phase-banner{margin:5px 0 4px!important;padding-top:6px!important;padding-bottom:6px!important}
+.statusline{margin-top:4px!important}
+.grid{margin-top:5px!important;gap:6px!important}
+.panel,.machine-zone,.bulletin-zone{padding-top:7px!important;padding-bottom:7px!important}
+.machine-zone .msg{margin-top:4px!important}
+.bulletin-zone .board{margin-top:6px!important}
+.bulletin-zone .sub{margin-bottom:5px!important}
+.info{margin-top:5px!important}
+#action{margin-top:5px!important}
+}
+</style></head><body class="phase-focus-base"><div id="introScreen"><div class="intro-card"><div class="intro-kicker">ALPHAZARD</div><div class="intro-title">DES MILLIERS DE MIX POSSIBLES</div><div class="intro-sub">Choisis ton bulletin, verrouille tes <strong style="color:#f2d98d">6 MIX</strong> + <strong style="color:#f2d98d">4 MIX EN RENFORT</strong>, puis laisse la machine ALPHABALLS faire le tirage.</div><div class="intro-machine"><div class="intro-orb"><b>B</b><b>C</b><b>D</b><b>F</b><b>G</b><b>H</b><b>J</b><b>K</b><b>L</b><b>M</b><b>N</b><b>P</b><b>Q</b><b>R</b><b>S</b><b>T</b><b>V</b><b>W</b><b>X</b><b>Z</b></div><div class="intro-copy"><h3>26 ALPHABALLS</h3><p><strong style="display:block;color:#d6b15a;margin-bottom:6px">20 CONSONNES • 6 VOYELLES</strong>La machine mélange les consonnes et les dirige une à une vers A, E, I, O, U puis Y. Chaque arrivée forme un MIX.</p></div></div><div class="intro-grid"><div class="intro-step"><strong>1. BASE</strong><span>Choisis 1 consonne dans chacune des 6 colonnes.</span></div><div class="intro-step"><strong>2. RENFORTS</strong><span>Ajoute 4 choix supplémentaires dans 4 colonnes différentes.</span></div><div class="intro-step"><strong>3. TIRAGE</strong><span>Valide, lance la machine et suis chaque ALPHABALL jusqu’à son résultat.</span></div></div><button id="enterGame" type="button">ENTRER DANS LE JEU</button><div class="intro-note">Le moteur 6+4 reste inchangé.</div></div></div><div class="wrap"><div class="head"><h1>DES MILLIERS DE MIX POSSIBLES</h1><div class="sub">Correction validée : d'abord les 6 choix de base, ensuite les 4 renforts.</div><div class="stepper">
+  <div class="step active" id="stepBase"><strong>1. BASE</strong>6 choix</div>
+  <div class="step" id="stepBoost"><strong>2. RENFORTS</strong>4 choix</div>
+  <div class="step" id="stepDraw"><strong>3. TIRAGE</strong>machine</div>
+</div>
+<div class="phase-banner" id="phaseBanner">
+  PHASE 1 — CONSTRUIS TA BASE
+  <small>1 consonne dans chacune des 6 colonnes</small>
+</div>
+<div class="statusline">
+  <div id="phase" class="statuspill">PHASE 1 — BASE</div>
+  <div class="statuspill"><span id="miniCount">0/6 + 0/4</span></div>
+</div></div><div class="grid"><section class="panel machine-zone"><div class="gold" style="font-weight:900">MACHINE ALPHABALLS</div><div class="sub" style="margin-top:2px">Mélange • sortie • parcours • verrouillage</div><div class="machine"><div class="globe" id="globe"></div><div class="exitChamber"><div class="exitNeck"></div><div class="exitCup"></div><div class="exitBall" id="exitBall">R</div></div><div class="transferArm" id="transferArm"><div class="transferArmBar"></div><div class="transferCradle"></div></div><div class="railV"></div><div class="railH"></div><div class="transportCarriage" id="transportCarriage"><div class="carriageBall" id="carriageBall">R</div><div class="carriageBody"></div><div class="carriageWheel left"></div><div class="carriageWheel right"></div></div><div class="gate" id="gate"></div><div class="selector" id="selector"></div><div class="traveler" id="traveler">R</div><div class="mixCelebration" id="mixCelebration"><strong>MIX</strong><span>VALIDÉ</span></div><div class="dest" id="dest" style="margin-top:66px"></div></div><div class="msg" id="machineMsg">Prépare d'abord ton bulletin.</div><div class="final" id="final">
+  <div class="sub">RÉSULTAT FINAL</div>
+  <div class="gold" id="finalText" style="font-size:24px;font-weight:900;margin-top:4px">0 MIX VALIDÉ</div>
+  <div id="wins" style="margin-top:4px;font-weight:800">Aucun MIX validé</div>
+</div></section><section class="panel bulletin-zone"><div class="gold" style="font-weight:900">BULLETIN 6+4</div><div class="sub" style="margin:3px 0 8px">1 choix dans chaque colonne, puis 4 renforts dans 4 colonnes différentes.</div><div class="board" id="board"></div><div class="info"><div class="box"><span class="gold" id="baseCount">0</span>/6 choix de base<br><span class="gold" id="boostCount">0</span>/4 renforts</div><div class="box" id="help">Choisis une consonne dans chacune des 6 colonnes.</div></div><button id="action" disabled>VALIDER LE BULLETIN</button></div></section></div></div><script>const C=['B','C','D','F','G','H','J','K','L','M','N','P','Q','R','S','T','V','W','X','Z'],V=['A','E','I','O','U','Y'];let picks=Array.from({length:6},()=>[]),phase='base',locked=false,state='edit';const board=document.getElementById('board'),baseCount=document.getElementById('baseCount'),boostCount=document.getElementById('boostCount'),help=document.getElementById('help'),action=document.getElementById('action'),phaseEl=document.getElementById('phase'),final=document.getElementById('final'),finalText=document.getElementById('finalText'),wins=document.getElementById('wins'),machineMsg=document.getElementById('machineMsg'),globe=document.getElementById('globe'),dest=document.getElementById('dest'),traveler=document.getElementById('traveler'),selector=document.getElementById('selector'),gate=document.getElementById('gate'),exitBall=document.getElementById('exitBall'),transferArm=document.getElementById('transferArm'),transportCarriage=document.getElementById('transportCarriage'),carriageBall=document.getElementById('carriageBall'),mixCelebration=document.getElementById('mixCelebration');C.forEach(c=>{const s=document.createElement('div');s.className='ball';s.textContent=c;globe.appendChild(s)});V.forEach(v=>{const d=document.createElement('div');d.innerHTML=`<div class="v">${v}</div><div class="slot">—</div>`;dest.appendChild(d)});function renderMemory(){
+  memoryGrid.innerHTML='';
+  V.forEach((v,i)=>{
+    const cell=document.createElement('div');
+    cell.className='memory-cell';
+    const vals=picks[i].length ? picks[i].map(c=>c+v).join(' / ') : '—';
+    cell.innerHTML=`<strong>${v}</strong><span>${vals}</span>`;
+    memoryGrid.appendChild(cell);
+  });
+}
+function render(){board.innerHTML='';V.forEach((v,i)=>{const col=document.createElement('div');col.className='col';const head=document.createElement('div');head.className='colhead';head.innerHTML=`<span>${v}</span><span>${picks[i].length===2?'+':''}</span>`;const letters=document.createElement('div');letters.className='letters';C.forEach(c=>{const b=document.createElement('button');b.textContent=c;if(picks[i].includes(c))b.classList.add('sel');b.disabled=locked||(phase==='base'&&picks[i].length===1&&!picks[i].includes(c));b.onclick=()=>toggle(i,c);letters.appendChild(b)});col.append(head,letters);board.appendChild(col)});refresh()}function toggle(i,c){if(locked)return;const arr=picks[i],idx=arr.indexOf(c);if(idx>=0){arr.splice(idx,1);if(phase==='boost'&&arr.length===0)phase='base'}else if(phase==='base'){if(arr.length===0)arr.push(c)}else{const boosted=picks.filter(x=>x.length===2).length;if(arr.length===1&&boosted<4)arr.push(c)}const bases=picks.filter(x=>x.length>=1).length;if(phase==='base'&&bases===6)phase='boost';render()}function refresh(){const bases=picks.filter(x=>x.length>=1).length,boosts=picks.filter(x=>x.length===2).length;baseCount.textContent=bases;boostCount.textContent=boosts;if(phase==='base'){phaseEl.textContent='PHASE 1 — BASE';help.textContent='Complète les 6 colonnes. Aucun renfort n’est possible avant 6/6.'}else{phaseEl.textContent='PHASE 2 — RENFORTS';help.textContent=boosts<4?`Ajoute ${4-boosts} renfort${4-boosts>1?'s':''} dans des colonnes différentes.`:'Bulletin complet : tu peux valider.'}action.disabled=!(bases===6&&boosts===4)&&state==='edit'}function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function celebrateMix(mix){
+  mixCelebration.innerHTML=`<strong>${mix}</strong><span>MIX VALIDÉ</span>`;
+  mixCelebration.classList.remove('show');
+  void mixCelebration.offsetWidth;
+  mixCelebration.classList.add('show');
+  setTimeout(()=>mixCelebration.classList.remove('show'),850);
+}
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}function lightWinningPick(colIndex,letter){const col=board.children[colIndex];if(!col)return;[...col.querySelectorAll('button')].forEach(btn=>{if(btn.textContent===letter)btn.classList.add('hit')})}async function remixBalls(duration=700){globe.classList.add('mixing');machineMsg.textContent='Les ALPHABALLS se remélangent…';await wait(duration);globe.classList.remove('mixing');await wait(180)}
+function lockSound(){
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;
+    const ctx=new AC(),o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='sine';o.frequency.setValueAtTime(520,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(760,ctx.currentTime+.08);
+    g.gain.setValueAtTime(.0001,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.08,ctx.currentTime+.01);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.12);
+    o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+.13);
+  }catch(e){}
+}async function mechanicalTransport(letter,index){
+  const machine=document.querySelector('.machine');
+  const mb=machine.getBoundingClientRect();
+  const slots=[...document.querySelectorAll('.slot')];
+  const sb=slots[index].getBoundingClientRect();
+
+  carriageBall.textContent=letter;
+  transportCarriage.classList.add('active');
+
+  const startX=mb.width/2-17;
+  const targetX=sb.left+sb.width/2-mb.left-17;
+  transportCarriage.style.left=startX+'px';
+  transportCarriage.style.transform='none';
+
+  slots[index].classList.add('transportTarget');
+  machineMsg.textContent=`${letter} est transportée vers ${V[index]}…`;
+
+  const move=transportCarriage.animate(
+    [
+      {left:startX+'px',offset:0},
+      {left:targetX+'px',offset:1}
+    ],
+    {duration:1050,easing:'ease-in-out',fill:'forwards'}
+  );
+  await Promise.race([move.finished.catch(()=>{}),wait(1400)]);
+  await wait(180);
+
+  transportCarriage.classList.remove('active');
+  slots[index].classList.remove('transportTarget');
+}
+async function animateJourney(letter,index){
+exitBall.textContent=letter;
+exitBall.classList.remove('present');
+void exitBall.offsetWidth;
+exitBall.classList.add('present');
+machineMsg.textContent=`ALPHABALL ${index+1}/6 — ${letter} se présente à la sortie…`;
+await wait(520);
+machineMsg.textContent=`ALPHABALL ${index+1}/6 — prise en charge…`;
+transferArm.classList.remove('catch');
+exitBall.classList.remove('captured');
+void transferArm.offsetWidth;
+transferArm.classList.add('catch');
+exitBall.classList.add('captured');
+await wait(720);
+exitBall.classList.remove('present','captured');
+transferArm.classList.remove('catch');
+await mechanicalTransport(letter,index);
+const machine=document.querySelector('.machine');const gb=globe.getBoundingClientRect(),mb=machine.getBoundingClientRect();const slot=[...document.querySelectorAll('.slot')][index],sb=slot.getBoundingClientRect();traveler.textContent=letter;traveler.style.display='flex';gate.classList.add('open');const startX=gb.left+gb.width/2-mb.left-20,startY=gb.bottom-mb.top-4,railY=Math.min(mb.height-95,262),endX=sb.left+sb.width/2-mb.left-20,endY=sb.top+sb.height/2-mb.top-20;traveler.style.left=startX+'px';traveler.style.top=startY+'px';const angles=[68,42,18,-18,-42,-68];selector.style.transform=`translateX(-50%) rotate(${angles[index]}deg)`;const anim=traveler.animate([{transform:'translate(0,0) scale(.8)',opacity:.35,offset:0},{transform:`translate(0,${railY-startY}px) scale(1)`,opacity:1,offset:.32},{transform:`translate(${endX-startX}px,${railY-startY}px) scale(1)`,opacity:1,offset:.74},{transform:`translate(${endX-startX}px,${endY-startY}px) scale(.96)`,opacity:1,offset:1}],{duration:1900,easing:'ease-in-out',fill:'forwards'});await Promise.race([
+  anim.finished.catch(()=>{}),
+  wait(2400)
+]);gate.classList.remove('open');traveler.style.display='none';await wait(250)}action.onclick=()=>{if(state==='edit'){locked=true;state='validated';action.disabled=false;action.textContent='LANCER LE TIRAGE';document.body.classList.remove('phase-focus-base','phase-focus-boost','phase-focus-done');document.body.classList.add('phase-focus-draw');phaseEl.textContent='BULLETIN VALIDÉ';phaseBanner.innerHTML='BULLETIN VERROUILLÉ<small>Étape suivante : clique sur LANCER LE TIRAGE</small>';stepBase.classList.add('done');stepBoost.classList.add('done');stepDraw.classList.add('active');machineMsg.textContent='Tes 10 choix sont verrouillés.';render();return}if(state==='validated'){state='drawing';action.disabled=true;action.textContent='TIRAGE EN COURS…';machineMsg.textContent='Les ALPHABALLS se mélangent…';globe.classList.add('mixing');const draw=shuffle(C).slice(0,6);let hits=0,win=[];const slots=[...document.querySelectorAll('.slot')];(async()=>{await wait(1500);globe.classList.remove('mixing');machineMsg.textContent='La première ALPHABALL va sortir…';await wait(550);for(let i=0;i<6;i++){if(i>0){await remixBalls(700)}const c=draw[i],mix=c+V[i];machineMsg.textContent=`ALPHABALL ${i+1}/6 — parcours vers ${V[i]}…`;await animateJourney(c,i);slots[i].textContent=c;
+slots[i].classList.remove('arriving','winningLock');
+void slots[i].offsetWidth;
+slots[i].classList.add('arriving');
+machineMsg.textContent=`${c} se verrouille sur ${V[i]}…`;
+lockSound();
+await wait(420);
+slots[i].classList.remove('arriving');
+slots[i].classList.add('lockedBall');
+
+if(picks[i].includes(c)){
+  hits++;
+  win.push(mix);
+  lightWinningPick(i,c);
+  slots[i].classList.add('winningLock');
+  celebrateMix(mix);
+  machineMsg.textContent=`${mix} VALIDÉ ✓`;
+}else{
+  machineMsg.textContent=`${mix} non sélectionné`;
+}
+await wait(650)}final.style.display='block';finalText.textContent=`${hits} MIX VALIDÉ${hits>1?'S':''}`;wins.textContent=win.length?win.join(' • '):'Aucun MIX validé';action.disabled=false;action.textContent='NOUVELLE PARTIE';state='done';document.body.classList.remove('phase-focus-base','phase-focus-boost','phase-focus-draw');document.body.classList.add('phase-focus-done');phaseEl.textContent='RÉSULTAT FINAL';phaseBanner.innerHTML='PARTIE TERMINÉE<small>Consulte ton résultat puis clique sur NOUVELLE PARTIE</small>';stepDraw.classList.remove('active');stepDraw.classList.add('done');selector.style.transform='translateX(-50%) rotate(0deg)';machineMsg.textContent='Tirage terminé — ton bulletin reste visible ci-dessous.'})();return}if(state==='done'){location.reload()}};const enterGame=document.getElementById('enterGame');const introScreen=document.getElementById('introScreen');enterGame.addEventListener('click',()=>{enterGame.disabled=true;enterGame.textContent='OUVERTURE DU JEU…';introScreen.classList.add('leaving');setTimeout(()=>{introScreen.style.display='none';document.body.classList.add('game-ready');window.scrollTo({top:0,behavior:'smooth'});},550);});render();</script></body></html>
