@@ -1,0 +1,153 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ALPHABALLS — ALPHABALLS — BULLETIN 6+4 — TEST 03</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 18%,#20323e,#080b10 50%,#020304);font-family:Arial,sans-serif;text-align:center;color:#efc74c}
+h1{margin:13px 0 1px;letter-spacing:3px}.sub{font-size:10px;color:#b8c5cc;letter-spacing:1.5px}
+#machine{position:relative;width:min(96vw,660px);height:635px;margin:5px auto 0}
+#drum{position:absolute;left:50%;top:8px;transform:translateX(-50%);width:min(67vw,346px);height:min(67vw,346px);max-height:346px;border-radius:50%;overflow:hidden;border:7px solid #a97922;background:radial-gradient(circle at 35% 25%,#c6efff33,#132b3822 55%,#0009);box-shadow:inset 0 0 38px #60cfff35,0 0 0 3px #343e45,0 0 30px #e0b02d22}
+#drum:after{content:"";position:absolute;inset:8%;border:1px solid #c9f2ff22;border-radius:50%;pointer-events:none}
+.b,#trav{position:absolute;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:900;color:#050505;background:radial-gradient(circle at 30% 22%,#fff8ba,#e1ae27 44%,#76500b 84%);border:1px solid #ffe886;box-shadow:0 2px 7px #000c;z-index:4}
+#mouth{position:absolute;left:50%;transform:translateX(-50%);top:372px;width:94px;height:45px;background:linear-gradient(90deg,#674512,#e5bc46,#674512);clip-path:polygon(0 0,100% 0,63% 100%,37% 100%);z-index:3}
+#capture{position:absolute;left:50%;transform:translateX(-50%);top:411px;width:56px;height:57px;border:5px solid #a97922;border-radius:11px;background:#0a151b;box-shadow:inset 0 0 13px #56cfff33}
+#capture:after{content:"CAPTURE";position:absolute;left:50%;transform:translateX(-50%);bottom:-20px;font-size:8px;color:#8da1ab;letter-spacing:1px}
+#gate{position:absolute;left:50%;transform:translateX(-50%);top:463px;width:50px;height:7px;background:#efc74c;box-shadow:0 0 8px #efc74c88;z-index:6}
+#rail{position:absolute;left:50%;top:490px;width:min(35vw,205px);height:18px;border-top:4px solid #a97922;border-bottom:4px solid #a97922;background:#0b151a}
+#trav{display:none;z-index:20;width:34px;height:34px;font-size:19px}
+#tray{position:absolute;left:50%;transform:translateX(-50%);top:530px;display:flex;gap:5px}
+.slot{position:relative;width:52px;height:52px;border:2px solid #8e722e;border-radius:12px;background:#070b0e;color:#f4d466;font-weight:900}
+.slot.active{border-color:#efc74c;box-shadow:0 0 15px #efc74c77}
+.vowel{position:absolute;left:5px;top:12px;font-size:24px;color:#f4d466}
+.out{position:absolute;right:3px;top:8px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:18px;font-weight:900;color:#050505;background:radial-gradient(circle at 30% 22%,#fff8ba,#e1ae27 44%,#76500b 84%)}
+.mix{position:absolute;left:50%;top:57px;transform:translateX(-50%);min-width:48px;padding:4px 7px;border-radius:9px;background:#171105;border:1px solid #f2c94c;color:#fff3a9;font-size:18px;font-weight:900;text-align:center;box-shadow:0 0 8px #fff1a8,0 0 20px #e7b933,0 0 34px #e7b93388;text-shadow:0 0 7px #fff3a9;animation:mixGlow .9s ease-out}
+@keyframes mixGlow{0%{opacity:.15;transform:translateX(-50%) scale(.65)}55%{opacity:1;transform:translateX(-50%) scale(1.18);box-shadow:0 0 14px #fff1a8,0 0 32px #e7b933,0 0 52px #e7b933aa}100%{transform:translateX(-50%) scale(1)}}
+#count{position:absolute;right:2%;top:425px;font-size:11px;line-height:1.5;text-align:leftcolor:#e6b93f!important;}#status{position:absolute;bottom:5px;width:100%;font-size:13px;color:#dce6ea;letter-spacing:.8px}
+button{margin:0 0 18px;padding:14px 22px;border:1px solid #ffe68d;border-radius:12px;background:linear-gradient(#dfb436,#8a5d13);font-weight:900;font-size:15px;color:#050505}button:disabled{opacity:.45}
+.mix.win{color:#fff!important;background:#145b28!important;border:2px solid #6cff8e!important;box-shadow:0 0 9px #fff,0 0 20px #4dff7a,0 0 30px #4dff7a88!important;text-shadow:0 0 5px #fff!important;animation:mixWin .75s ease-out!important}
+.mix.win:before{content:"✓ ";color:#a2ffb2;font-weight:900}
+@keyframes mixWin{0%{transform:translateX(-50%) scale(.78)}45%{transform:translateX(-50%) scale(1.16)}100%{transform:translateX(-50%) scale(1)}}
+</style></head><body>
+<h1>ALPHABALLS</h1><div class="sub">BULLETIN 6+4 — TEST 03</div>
+<div id="machine"><div id="drum"></div><div id="mouth"></div><div id="capture"></div><div id="gate"></div><div id="rail"></div><div id="trav"></div>
+<div id="finished" style="display:none;position:absolute;left:2%;top:470px;color:#e6b93f;font-size:13px;font-weight:900;letter-spacing:1px;text-align:left">TIRAGE TERMINÉ<div id="finalMixCount" style="margin-top:5px;font-size:12px"></div></div><div id="count">20 ALPHABALLS<br>6 À EXTRAIRE</div>
+<div id="tray"><div class="slot active">A</div><div class="slot">E</div><div class="slot">I</div><div class="slot">O</div><div class="slot">U</div><div class="slot">Y</div></div>
+<div id="race" style="position:absolute;left:50%;transform:translateX(-50%);top:482px;z-index:50;min-width:154px;padding:3px 7px;border:1px solid #b98b27;border-radius:6px;background:#050708;color:#e6b93f!important;font-size:10px;font-weight:900;letter-spacing:.45px">COURSE AUX MIX : <span id="raceN" style="color:#e6b93f!important">0 / 6</span></div><div id="status">Prêt pour le tirage</div></div>
+<div id="bulletin" style="width:min(96vw,660px);margin:0 auto 12px;padding:10px;border:1px solid #9b7627;border-radius:12px;background:#070b0ee8;color:#e6b93f">
+ <div style="font-weight:900;letter-spacing:1px;margin-bottom:7px">BULLETIN 6+4</div>
+ <div id="choices" style="display:grid;grid-template-columns:repeat(6,1fr);gap:5px"></div>
+ <div id="binfo" style="font-size:11px;margin-top:8px;color:#d8c27a">1 choix obligatoire par voyelle + 4 renforts dans 4 colonnes différentes.</div>
+ <button id="validate" style="margin:9px 0 0;padding:9px 14px;font-size:12px">VALIDER LE BULLETIN</button>
+</div>
+<button id="go" disabled>LANCER LE TIRAGE</button>
+<script>
+const letters=[..."BCDFGHJKLMNPQRSTVWXZ"],drum=document.querySelector("#drum"),machine=document.querySelector("#machine"),go=document.querySelector("#go"),trav=document.querySelector("#trav"),statusEl=document.querySelector("#status"),count=document.querySelector("#count"),slots=[...document.querySelectorAll(".slot")],gate=document.querySelector("#gate");
+let balls=[],run=false,af,W,R,extracted=0;
+function setup(){let rr=document.querySelector("#raceN");if(rr)rr.textContent="0 / 6";let ff=document.querySelector("#finished");if(ff)ff.style.display="none";let fm=document.querySelector("#finalMixCount");if(fm)fm.textContent="";cancelAnimationFrame(af);drum.innerHTML="";balls=[];extracted=0;W=drum.clientWidth;R=W/2-19;letters.forEach((l,i)=>{let e=document.createElement("div");e.className="b";e.textContent=l;drum.appendChild(e);let a=i*2.399,r=35+(i%5)*(R-42)/4;balls.push({e,l,x:W/2+Math.cos(a)*r,y:W/2+Math.sin(a)*r,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*5})});const vowels=["A","E","I","O","U","Y"];slots.forEach((s,i)=>{s.className="slot"+(i===0?" active":"");s.innerHTML='<span class="vowel">'+vowels[i]+'</span>'});paint();count.innerHTML="20 ALPHABALLS<br>6 À EXTRAIRE"}
+function paint(){balls.forEach(b=>{b.e.style.left=b.x-15+"px";b.e.style.top=b.y-15+"px"})}
+function physics(){if(!run)return;let c=W/2;for(let b of balls){b.vx+=(Math.random()-.5)*1.35-(b.y-c)*.0014;b.vy+=(Math.random()-.5)*1.35+(b.x-c)*.0014;let s=Math.hypot(b.vx,b.vy);if(s>7.2){b.vx*=7.2/s;b.vy*=7.2/s}b.x+=b.vx;b.y+=b.vy;let dx=b.x-c,dy=b.y-c,d=Math.hypot(dx,dy),lim=R-15;if(d>lim){let nx=dx/d,ny=dy/d;b.x=c+nx*lim;b.y=c+ny*lim;let q=b.vx*nx+b.vy*ny;b.vx-=1.9*q*nx;b.vy-=1.9*q*ny}}
+for(let i=0;i<balls.length;i++)for(let j=i+1;j<balls.length;j++){let a=balls[i],b=balls[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);if(d>0&&d<29){let nx=dx/d,ny=dy/d,p=(29-d)/2;a.x-=nx*p;a.y-=ny*p;b.x+=nx*p;b.y+=ny*p;let q=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;if(q<0){a.vx+=q*nx*.75;a.vy+=q*ny*.75;b.vx-=q*nx*.75;b.vy-=q*ny*.75}}}paint();af=requestAnimationFrame(physics)}
+const wait=m=>new Promise(r=>setTimeout(r,m));
+function move(x0,y0,x1,y1,ms){let t0=performance.now();return new Promise(ok=>{function f(t){let p=Math.min(1,(t-t0)/ms),e=p*p*(3-2*p);trav.style.left=x0+(x1-x0)*e+"px";trav.style.top=y0+(y1-y0)*e+"px";p<1?requestAnimationFrame(f):ok()}requestAnimationFrame(f)})}
+async function oneDraw(){
+ statusEl.textContent="MÉLANGE… LAQUELLE VA TOMBER ?";run=true;physics();await wait(2300);
+ statusEl.textContent="UNE ALPHABALL S’APPROCHE…";await wait(650);
+ statusEl.textContent="… ELLE REPART.";await wait(600);
+ statusEl.textContent="UNE AUTRE ARRIVE…";await wait(650);
+ let chosen=balls.reduce((a,b)=>Math.abs(b.x-W/2)*1.3+(W-b.y)<Math.abs(a.x-W/2)*1.3+(W-a.y)?b:a);
+ run=false;cancelAnimationFrame(af);
+ let mr=machine.getBoundingClientRect(),dr=drum.getBoundingClientRect(),sx=dr.left-mr.left+chosen.x-17,sy=dr.top-mr.top+chosen.y-17,cx=machine.clientWidth/2-17;
+ chosen.e.style.visibility="hidden";trav.textContent=chosen.l;trav.style.display="grid";trav.style.left=sx+"px";trav.style.top=sy+"px";
+ statusEl.textContent="ELLE DESCEND VERS LA CAPTURE…";await move(sx,sy,cx,370,1000);
+ statusEl.textContent="CAPTURE — "+chosen.l;await move(cx,370,cx,418,560);await wait(800);
+ gate.style.opacity=".12";statusEl.textContent="CLIC — TRAPPE OUVERTE";await move(cx,418,cx,482,560);gate.style.opacity="1";
+ let sl=slots[extracted].getBoundingClientRect(),ex=sl.left-mr.left+5,ey=sl.top-mr.top+5;statusEl.textContent="SORTIE "+(extracted+1)+" SUR 6";await move(cx,482,ex,ey,1050);
+ trav.style.display="none";
+ let vowel=["A","E","I","O","U","Y"][extracted];
+ let mix=chosen.l+vowel;
+ slots[extracted].innerHTML='<span class="vowel">'+vowel+'</span><div class="out">'+chosen.l+'</div><div class="mix">'+mix+'</div>';
+ let isWin=validatedMixes.has(mix);
+ if(isWin){
+   let m=slots[extracted].querySelector(".mix");m.classList.add("win");m.textContent=mix;
+   let rr=document.querySelector("#raceN"),score=parseInt(rr.textContent,10)||0;rr.textContent=(score+1)+" / 6";
+   statusEl.innerHTML='<strong style="color:#78ff99;font-size:18px">✓ MIX ! — '+mix+'</strong>';
+   await wait(1400);
+ }else{
+   statusEl.innerHTML='<strong>'+mix+' — MIX TIRÉ</strong>';await wait(900);
+ }
+ slots[extracted].classList.remove("active");
+ balls=balls.filter(b=>b!==chosen);chosen.e.remove();extracted++;if(extracted<6)slots[extracted].classList.add("active");
+ count.innerHTML=balls.length+" ALPHABALLS<br>"+(6-extracted)+" À EXTRAIRE";
+ if(extracted<6){statusEl.textContent="LA MACHINE REPART…";await wait(1000)}
+}
+async function full(){go.disabled=true;setup();for(let i=0;i<6;i++)await oneDraw();statusEl.textContent="";let finalN=parseInt(document.querySelector("#raceN").textContent,10)||0;document.querySelector("#finalMixCount").textContent=finalN+" MIX";document.querySelector("#finished").style.display="block";go.disabled=false;go.textContent="NOUVEAU TIRAGE"}
+
+const consonants=[..."BCDFGHJKLMNPQRSTVWXZ"];
+const vowelsB=["A","E","I","O","U","Y"];
+let bulletinSel=Array.from({length:6},()=>new Set()), validatedMixes=new Set(), bulletinLocked=false;
+
+function renderBulletin(){
+ const box=document.querySelector("#choices"); box.innerHTML="";
+ vowelsB.forEach((v,ci)=>{
+   let col=document.createElement("div");
+   col.style.cssText="border:1px solid #6f5925;border-radius:8px;padding:5px 2px;background:#090d10";
+   let h=document.createElement("div");h.textContent=v+(bulletinSel[ci].size===2?" +":"");h.style.cssText="font-size:18px;font-weight:900;margin-bottom:4px;color:#e6b93f";col.appendChild(h);
+   consonants.forEach(c=>{
+     let b=document.createElement("button"); b.textContent=c;
+     b.style.cssText="width:25px;height:22px;margin:1px;padding:0;border-radius:5px;font-size:10px;background:#15191b;color:#d7c27b;border:1px solid #4e4529";
+     if(bulletinSel[ci].has(c)) b.style.cssText+=";background:#b98924;color:#050505;border-color:#ffe184";
+     b.disabled=bulletinLocked;
+     b.onclick=()=>{
+       if(bulletinLocked)return;
+       let set=bulletinSel[ci];
+       if(set.has(c)) set.delete(c);
+       else{
+         const sixBasesDone=bulletinSel.every(x=>x.size>=1);
+         if(!sixBasesDone){
+           // Phase 1: only one base choice per vowel column.
+           if(set.size>=1)return;
+           set.add(c);
+         }else{
+           // Phase 2: four reinforcements, max one extra per column.
+           if(set.size>=2)return;
+           if(set.size===1 && bulletinSel.filter(x=>x.size===2).length>=4)return;
+           set.add(c);
+         }
+       }
+       renderBulletin();
+     };
+     col.appendChild(b);
+   });
+   box.appendChild(col);
+ });
+ let bases=bulletinSel.every(x=>x.size>=1), reinf=bulletinSel.filter(x=>x.size===2).length;
+ document.querySelector("#validate").disabled=!(bases&&reinf===4)||bulletinLocked;
+ document.querySelector("#binfo").textContent=!bases
+   ? "ÉTAPE 1 — 1 choix dans chacune des 6 colonnes."
+   : (reinf<4 ? "ÉTAPE 2 — ajoutez 4 renforts dans 4 colonnes différentes. Renforts : "+reinf+"/4"
+              : "10 MIX prêts — vous pouvez valider.");
+}
+document.querySelector("#validate").onclick=()=>{
+ bulletinLocked=true; validatedMixes.clear();
+ bulletinSel.forEach((set,i)=>set.forEach(c=>validatedMixes.add(c+vowelsB[i])));
+ document.querySelector("#validate").disabled=true;
+ document.querySelector("#validate").textContent="BULLETIN VALIDÉ ✓";
+ document.querySelector("#go").disabled=false;
+ document.querySelector("#binfo").textContent="10 MIX verrouillés — le tirage peut commencer.";
+ renderBulletin();
+};
+renderBulletin();
+
+go.onclick=async()=>{
+ if(go.textContent==="NOUVEAU TIRAGE"){
+   bulletinSel=Array.from({length:6},()=>new Set());
+   validatedMixes.clear(); bulletinLocked=false;
+   document.querySelector("#validate").textContent="VALIDER LE BULLETIN";
+   document.querySelector("#go").textContent="LANCER LE TIRAGE";
+   document.querySelector("#go").disabled=true;
+   setup(); renderBulletin();
+   statusEl.textContent="Nouveau bulletin — faites vos 6 choix de base.";
+   return;
+ }
+ await full();
+};addEventListener("resize",()=>{if(!go.disabled)setup()});setup();
+</script></body></html>
