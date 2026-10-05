@@ -1,0 +1,476 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ALPHABALLS — JOUER À PLUSIEURS 07 — 2 À 6 JOUEURS</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 18%,#20323e,#080b10 50%,#020304);font-family:Arial,sans-serif;text-align:center;color:#efc74c}
+h1{margin:13px 0 1px;letter-spacing:3px}.sub{font-size:10px;color:#b8c5cc;letter-spacing:1.5px}
+#statusBand{width:min(96vw,660px);min-height:28px;margin:5px auto 0;padding:6px 8px;color:#dce6ea;font-size:13px;letter-spacing:.8px}
+#rulesScreen{position:fixed;inset:0;z-index:10000;background:radial-gradient(circle at 50% 18%,#20323e,#080b10 50%,#020304);display:flex;align-items:center;justify-content:center;padding:20px;color:#efc74c}
+#rulesCard{width:min(92vw,520px);padding:22px 18px;border:1px solid #9b7627;border-radius:16px;background:#070b0ef5;box-shadow:0 0 30px #000;text-align:center}
+#rulesCard h2{margin:0 0 18px;letter-spacing:2px}
+#rulesBrand{font-size:30px;font-weight:900;letter-spacing:4px;color:#efc74c;margin-bottom:4px;text-shadow:0 0 14px #e0b02d55}
+#rulesTagline{font-size:11px;font-weight:900;letter-spacing:1.4px;color:#d8c27a;margin-bottom:20px}
+#rulesCard p{margin:10px 0;color:#e8e2cf;line-height:1.45;font-size:15px}
+#rulesCard .lead{color:#efc74c;font-size:21px;font-weight:900}
+#signature{width:min(96vw,660px);margin:2px auto 18px;color:#b8a56d;font-size:10px;line-height:1.5;letter-spacing:.35px}
+#machine{position:relative;width:min(96vw,660px);height:635px;margin:5px auto 0}
+#drum{position:absolute;left:50%;top:8px;transform:translateX(-50%);width:min(67vw,346px);height:min(67vw,346px);max-height:346px;border-radius:50%;overflow:hidden;border:7px solid #a97922;background:radial-gradient(circle at 35% 25%,#c6efff33,#132b3822 55%,#0009);box-shadow:inset 0 0 38px #60cfff35,0 0 0 3px #343e45,0 0 30px #e0b02d22}
+#drum:after{content:"";position:absolute;inset:8%;border:1px solid #c9f2ff22;border-radius:50%;pointer-events:none}
+.b,#trav{position:absolute;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:900;color:#050505;background:radial-gradient(circle at 30% 22%,#fff8ba,#e1ae27 44%,#76500b 84%);border:1px solid #ffe886;box-shadow:0 2px 7px #000c;z-index:4}
+#mouth{position:absolute;left:50%;transform:translateX(-50%);top:372px;width:94px;height:45px;background:linear-gradient(90deg,#674512,#e5bc46,#674512);clip-path:polygon(0 0,100% 0,63% 100%,37% 100%);z-index:3}
+#capture{position:absolute;left:50%;transform:translateX(-50%);top:411px;width:56px;height:57px;border:5px solid #a97922;border-radius:11px;background:#0a151b;box-shadow:inset 0 0 13px #56cfff33}
+#capture:after{content:"CAPTURE";position:absolute;left:50%;transform:translateX(-50%);bottom:-20px;font-size:8px;color:#8da1ab;letter-spacing:1px}
+#gate{position:absolute;left:50%;transform:translateX(-50%);top:463px;width:50px;height:7px;background:#efc74c;box-shadow:0 0 8px #efc74c88;z-index:6}
+#rail{position:absolute;left:50%;top:490px;width:min(35vw,205px);height:18px;border-top:4px solid #a97922;border-bottom:4px solid #a97922;background:#0b151a}
+#trav{display:none;z-index:20;width:34px;height:34px;font-size:19px}
+#tray{position:absolute;left:50%;transform:translateX(-50%);top:530px;display:flex;gap:5px}
+.slot{position:relative;width:52px;height:52px;border:2px solid #8e722e;border-radius:12px;background:#070b0e;color:#f4d466;font-weight:900}
+.slot.active{border-color:#efc74c;box-shadow:0 0 15px #efc74c77}
+.vowel{position:absolute;left:5px;top:12px;font-size:24px;color:#f4d466}
+.out{position:absolute;right:3px;top:8px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:18px;font-weight:900;color:#050505;background:radial-gradient(circle at 30% 22%,#fff8ba,#e1ae27 44%,#76500b 84%)}
+.mix{position:absolute;left:50%;top:57px;transform:translateX(-50%);min-width:48px;padding:4px 7px;border-radius:9px;background:#171105;border:1px solid #f2c94c;color:#fff3a9;font-size:18px;font-weight:900;text-align:center;box-shadow:0 0 8px #fff1a8,0 0 20px #e7b933,0 0 34px #e7b93388;text-shadow:0 0 7px #fff3a9;animation:mixGlow .9s ease-out}
+@keyframes mixGlow{0%{opacity:.15;transform:translateX(-50%) scale(.65)}55%{opacity:1;transform:translateX(-50%) scale(1.18);box-shadow:0 0 14px #fff1a8,0 0 32px #e7b933,0 0 52px #e7b933aa}100%{transform:translateX(-50%) scale(1)}}
+#count{position:absolute;right:2%;top:425px;font-size:11px;line-height:1.5;text-align:left;color:#e6b93f!important;}
+button{margin:0 0 18px;padding:14px 22px;border:1px solid #ffe68d;border-radius:12px;background:linear-gradient(#dfb436,#8a5d13);font-weight:900;font-size:15px;color:#050505}button:disabled{opacity:.45}
+.mix.win{color:#fff!important;background:#145b28!important;border:2px solid #6cff8e!important;box-shadow:0 0 9px #fff,0 0 20px #4dff7a,0 0 30px #4dff7a88!important;text-shadow:0 0 5px #fff!important;animation:mixWin .75s ease-out!important}
+.mix.win:before{content:"✓ ";color:#a2ffb2;font-weight:900}
+.bulletinWin{background:#145b28!important;color:#fff!important;border:2px solid #6cff8e!important;box-shadow:0 0 8px #fff,0 0 16px #4dff7a,0 0 24px #4dff7a88!important;text-shadow:0 0 5px #fff!important}
+@keyframes mixWin{0%{transform:translateX(-50%) scale(.78)}45%{transform:translateX(-50%) scale(1.16)}100%{transform:translateX(-50%) scale(1)}}
+</style><style>
+@media (max-width:600px){
+  #machine{height:570px}
+  #mouth{top:304px}
+  #capture{top:361px}
+  #gate{top:413px}
+  #rail{top:440px}
+  #count{top:375px}
+  #finished{top:420px!important}
+  #race{top:432px!important}
+  #tray{top:480px}
+}
+
+/* ===== JOUER À PLUSIEURS 01 ===== */
+#playerBand{width:min(96vw,660px);margin:2px auto 8px;padding:8px 10px;border:1px solid #8f7027;border-radius:9px;background:#070b0e;color:#efc74c;font-size:12px;font-weight:900;letter-spacing:.8px;display:none}
+#competitorsBand{width:min(96vw,660px);margin:2px auto 10px;padding:7px 10px;color:#d8c27a;font-size:11px;font-weight:800;letter-spacing:.7px;text-align:center;display:none}
+#passScreen,#readyScreen{position:fixed;inset:0;z-index:9998;background:radial-gradient(circle at 50% 18%,#20323e,#080b10 50%,#020304);display:none;align-items:center;justify-content:center;padding:20px;color:#efc74c}
+#readyScreen .multiCard{transform:translateY(85px)}
+@media (max-width:600px){#readyScreen .multiCard{transform:translateY(55px)}}
+.multiCard{width:min(92vw,500px);padding:24px 18px;border:1px solid #9b7627;border-radius:16px;background:#070b0ef5;box-shadow:0 0 30px #000;text-align:center}
+.multiCard h2{margin:0 0 8px;letter-spacing:2px}.multiCard p{color:#d8c27a;font-size:13px;line-height:1.5}
+#pseudoScreen{position:fixed;inset:0;z-index:9999;background:radial-gradient(circle at 50% 18%,#20323e,#080b10 50%,#020304);display:none;align-items:center;justify-content:center;padding:20px;color:#efc74c}
+#pseudoScreen input{width:min(86%,300px);display:block;margin:10px auto;padding:11px;border-radius:8px;border:1px solid #9b7627;background:#11171b;color:#fff;text-align:center;font-size:16px}
+.slot .who{font-size:7px;line-height:1.15;margin-top:2px;color:#78ff99;font-weight:900;max-width:56px;word-break:break-word}
+#multiFinal{width:min(96vw,660px);margin:10px auto 16px;padding:14px;border:1px solid #9b7627;border-radius:12px;background:#070b0ee8;color:#e6b93f;display:none}
+#multiFinal h3{margin:0 0 9px;letter-spacing:1px}#ranking{font-size:13px;line-height:1.9;color:#eee2b0}
+#verifyArea{display:none;margin-top:12px;padding-top:10px;border-top:1px solid #5f4b21}
+#verifyTabs{margin:10px 0 4px}#verifyTabs button{padding:8px 12px;font-size:12px;margin:4px}
+#verifyBulletin{margin-top:14px;font-size:12px;line-height:1.7;color:#ddd}
+.verifyWin{color:#78ff99;font-weight:900;text-shadow:0 0 7px #4dff7a}
+#commonDrawProof{margin-top:10px;padding-top:8px;border-top:1px solid #4f4425;color:#d8c27a;font-size:11px}
+</style>
+
+<style>
+/* ===== TEST 05 : joueurs face au boulier — présentation uniquement ===== */
+#competitorsBand{display:none!important}
+#playersPanel{
+  position:absolute; right:4px; top:128px; z-index:55;
+  width:122px; padding:7px 7px 6px;
+  border:1px solid #8f7027; border-radius:9px;
+  background:#05080bdc; box-shadow:0 0 12px #0009;
+  color:#d8c27a; text-align:left;
+}
+#playersPanel .ppTitle{
+  font-size:9px; font-weight:900; letter-spacing:.8px;
+  color:#e6b93f; margin-bottom:5px; text-align:center;
+}
+#playersPanel .ppRow{
+  display:flex; justify-content:space-between; align-items:center;
+  gap:5px; min-height:21px; padding:2px 3px;
+  border-top:1px solid #3f351d;
+  font-size:10px; font-weight:800;
+}
+#playersPanel .ppRow:first-of-type{border-top:none}
+#playersPanel .ppName{
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:76px;
+  color:#eee2b0;
+}
+#playersPanel .ppScore{color:#e6b93f; white-space:nowrap}
+#playersPanel .ppRow.leading .ppName,
+#playersPanel .ppRow.leading .ppScore{
+  color:#78ff99; text-shadow:0 0 6px #4dff7a55;
+}
+#race{min-width:118px!important}
+#raceN{display:none!important}
+
+@media (max-width:600px){
+  #playersPanel{
+    top:402px; right:2px; width:108px;
+    padding:5px 6px 4px;
+  }
+  #playersPanel .ppTitle{font-size:8px}
+  #playersPanel .ppRow{font-size:9px;min-height:18px}
+  #playersPanel .ppName{max-width:64px}
+}
+</style>
+
+</head><body>
+<div id="rulesScreen"><div id="rulesCard"><div id="rulesBrand">ALPHABALLS</div><div id="rulesTagline">FORMEZ · JOUEZ · VISEZ LE MIXIMUM</div><h2>COMMENT JOUER ?</h2><p class="lead">Formez 6 MIX.</p><p>Dans chacune des <strong>6 colonnes représentant une voyelle</strong>,<br>choisissez <strong>1 consonne</strong>.</p><p>Vous avez maintenant vos <strong>6 MIX de base</strong>.</p><p>Ajoutez ensuite <strong>4 consonnes supplémentaires</strong>, dans <strong>4 colonnes différentes</strong>.</p><p>Votre bulletin contient alors <strong>10 MIX</strong>.</p><p>Validez votre bulletin, puis lancez le tirage des <strong>6 ALPHABALLS</strong>.</p><p>Chaque MIX tiré correspondant à votre bulletin est gagné ✓.</p><p style="margin:12px 0 5px;color:#efc74c;font-weight:900">BARÈME</p><p style="font-size:13px;line-height:1.55">2 MIX = 5 pts · 3 = 15 pts · 4 = 50 pts<br>5 = 250 pts · 6 = 1 000 pts 👑 MIXIMUM 👑</p><p><strong>Objectif : obtenir le plus de MIX possible.</strong></p><button id="startGame">JOUER À PLUSIEURS</button></div></div>
+<div id="pseudoScreen"><div class="multiCard">
+<h2>JOUER À PLUSIEURS</h2>
+<p>De 2 à 6 joueurs.<br>Un seul tirage commun pour tous les bulletins.</p>
+<label for="playerCount" style="display:block;margin:8px 0 6px;color:#d8c27a;font-size:12px">NOMBRE DE JOUEURS</label>
+<select id="playerCount" style="width:min(86%,300px);padding:11px;border-radius:8px;border:1px solid #9b7627;background:#11171b;color:#fff;text-align:center;font-size:16px">
+<option value="2">2 joueurs</option>
+<option value="3">3 joueurs</option>
+<option value="4">4 joueurs</option>
+<option value="5">5 joueurs</option>
+<option value="6">6 joueurs</option>
+</select>
+<div id="pseudoInputs" style="margin-top:10px"></div>
+<button id="startMultiPlayers">COMMENCER</button>
+</div></div>
+<div id="passScreen"><div class="multiCard"><h2 id="passTitle">BULLETIN VERROUILLÉ ✓</h2><p id="passText"></p><button id="passButton">JOUEUR SUIVANT</button></div></div>
+<div id="readyScreen"><div class="multiCard"><h2 id="readyTitle">JOUEURS PRÊTS ✓</h2><p>Tous les bulletins sont verrouillés.<br><strong>UN SEUL TIRAGE POUR TOUS</strong></p><button id="commonLaunch">LANCER LE TIRAGE</button></div></div>
+<h1>ALPHABALLS</h1>
+<div id="statusBand"><div id="status">Prêt pour le tirage</div></div>
+<div id="competitorsBand"></div>
+<div id="machine"><div id="drum"></div><div id="playersPanel" style="display:none"></div><div id="mouth"></div><div id="capture"></div><div id="gate"></div><div id="rail"></div><div id="trav"></div>
+<div id="finished" style="display:none;position:absolute;left:2%;top:470px;color:#e6b93f;font-size:13px;font-weight:900;letter-spacing:1px;text-align:left">TIRAGE TERMINÉ<div id="finalMixCount" style="margin-top:5px;font-size:12px"></div><div id="finalPoints" style="margin-top:4px;font-size:13px;font-weight:900;color:#efc74c"></div></div><div id="count">20 ALPHABALLS<br>6 À EXTRAIRE</div>
+<div id="tray"><div class="slot active">A</div><div class="slot">E</div><div class="slot">I</div><div class="slot">O</div><div class="slot">U</div><div class="slot">Y</div></div>
+<div id="race" style="position:absolute;left:50%;transform:translateX(-50%);top:482px;z-index:50;min-width:154px;padding:3px 7px;border:1px solid #b98b27;border-radius:6px;background:#050708;color:#e6b93f!important;font-size:10px;font-weight:900;letter-spacing:.45px">COURSE AUX MIX : <span id="raceN" style="color:#e6b93f!important">0 / 6</span></div></div>
+<div id="playerBand"></div>
+<div id="bulletin" style="width:min(96vw,660px);margin:0 auto 12px;padding:10px;border:1px solid #9b7627;border-radius:12px;background:#070b0ee8;color:#e6b93f">
+ <div style="font-weight:900;letter-spacing:1px;margin-bottom:7px">BULLETIN 6+4</div>
+ <div id="choices" style="display:grid;grid-template-columns:repeat(6,1fr);gap:5px"></div>
+ <div id="binfo" style="font-size:11px;margin-top:8px;color:#d8c27a">1 choix obligatoire par voyelle + 4 renforts dans 4 colonnes différentes.</div>
+ <button id="validate" style="margin:9px 0 0;padding:9px 14px;font-size:12px">FORMEZ D’ABORD VOS 6 MIX</button>
+</div>
+<button id="go" disabled>LANCER LE TIRAGE</button>
+<div id="multiFinal"><h3>RÉSULTATS</h3><div id="ranking"></div>
+<button id="verifyBtn" style="margin-top:10px">VÉRIFIER LES BULLETINS</button>
+<button id="newGameFinal" style="margin-top:10px">NOUVELLE PARTIE</button>
+<div id="verifyArea">
+  <div id="verifyPrompt" style="font-size:12px;font-weight:900;color:#efc74c;margin:6px 0 10px">CHOISISSEZ UN JOUEUR</div>
+  <div id="verifyTabs"></div>
+  <div id="verifyBulletin"></div>
+  <div id="commonDrawProof"></div>
+</div></div>
+<div id="signature">Conception du jeu et des ALPHABALLS<br><strong>Justin Joris JOLY — ALPHAZARD</strong></div>
+<div id="miximumEvent" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.94);align-items:center;justify-content:center;flex-direction:column;color:#efc74c;text-align:center;overflow:hidden">
+<div id="confettiLayer" style="position:absolute;inset:0;pointer-events:none"></div>
+<div style="position:relative;z-index:2;font-size:clamp(38px,11vw,78px);font-weight:900;letter-spacing:3px;text-shadow:0 0 12px #fff2a0,0 0 35px #d6a72a">👑 MIXIMUM 👑</div>
+<div style="position:relative;z-index:2;margin-top:18px;font-size:clamp(20px,5vw,34px);font-weight:900">6 MIX SUR 6</div>
+<div style="position:relative;z-index:2;margin-top:12px;font-size:clamp(24px,6vw,40px);font-weight:900">1 000 POINTS</div>
+
+<button id="closeMiximum" style="position:relative;z-index:2;margin-top:28px">CONTINUER</button>
+</div><script>
+
+document.querySelector("#startGame").onclick=()=>{document.querySelector("#rulesScreen").style.display="none";document.querySelector("#pseudoScreen").style.display="flex";};
+
+let alphAudio=null;
+function audioCtx(){
+  try{
+    if(!alphAudio) alphAudio=new (window.AudioContext||window.webkitAudioContext)();
+    if(alphAudio.state==="suspended") alphAudio.resume();
+    return alphAudio;
+  }catch(e){return null}
+}
+function mechTick(freq=900,vol=.035,dur=.035){
+  const ac=audioCtx(); if(!ac)return;
+  const o=ac.createOscillator(),g=ac.createGain(),n=ac.currentTime;
+  o.type="square";o.frequency.value=freq;
+  g.gain.setValueAtTime(vol,n);g.gain.exponentialRampToValueAtTime(.0001,n+dur);
+  o.connect(g);g.connect(ac.destination);o.start(n);o.stop(n+dur);
+}
+function gateClick(){
+  mechTick(520,.09,.055);setTimeout(()=>mechTick(330,.07,.07),55);
+}
+function arrivalSound(){
+  const ac=audioCtx();if(!ac)return;const n=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();
+  o.type="sine";o.frequency.setValueAtTime(620,n);o.frequency.exponentialRampToValueAtTime(880,n+.12);
+  g.gain.setValueAtTime(.07,n);g.gain.exponentialRampToValueAtTime(.0001,n+.18);
+  o.connect(g);g.connect(ac.destination);o.start(n);o.stop(n+.2);
+}
+function mixFoundSound(){
+  const ac=audioCtx();if(!ac)return;const n=ac.currentTime;
+  [784,1047].forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain();o.type="sine";o.frequency.value=f;
+  g.gain.setValueAtTime(.0001,n+i*.09);g.gain.exponentialRampToValueAtTime(.11,n+i*.09+.02);
+  g.gain.exponentialRampToValueAtTime(.0001,n+i*.09+.28);o.connect(g);g.connect(ac.destination);o.start(n+i*.09);o.stop(n+i*.09+.3);});
+}
+function startMixTicks(){
+  let k=0; return setInterval(()=>{mechTick(700+(k++%5)*75,.025,.025)},190);
+}
+function miximumSound(){
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext, ac=new AC();
+    const now=ac.currentTime;
+    const notes=[523.25,659.25,783.99,1046.5];
+    notes.forEach((f,i)=>{
+      const o=ac.createOscillator(), g=ac.createGain();
+      o.type="sine"; o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,now+i*.13);
+      g.gain.exponentialRampToValueAtTime(.30,now+i*.13+.025);
+      g.gain.exponentialRampToValueAtTime(0.0001,now+i*.13+.42);
+      o.connect(g); g.connect(ac.destination);
+      o.start(now+i*.13); o.stop(now+i*.13+.45);
+    });
+    const o=ac.createOscillator(),g=ac.createGain();
+    o.type="triangle";o.frequency.setValueAtTime(1046.5,now+.55);
+    o.frequency.exponentialRampToValueAtTime(1568,now+1.15);
+    g.gain.setValueAtTime(.0001,now+.55);g.gain.exponentialRampToValueAtTime(.27,now+.6);
+    g.gain.exponentialRampToValueAtTime(.0001,now+1.45);
+    o.connect(g);g.connect(ac.destination);o.start(now+.55);o.stop(now+1.5);
+  }catch(e){}
+}
+function goldConfetti(){
+  const layer=document.querySelector("#confettiLayer"); layer.innerHTML="";
+  for(let i=0;i<42;i++){
+    const c=document.createElement("i");
+    c.style.cssText="position:absolute;top:-8%;width:"+(4+Math.random()*5)+"px;height:"+(9+Math.random()*10)+"px;left:"+Math.random()*100+"%;background:"+(i%3===0?"#fff0a8":i%3===1?"#efc74c":"#a97922")+";opacity:.95;transform:rotate("+Math.random()*180+"deg);border-radius:1px";
+    layer.appendChild(c);
+    c.animate([{transform:"translateY(0) rotate(0deg)",opacity:1},{transform:"translateY(112vh) rotate("+(500+Math.random()*700)+"deg)",opacity:.15}],{duration:2200+Math.random()*1400,delay:Math.random()*650,easing:"cubic-bezier(.18,.7,.4,1)",fill:"forwards"});
+  }
+}
+
+const letters=[..."BCDFGHJKLMNPQRSTVWXZ"],drum=document.querySelector("#drum"),machine=document.querySelector("#machine"),go=document.querySelector("#go"),trav=document.querySelector("#trav"),statusEl=document.querySelector("#status"),count=document.querySelector("#count"),slots=[...document.querySelectorAll(".slot")],gate=document.querySelector("#gate");
+let balls=[],run=false,af,W,R,extracted=0;
+let multiPlayers=[],currentPlayer=0,savedBulletins=[],playerWins=[],commonDraw=[];
+
+const baremeMulti=[0,0,5,15,50,250,1000];
+
+function renderPlayersPanel(finalMode=false){
+ const panel=document.querySelector("#playersPanel");
+ if(!panel || !multiPlayers.length){ if(panel)panel.style.display="none"; return; }
+ panel.style.display="block";
+ let scores=multiPlayers.map((n,i)=>playerWins[i] ? playerWins[i].size : 0);
+ let best=scores.length ? Math.max(...scores) : 0;
+ panel.innerHTML='<div class="ppTitle">'+(finalMode?'SCORES':'CONCURRENTS')+'</div>'+
+   multiPlayers.map((n,i)=>{
+     const m=scores[i]||0;
+     const lead=!finalMode && best>0 && m===best ? ' leading' : '';
+     const value=finalMode ? (m+' MIX · '+baremeMulti[m]+' pts') : (m+' MIX');
+     return '<div class="ppRow'+lead+'"><span class="ppName">'+n+'</span><span class="ppScore">'+value+'</span></div>';
+   }).join('');
+}
+
+function setup(){go.style.display="none";let rr=document.querySelector("#raceN");if(rr)rr.textContent="";renderPlayersPanel(false);let ff=document.querySelector("#finished");if(ff)ff.style.display="none";let fm=document.querySelector("#finalMixCount");if(fm)fm.textContent="";let fp=document.querySelector("#finalPoints");if(fp)fp.textContent="";cancelAnimationFrame(af);drum.innerHTML="";balls=[];extracted=0;W=drum.clientWidth;R=W/2-19;letters.forEach((l,i)=>{let e=document.createElement("div");e.className="b";e.textContent=l;drum.appendChild(e);let a=i*2.399,r=35+(i%5)*(R-42)/4;balls.push({e,l,x:W/2+Math.cos(a)*r,y:W/2+Math.sin(a)*r,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*5})});const vowels=["A","E","I","O","U","Y"];slots.forEach((s,i)=>{s.className="slot"+(i===0?" active":"");s.innerHTML='<span class="vowel">'+vowels[i]+'</span>'});paint();count.innerHTML="20 ALPHABALLS<br>6 À EXTRAIRE"}
+function paint(){balls.forEach(b=>{b.e.style.left=b.x-15+"px";b.e.style.top=b.y-15+"px"})}
+function physics(){if(!run)return;let c=W/2;for(let b of balls){b.vx+=(Math.random()-.5)*1.35-(b.y-c)*.0014;b.vy+=(Math.random()-.5)*1.35+(b.x-c)*.0014;let s=Math.hypot(b.vx,b.vy);if(s>7.2){b.vx*=7.2/s;b.vy*=7.2/s}b.x+=b.vx;b.y+=b.vy;let dx=b.x-c,dy=b.y-c,d=Math.hypot(dx,dy),lim=R-15;if(d>lim){let nx=dx/d,ny=dy/d;b.x=c+nx*lim;b.y=c+ny*lim;let q=b.vx*nx+b.vy*ny;b.vx-=1.9*q*nx;b.vy-=1.9*q*ny}}
+for(let i=0;i<balls.length;i++)for(let j=i+1;j<balls.length;j++){let a=balls[i],b=balls[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);if(d>0&&d<29){let nx=dx/d,ny=dy/d,p=(29-d)/2;a.x-=nx*p;a.y-=ny*p;b.x+=nx*p;b.y+=ny*p;let q=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;if(q<0){a.vx+=q*nx*.75;a.vy+=q*ny*.75;b.vx-=q*nx*.75;b.vy-=q*ny*.75}}}paint();af=requestAnimationFrame(physics)}
+const wait=m=>new Promise(r=>setTimeout(r,m));
+function move(x0,y0,x1,y1,ms){let t0=performance.now();return new Promise(ok=>{function f(t){let p=Math.min(1,(t-t0)/ms),e=p*p*(3-2*p);trav.style.left=x0+(x1-x0)*e+"px";trav.style.top=y0+(y1-y0)*e+"px";p<1?requestAnimationFrame(f):ok()}requestAnimationFrame(f)})}
+async function oneDraw(){
+ statusEl.textContent="MÉLANGE… LAQUELLE VA TOMBER ?";run=true;physics();let tickLoop=startMixTicks();await wait(2300);clearInterval(tickLoop);
+ statusEl.textContent="UNE ALPHABALL S’APPROCHE…";await wait(650);
+ statusEl.textContent="… ELLE REPART.";await wait(600);
+ statusEl.textContent="UNE AUTRE ARRIVE…";await wait(650);
+ let chosen=balls.reduce((a,b)=>Math.abs(b.x-W/2)*1.3+(W-b.y)<Math.abs(a.x-W/2)*1.3+(W-a.y)?b:a);
+ run=false;cancelAnimationFrame(af);
+ let mr=machine.getBoundingClientRect(),dr=drum.getBoundingClientRect(),sx=dr.left-mr.left+chosen.x-17,sy=dr.top-mr.top+chosen.y-17,cx=machine.clientWidth/2-17;
+ chosen.e.style.visibility="hidden";trav.textContent=chosen.l;trav.style.display="grid";trav.style.left=sx+"px";trav.style.top=sy+"px";
+ statusEl.textContent="ELLE DESCEND VERS LA CAPTURE…";await move(sx,sy,cx,370,1000);
+ statusEl.textContent="CAPTURE — "+chosen.l;mechTick(430,.075,.06);await move(cx,370,cx,418,560);await wait(800);
+ gate.style.opacity=".12";statusEl.textContent="CLIC — TRAPPE OUVERTE";gateClick();await move(cx,418,cx,482,560);gate.style.opacity="1";
+ let sl=slots[extracted].getBoundingClientRect(),ex=sl.left-mr.left+5,ey=sl.top-mr.top+5;statusEl.textContent="SORTIE "+(extracted+1)+" SUR 6";await move(cx,482,ex,ey,1050);
+ trav.style.display="none";arrivalSound();
+ let vowel=["A","E","I","O","U","Y"][extracted];
+ let mix=chosen.l+vowel;
+ slots[extracted].innerHTML='<span class="vowel">'+vowel+'</span><div class="out">'+chosen.l+'</div><div class="mix">'+mix+'</div>';
+ commonDraw.push(mix);
+ let winners=[];
+ savedBulletins.forEach((set,i)=>{if(set && set.has(mix)) winners.push(i);});
+ let isWin=winners.length>0;
+ if(isWin){
+   mixFoundSound();
+   let m=slots[extracted].querySelector(".mix");m.classList.add("win");m.textContent=mix;
+   winners.forEach(i=>{playerWins[i].add(mix);});
+   let who=document.createElement("div");who.className="who";who.textContent=winners.map(i=>multiPlayers[i]).join(" · ");slots[extracted].appendChild(who);
+   let rr=document.querySelector("#raceN");if(rr)rr.textContent="";renderPlayersPanel(false);
+   statusEl.innerHTML='<strong style="color:#78ff99;font-size:18px">✓ MIX ! — '+mix+'</strong><br><span style="color:#78ff99">'+winners.map(i=>multiPlayers[i]).join(" · ")+'</span>';
+   await wait(1400);
+ }else{
+   statusEl.innerHTML='<strong>'+mix+' — MIX TIRÉ</strong>';await wait(900);
+ }
+ slots[extracted].classList.remove("active");
+ balls=balls.filter(b=>b!==chosen);chosen.e.remove();extracted++;if(extracted<6)slots[extracted].classList.add("active");
+ count.innerHTML=balls.length+" ALPHABALLS<br>"+(6-extracted)+" À EXTRAIRE";
+ if(extracted<6){statusEl.textContent="LA MACHINE REPART…";await wait(1000)}
+}
+async function full(){
+ go.disabled=true;setup();commonDraw=[];playerWins=multiPlayers.map(()=>new Set());
+ for(let i=0;i<6;i++)await oneDraw();
+ statusEl.textContent="";
+ document.querySelector("#finished").style.display="block";
+ document.querySelector("#finalMixCount").textContent="TIRAGE COMMUN : 6 MIX";
+ document.querySelector("#finalPoints").textContent="";
+ const top=Math.max(...playerWins.map(s=>s.size));
+ if(top===6){await wait(1100);const ev=document.querySelector("#miximumEvent");ev.style.display="flex";miximumSound();goldConfetti();document.querySelector("#closeMiximum").onclick=()=>{ev.style.display="none";};}
+ showMultiResults();
+}
+
+
+const consonants=[..."BCDFGHJKLMNPQRSTVWXZ"];
+const vowelsB=["A","E","I","O","U","Y"];
+let bulletinSel=Array.from({length:6},()=>new Set()), validatedMixes=new Set(), winningMixes=new Set(), bulletinLocked=false;
+
+function renderBulletin(){
+ const box=document.querySelector("#choices"); box.innerHTML="";
+ vowelsB.forEach((v,ci)=>{
+   let col=document.createElement("div");
+   col.style.cssText="border:1px solid #6f5925;border-radius:8px;padding:5px 2px;background:#090d10";
+   let h=document.createElement("div");h.textContent=v+(bulletinSel[ci].size===2?" +":"");h.style.cssText="font-size:18px;font-weight:900;margin-bottom:4px;color:#e6b93f";col.appendChild(h);
+   consonants.forEach(c=>{
+     let b=document.createElement("button"); b.textContent=c;
+     b.style.cssText="width:25px;height:22px;margin:1px;padding:0;border-radius:5px;font-size:10px;background:#15191b;color:#d7c27b;border:1px solid #4e4529";
+     if(bulletinSel[ci].has(c)) b.style.cssText+=";background:#b98924;color:#050505;border-color:#ffe184";
+      if(winningMixes.has(c+v)){b.classList.add("bulletinWin");b.textContent=c+" ✓";}
+     b.disabled=bulletinLocked;
+     b.onclick=()=>{
+       if(bulletinLocked)return;
+       mechTick(760,.045,.04);
+       let set=bulletinSel[ci];
+       if(set.has(c)) set.delete(c);
+       else{
+         const sixBasesDone=bulletinSel.every(x=>x.size>=1);
+         if(!sixBasesDone){
+           // Phase 1: only one base choice per vowel column.
+           if(set.size>=1)return;
+           set.add(c);
+         }else{
+           // Phase 2: four reinforcements, max one extra per column.
+           if(set.size>=2)return;
+           if(set.size===1 && bulletinSel.filter(x=>x.size===2).length>=4)return;
+           set.add(c);
+         }
+       }
+       renderBulletin();
+     };
+     col.appendChild(b);
+   });
+   box.appendChild(col);
+ });
+ let bases=bulletinSel.every(x=>x.size>=1), reinf=bulletinSel.filter(x=>x.size===2).length;
+ const validateBtn=document.querySelector("#validate"), info=document.querySelector("#binfo");
+ validateBtn.disabled=!(bases&&reinf===4)||bulletinLocked;
+ if(bulletinLocked){
+   info.innerHTML="<strong>10 MIX verrouillés ✓</strong> — le tirage peut commencer.";
+   validateBtn.textContent="BULLETIN VALIDÉ ✓";
+ }else if(!bases){
+   info.innerHTML="<strong>ÉTAPE 1 — FORMEZ VOS 6 MIX</strong><br>Choisissez 1 consonne dans chaque colonne.";
+   validateBtn.textContent="FORMEZ D’ABORD VOS 6 MIX";
+ }else if(reinf<4){
+   info.innerHTML="<strong>ÉTAPE 2 — AJOUTEZ VOS 4 RENFORTS</strong><br>4 MIX supplémentaires sont nécessaires pour valider le bulletin.<br><strong>RENFORTS : "+reinf+" / 4</strong>";
+   validateBtn.textContent="VALIDATION APRÈS 4 RENFORTS";
+ }else{
+   info.innerHTML="<strong>VOS 10 MIX SONT PRÊTS ✓</strong><br>RENFORTS : 4 / 4 ✓ — Validez votre bulletin.";
+   validateBtn.textContent="VALIDER LE BULLETIN";
+ }
+}
+document.querySelector("#validate").onclick=()=>{
+ bulletinLocked=true; validatedMixes.clear(); winningMixes.clear();
+ bulletinSel.forEach((set,i)=>set.forEach(c=>validatedMixes.add(c+vowelsB[i])));
+ savedBulletins[currentPlayer]=new Set(validatedMixes);
+ document.querySelector("#validate").disabled=true;
+ document.querySelector("#validate").textContent="BULLETIN VALIDÉ ✓";
+ document.querySelector("#binfo").innerHTML="<strong>10 MIX verrouillés ✓</strong>";
+ renderBulletin();
+
+ const last=currentPlayer===multiPlayers.length-1;
+ document.querySelector("#passScreen").style.display="flex";
+ if(!last){
+   document.querySelector("#passTitle").textContent="BULLETIN VERROUILLÉ ✓";
+   document.querySelector("#passText").innerHTML="Le bulletin de <strong>"+multiPlayers[currentPlayer]+"</strong> est conservé et masqué.<br>Passez maintenant l’écran à <strong>"+multiPlayers[currentPlayer+1]+"</strong>.";
+   document.querySelector("#passButton").textContent="PASSER À "+multiPlayers[currentPlayer+1].toUpperCase();
+ }else{
+   document.querySelector("#passTitle").textContent=multiPlayers.length+" BULLETINS VERROUILLÉS ✓";
+   document.querySelector("#passText").textContent="Les choix sont enregistrés. Le tirage commun peut commencer.";
+   document.querySelector("#passButton").textContent="VOIR LE TIRAGE COMMUN";
+ }
+};
+renderBulletin();
+
+
+function buildPseudoInputs(){
+ const n=parseInt(document.querySelector("#playerCount").value,10);
+ const box=document.querySelector("#pseudoInputs");
+ box.innerHTML="";
+ for(let i=0;i<n;i++){
+   const input=document.createElement("input");
+   input.id="pseudo"+(i+1);
+   input.maxLength=14;
+   input.placeholder="Pseudo joueur "+(i+1);
+   box.appendChild(input);
+ }
+}
+document.querySelector("#playerCount").onchange=buildPseudoInputs;
+buildPseudoInputs();
+
+document.querySelector("#startMultiPlayers").onclick=()=>{
+ const n=parseInt(document.querySelector("#playerCount").value,10);
+ multiPlayers=[];
+ for(let i=0;i<n;i++){
+   const el=document.querySelector("#pseudo"+(i+1));
+   multiPlayers.push((el.value.trim()||("JOUEUR "+(i+1))));
+ }
+ currentPlayer=0;savedBulletins=[];playerWins=multiPlayers.map(()=>new Set());commonDraw=[];
+ document.querySelector("#pseudoScreen").style.display="none";
+ document.querySelector("#competitorsBand").style.display="none";
+ renderPlayersPanel(false);
+ document.querySelector("#playerBand").style.display="block";
+ document.querySelector("#playerBand").textContent=multiPlayers[0]+" — PRÉPARE TON BULLETIN 6+4";
+ bulletinSel=Array.from({length:6},()=>new Set());validatedMixes.clear();winningMixes.clear();bulletinLocked=false;renderBulletin();
+ document.querySelector("#bulletin").style.display="block";
+ document.querySelector("#bulletin").scrollIntoView({behavior:"smooth",block:"start"});
+};
+
+document.querySelector("#passButton").onclick=()=>{
+ document.querySelector("#passScreen").style.display="none";
+ if(currentPlayer < multiPlayers.length-1){
+   currentPlayer++;
+   bulletinSel=Array.from({length:6},()=>new Set());validatedMixes.clear();winningMixes.clear();bulletinLocked=false;
+   document.querySelector("#playerBand").textContent=multiPlayers[currentPlayer]+" — PRÉPARE TON BULLETIN 6+4";
+   document.querySelector("#passTitle").textContent="BULLETIN VERROUILLÉ ✓";
+   renderBulletin();
+   document.querySelector("#bulletin").scrollIntoView({behavior:"smooth",block:"start"});
+ }else{
+   document.querySelector("#bulletin").style.display="none";
+   document.querySelector("#playerBand").textContent=multiPlayers.length+" JOUEURS PRÊTS ✓ — UN SEUL TIRAGE POUR TOUS";
+   document.querySelector("#readyTitle").textContent=multiPlayers.length+" JOUEURS PRÊTS ✓";
+   document.querySelector("#readyScreen").style.display="flex";
+ }
+};
+
+document.querySelector("#commonLaunch").onclick=()=>{document.querySelector("#readyScreen").style.display="none";full();};
+
+function showMultiResults(){
+ renderPlayersPanel(true);
+ const rank=multiPlayers.map((n,i)=>({name:n,mix:playerWins[i].size,pts:baremeMulti[playerWins[i].size]})).sort((a,b)=>b.mix-a.mix);
+ document.querySelector("#ranking").innerHTML=rank.map((x,i)=>(i+1)+". <strong>"+x.name+"</strong> — "+x.mix+" MIX — "+x.pts+" pts").join("<br>");
+ document.querySelector("#multiFinal").style.display="block";
+ document.querySelector("#multiFinal").scrollIntoView({behavior:"smooth",block:"center"});
+}
+function showVerify(i){
+ let set=savedBulletins[i]||new Set(),html="<strong>"+multiPlayers[i]+"</strong><br><span style='color:#d8c27a'>Bulletin verrouillé avant le tirage</span><br><br>";
+ vowelsB.forEach(v=>{let ms=[...set].filter(m=>m.endsWith(v));html+="<strong>"+v+"</strong> : "+ms.map(m=>commonDraw.includes(m)?"<span class='verifyWin'>"+m+" ✓</span>":m).join(" · ")+"<br>";});
+ document.querySelector("#verifyBulletin").innerHTML=html;
+ document.querySelector("#commonDrawProof").innerHTML="<strong>TIRAGE COMMUN</strong><br>"+commonDraw.map(m=>"<span class='"+(set.has(m)?"verifyWin":"")+"'>"+m+(set.has(m)?" ✓":"")+"</span>").join(" · ");
+}
+document.querySelector("#verifyBtn").onclick=()=>{
+ const area=document.querySelector("#verifyArea");
+ area.style.display="block";
+ document.querySelector("#verifyBulletin").innerHTML="";
+ document.querySelector("#commonDrawProof").innerHTML="";
+ let tabs=document.querySelector("#verifyTabs");tabs.innerHTML="";
+ multiPlayers.forEach((n,i)=>{
+   let b=document.createElement("button");
+   b.textContent=n;
+   b.onclick=()=>showVerify(i);
+   tabs.appendChild(b);
+ });
+ area.scrollIntoView({behavior:"smooth",block:"center"});
+};
+
+document.querySelector("#newGameFinal").onclick=()=>{location.reload();};
+
+addEventListener("resize",()=>{});setup();
+</script></body></html>
