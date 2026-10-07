@@ -9,28 +9,83 @@
   body{
     margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
     background:radial-gradient(circle at 50% 18%,#20323e,#080b10 50%,#020304);
-    color:#efc74c; font-family:Arial,sans-serif; text-align:center; padding:24px;
+    color:#efc74c; font-family:Arial,sans-serif; text-align:center; padding:22px;
   }
   .card{
-    width:min(92vw,560px); padding:34px 22px 30px;
+    width:min(92vw,600px); padding:30px 22px 28px;
     border:1px solid #9b7627; border-radius:18px; background:#070b0ef2;
     box-shadow:0 0 30px #000;
   }
-  h1{margin:0 0 8px; font-size:clamp(30px,7vw,48px); letter-spacing:3px}
-  .tag{font-size:12px; letter-spacing:1.6px; color:#d8c27a; margin-bottom:30px}
-  .choice{
-    display:block; width:min(88%,360px); margin:14px auto; padding:17px 14px;
+  h1{margin:0 0 6px; font-size:clamp(30px,7vw,48px); letter-spacing:3px}
+  .tag{font-size:12px; letter-spacing:1.5px; color:#d8c27a; margin-bottom:22px}
+  .rules{
+    color:#eee2b0; font-size:13px; line-height:1.55; text-align:left;
+    width:min(94%,500px); margin:0 auto 20px;
+  }
+  .rules strong{color:#efc74c}
+  .bar{
+    margin:16px auto 4px; padding-top:14px; border-top:1px solid #57451f;
+    color:#d8c27a; text-align:center; font-size:12px; line-height:1.6;
+  }
+  .choice,.continue{
+    display:block; width:min(88%,380px); margin:14px auto; padding:16px 14px;
     border:1px solid #c79b34; border-radius:12px;
     background:linear-gradient(#2b210b,#120f07);
     color:#f4d466; text-decoration:none; font-weight:900; font-size:16px;
-    letter-spacing:.7px; box-shadow:0 0 14px #e0b02d22;
+    letter-spacing:.6px; box-shadow:0 0 14px #e0b02d22;
+    cursor:pointer;
   }
   .sub{display:block; margin-top:6px; font-size:11px; font-weight:normal; color:#d8c27a}
-  .foot{margin-top:28px; font-size:11px; color:#9e8d58}
+  .foot{margin-top:24px; font-size:11px; color:#9e8d58}
+  #modeScreen{display:none}
+  @media(max-width:430px){
+    body{padding:12px}
+    .card{padding:24px 16px 22px}
+    .rules{font-size:12px;line-height:1.45}
+  }
 </style>
 </head>
 <body>
-  <main class="card">
+
+  <main class="card" id="rulesScreen">
+    <h1>ALPHABALLS</h1>
+    <div class="tag">FORMEZ · JOUEZ · VISEZ LE MIXIMUM</div>
+
+    <div class="rules">
+      <p><strong>COMMENT JOUER ?</strong></p>
+      <p>
+        Formez 6 MIX.<br>
+        Dans chacune des 6 colonnes représentant une voyelle,<br>
+        choisissez 1 consonne.
+      </p>
+      <p>
+        Vous avez maintenant vos 6 MIX de base.<br>
+        Ajoutez ensuite 4 consonnes supplémentaires, dans 4 colonnes différentes.
+      </p>
+      <p>
+        Votre bulletin contient alors 10 MIX.<br>
+        Validez votre bulletin, puis lancez le tirage des 6 ALPHABALLS.
+      </p>
+      <p>
+        Chaque MIX tiré correspondant à votre bulletin est gagné ✓.
+      </p>
+
+      <div class="bar">
+        <strong>BARÈME</strong><br>
+        2 MIX = 5 pts · 3 = 15 pts · 4 = 50 pts<br>
+        5 = 250 pts · 6 = 1 000 pts 👑 MIXIMUM 👑
+      </div>
+
+      <p style="text-align:center;margin-bottom:0">
+        <strong>Objectif :</strong> obtenir le plus de MIX possible.
+      </p>
+    </div>
+
+    <button class="continue" id="continueBtn">J'AI COMPRIS — CONTINUER</button>
+    <div class="foot">ALPHAZARD</div>
+  </main>
+
+  <main class="card" id="modeScreen">
     <h1>ALPHABALLS</h1>
     <div class="tag">CHOISISSEZ VOTRE MODE DE JEU</div>
 
@@ -46,5 +101,13 @@
 
     <div class="foot">ALPHAZARD</div>
   </main>
+
+<script>
+document.getElementById("continueBtn").addEventListener("click", function(){
+  document.getElementById("rulesScreen").style.display="none";
+  document.getElementById("modeScreen").style.display="block";
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+</script>
 </body>
 </html>
