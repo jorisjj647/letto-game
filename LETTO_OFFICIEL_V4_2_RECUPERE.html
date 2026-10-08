@@ -819,6 +819,7 @@ margin:0 auto 14px;
     <h2>RÈGLES DE LETTO</h2>
 
     <p>🎯 Une partie = 10 manches.</p>
+    <p>🎲 6 lettres par manche : maximum 4 voyelles, donc au moins 2 consonnes.</p>
 <p>🎲 Pour chaque lettre, choisis D6 Voyelles ou D20 Consonnes.</p>
 <p>👀 OPPORTUNITÉ peut signaler qu’un gain est proche.</p>
 <p>🔥 TRIPLÉ 5 • AABB 10 • SUITE 15 • PALINDROME 25 • ARTART 30.</p>
@@ -901,6 +902,7 @@ Création originale •  Joris Justin JOLY • 2011
 <li>Observe ton tirage : 👀 OPPORTUNITÉ peut signaler qu’un gain est proche.</li>
 <li>TRIPLÉ = 5 pts • AABB = 10 pts • SUITE = 15 pts • PALINDROME = 25 pts • ARTART = 30 pts.</li>
 <li>Objectif ultime : réunir L-E-T-T-O parmi tes 6 lettres. Si tu réussis, LETTO met fin immédiatement à la partie.</li>
+<li>🎲 6 lettres par manche : maximum 4 voyelles, donc au moins 2 consonnes.</li>
 </ol>
       </div>
 
@@ -923,6 +925,10 @@ Création originale •  Joris Justin JOLY • 2011
     const playBtn = document.createElement("button");
     const vowelBtn = document.getElementById("vowelBtn");
     vowelBtn.onclick = () => {
+      if(vowelCount >= 4){
+        msgEl.textContent = "⚠️ 4 voyelles maximum - choisis D20";
+        return;
+      }
       const gameVowelDie = document.getElementById("gameVowelDie");
 gameVowelDie.classList.remove("game-die-spin");
 void gameVowelDie.offsetWidth;
@@ -936,6 +942,7 @@ gameVowelDie.classList.add("game-die-spin");
         spins--;
         if(spins <= 0){
           clearInterval(anim);
+          vowelCount++;
           addLetterToDraw(rollVowelDie());
           }}, 60);
       };
@@ -971,6 +978,7 @@ gameConsonantDie.classList.add("game-die-spin");
     historyList.innerHTML = "";
     let currentDraw = [];
     let rollIndex = 0;
+    let vowelCount = 0
 const roundDisplay = document.getElementById("roundDisplay");
     let best = Number(localStorage.getItem("letto_best") || 0);
     
@@ -1052,6 +1060,7 @@ function addLetterToDraw(letter){
     vowelBtn.disabled = true;
     consonantBtn.disabled = true;
     rollIndex = 0;
+    vowelCount = 0
     setTimeout(() => {
       slots.forEach(s => s.textContent = "?");
       vowelBtn.disabled = false;
@@ -1197,6 +1206,7 @@ if(suiteCount > 0){
   consonantBtn.disabled = false;
   currentDraw = [];
   rollIndex = 0;
+  vowelCount = 0
   slots.forEach(s => s.textContent = "?");
   score = 0;
   scoreEl.textContent = "0";
