@@ -444,53 +444,22 @@
     let dictionnairePret = false;
 
     const voyelles = ["A", "E", "I", "O", "U", "Y"];
-    const dictionnaire = [
-      "CHAT",
-      "CHIEN",
-      "MAISON",
-      "ARBRE",
-      "TABLE",
-      "JARDIN",
-      "ROUGE",
-      "VERT",
-      "BONJOUR",
-      "ALPHAZARD",
-      "PORTE",
-      "FENETRE",
-      "VOITURE",
-      "CAMION",
-      "VELO",
-      "TRAIN",
-      "AVION",
-      "BATEAU",
-      "LIVRE",
-      "CAHIER",
-      "ECOLE",
-      "CLASSE",
-      "ELEVE",
-      "PROF",
-      "SOLEIL",
-      "LUNE",
-      "ETOILE",
-      "MER",
-      "PLAGE",
-      "SABLE",
-      "MONTAGNE",
-      "FORET",
-      "FLEUR",
-      "POMME",
-      "POIRE",
-      "ORANGE",
-      "BANANE",
-      "RAISIN",
-      "TENNIS",
-      "FOOT",
-      "RUGBY",
-      "PIZZA",
-      "JAZZ",
-      "PARKING",
-      "WEEKEND"
-    ];
+    let dictionnaire = [];
+
+fetch("ALPHAZARD_LETTO_DICO_3a7_V3_DICE.txt")
+  .then(response => response.text())
+  .then(data => {
+    dictionnaire = data
+      .split("\n")
+      .map(mot => mot.trim().toUpperCase())
+      .filter(mot => mot.length > 0);
+
+    dictionnairePret = true;
+    console.log("Dictionnaire chargé :", dictionnaire.length, "mots");
+  })
+  .catch(error => {
+    console.error("Erreur dictionnaire :", error);
+  });
 
     const consonnes = [
       "B", "C", "D", "F", "G",
@@ -645,11 +614,17 @@ function entrerDansDuel() {
         resultat.style.color = "red";
         return;
       }
-      if (false && !dictionnaire.includes(mot)) {
-        resultat.innerHTML = "❌ Mot inconnu";
-        resultat.style.color = "red";
-        return;
-      }
+      if (!dictionnairePret) {
+  resultat.innerHTML = "⏳ Dictionnaire en cours de chargement";
+  resultat.style.color = "gold";
+  return;
+}
+
+if (!dictionnaire.includes(mot)) {
+  resultat.innerHTML = "❌ Mot inconnu";
+  resultat.style.color = "red";
+  return;
+}
 
       let copie = [...lettres];
 
