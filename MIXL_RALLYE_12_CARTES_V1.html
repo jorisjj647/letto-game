@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root{--red:#e53935;--blue:#1e88e5;--yellow:#fdd835;--orange:#fb8c00;--green:#43a047;--purple:#8e24aa;--gold:#f5c542}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#07111f;color:white;padding:16px}
+header{
+text-align:center;
+margin-bottom:2px;
+padding-top:4px;
+}
+h1{font-size:24px;margin:0;letter-spacing:3px}
+.m{color:var(--red)}.i{color:var(--yellow)}.x{color:var(--blue)}.l{color:var(--green)}
+.main{display:grid;grid-template-columns:220px 1fr;gap:12px;max-width:1000px;margin:auto}
+.panel{background:#101c2d;border-radius:18px;padding:14px;border:1px solid rgba(255,255,255,.15)}
+.bag{height:105px;background:linear-gradient(145deg,#111,#333);border-radius:25px;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:bold;margin-bottom:10px}
+.bag.shake{animation:shake .5s ease;}
+@keyframes shake{25%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}75%{transform:rotate(-4deg)}}
+.stat{background:#07111f;border-radius:12px;padding:8px;margin:7px 0;text-align:center}
+.stat strong{display:block;color:var(--gold);font-size:26px}
+.token{width:96px;height:96px;border-radius:50%;background:white;color:#111;margin:10px auto;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:bold;border:8px solid #999}
+box-shadow:
+0 0 25px rgba(255,215,0,0.75),
+0 10px 20px rgba(0,0,0,.35);
+.token.pop{
+animation:tokenPop .75s ease;
+}
+
+@keyframes tokenPop{
+0%{transform:scale(.75);box-shadow:0 0 8px rgba(255,215,0,.35)}
+70%{transform:scale(1.12);box-shadow:0 0 28px rgba(255,215,0,.9)}
+100%{transform:scale(1);box-shadow:0 0 25px rgba(255,215,0,.75)}
+}
+@keyframes pop{0%{transform:scale(.7)}80%{transform:scale(1.15)}100%{transform:scale(1)}}
+button{width:100%;padding:16px;margin-top:9px;border:0;border-radius:16px;font-size:18px;font-weight:bold;cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,.28);}
+#draw{
+background:linear-gradient(145deg,#ffe27a,#d9a400);
+color:#111;
+box-shadow:
+0 6px 18px rgba(255,215,0,.35),
+0 3px 8px rgba(0,0,0,.25);
+}
+#reset{
+background:linear-gradient(145deg,#223451,#18263d);
+color:white;
+box-shadow:
+0 6px 14px rgba(0,0,0,.28),
+0 0 10px rgba(80,120,255,.12);
+}
+#validateBtn{display:none;background:#00c853;color:white;box-shadow:0 0 14px rgba(0,200,83,.8)}
+#validateBtn.show{display:block;animation:pop .45s ease;}
+.actionRow{display:block;}
+.actionRow button{width:100%;}
+.info{
+text-align:center;
+font-weight:bold;
+margin-bottom:14px;
+background:rgba(15,20,40,.55);
+padding:8px 18px;
+border-radius:18px;
+border:1px solid rgba(255,215,0,.18);
+box-shadow:0 0 18px rgba(0,0,0,.35);
+backdrop-filter:blur(4px)
+}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.card{
+background:linear-gradient(145deg,#ffe27a,#d4a017);
+color:#111;
+border:5px solid #b8860b;
+border-radius:18px;
+padding:10px;
+transition:transform .25s, box-shadow .25s;
+cursor:pointer;
+transform:translateY(0);
+box-shadow:0 8px 18px rgba(0,0,0,.35);
+overflow:hidden;
+position:relative;
+cursor:pointer;
+}
+.card.serie-bleue {
+  background: linear-gradient(145deg, #183b68, #091a36);
+  border-color: #4388d0;
+}
+
+.card.serie-violette {
+  background: linear-gradient(145deg, #62358c, #291343);
+  border-color: #a875df;
+}
+.card:hover{
+transform:translateY(-4px);
+box-shadow:0 14px 28px rgba(0,0,0,.45);
+}
+.card::before{
+content:"";
+position:absolute;
+top:0;
+left:-120%;
+width:80%;
+height:100%;
+background:linear-gradient(
+90deg,
+transparent,
+rgba(255,255,255,.18),
+transparent
+);
+transform:skewX(-25deg);
+transition:.7s;
+}
+
+.card:hover::before{
+left:140%;
+}
+.card.bonus{
+border-color:#ff3b30;
+box-shadow:
+0 0 12px rgba(255,59,48,.7)
+0 0 28px rgba(255,215,0,.9);
+transform:translateY(-4px) scale(1.03);
+}
+.card.ready{
+border-color:#00c853;
+box-shadow:
+0 0 18px rgba(0,200,83,.75),
+0 0 35px rgba(0,200,83,.35);
+transform:translateY(-2px) scale(1.01);
+animation:readyPulse 1.2s infinite ease-in-out;
+}
+@keyframes readyPulse{
+0%{box-shadow:0 0 18px rgba(0,200,83,.55),0 0 30px rgba(0,200,83,.25)}
+50%{box-shadow:0 0 26px rgba(0,200,83,.95),0 0 45px rgba(0,200,83,.45)}
+100%{box-shadow:0 0 18px rgba(0,200,83,.55),0 0 30px rgba(0,200,83,.25)}
+}
+.card h2{margin:0 0 6px;background:#b3122f;color:white;text-align:center;border-radius:8px;padding:5px;font-size:16px}
+.card.bonus h2{background:var(--gold);color:#111}
+.card.ready h2{background:#00c853;color:white}
+.card:nth-child(-n+6) h2{background:#1764b5;}
+.card:nth-child(n+7) h2{background:#7836b5;}
+.card .bonusText{font-size:13px;text-align:center;margin-bottom:6px;font-weight:bold;color:#333}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.cell{
+height:40px;
+background:linear-gradient(145deg,#ffffff,#ececec);
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:700;
+font-size:14px;
+box-shadow:0 4px 10px rgba(0,0,0,.22);
+transition:.2s;
+}
+.cell.marked{color:white;animation:mark .2s}
+@keyframes mark{0%{transform:scale(1.18)}100%{transform:scale(1)}}
+.cell.win{outline:4px solid var(--gold);box-shadow:0 0 16px var(--gold);animation:pulse 1s infinite}
+@keyframes pulse{50%{filter:brightness(1.4)}}
+#bonusAlert{display:none;margin-top:10px;background:var(--gold);color:#111;text-align:center;padding:10px;border-radius:12px;font-weight:bold}
+#bonusAlert.show{display:block;animation:pop .35s}
+#readyAlert{display:none;margin-top:10px;background:#00c853;color:white;text-align:center;padding:10px;border-radius:12px;font-weight:bold}
+#readyAlert.show{display:block;animation:pop .35s}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:9}
+.box{background:white;color:#111;border-radius:22px;padding:28px;text-align:center;max-width:420px;animation:zoom .35s}
+@keyframes zoom{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+.box h2{font-size:60px;margin:0 0 8px}
+.confetti{position:fixed;top:-20px;width:10px;height:18px;animation:fall 2.6s linear forwards;z-index:20}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.2}}
+@media(max-width:850px){body{padding:10px}.main{grid-template-columns:1fr}.cards{grid-template-columns:1fr}h1{font-size:38px}.bag{height:95px}}
+.cards{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+
+@media(min-width:700px){
+  .cards{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(min-width:1000px){
+  .cards{
+    grid-template-columns:repeat(3,1fr);
+  }
+}
+@media (max-width: 768px) {
+  #playerName {
+  display: none !important;
+}
+
+  body {
+    padding: 4px;
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 100%;
+  }
+
+  .panel {
+    padding: 2px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+  .card {
+    width: 100%;
+  }
+
+  .cell {
+    height: 38px;
+    font-size: 17px;
+  }
+
+  .token {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+}
+#sacJetons{
+  width:120px;
+  height:120px;
+  border-radius:25px;
+  background:linear-gradient(145deg,#111,#333);
+  border:3px solid gold;
+  margin:auto;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 0 25px rgba(255,215,0,0.4);
+z-index:0;
+}
+
+#sacJetons::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+right:0;
+bottom:0;
+display:block;
+background-image:url("logo.jpg"),url("https://raw.githubusercontent.com/jorisjj647/mixl/main/logo.jpg");
+background-size:contain;
+background-repeat:no-repeat;
+background-position:center;
+opacity:1;
+z-index:1;
+}
+
+#sacJetons::after{
+  content:"KI";
+  position:absolute;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:gold;
+  color:black;
+  font-weight:bold;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  top:70px;
+  left:40px;
+  animation:popJeton 2s infinite;
+z-index:2;
+}
+
+@keyframes popJeton{
+0%{
+transform:translateY(30px) scale(0.2) rotate(-15deg);
+opacity:0;
+}
+
+25%{
+transform:translateY(-5px) scale(1.15) rotate(8deg);
+opacity:1;
+}
+
+50%{
+transform:translateY(-20px) scale(1) rotate(-5deg);
+opacity:1;
+}
+
+75%{
+transform:translateY(-40px) scale(0.8) rotate(5deg);
+opacity:0.9;
+}
+
+100%{
+transform:translateY(-80px) scale(0.2) rotate(-10deg);
+opacity:0;
+}
+}
+@media (max-width: 900px){
+
+.main{
+grid-template-columns:1fr;
+}
+
+.cards{
+grid-template-columns:1fr;
+}
+
+.panel{
+    padding:4px;
+    background:rgba(10,15,35,.35);
+    border-radius:16px;
+    backdrop-filter:blur(4px);
+}
+
+h1{
+font-size:24px;
+text-align:center;
+}
+
+#bag{
+    height:36px;
+    font-size:16px;
+    padding:3px;
+}
+
+button{
+font-size:16px;
+padding:10px;
+}
+
+.token{
+width:60px;
+height:60px;
+font-size:22px;
+}
+
+.card{
+margin-bottom:14px;
+}
+
+}
+
+
+
+
+/* === MIXL V2 SAFE — amélioration affichage uniquement === */
+/* Moteur JavaScript inchangé */
+
+/* Ordinateur : compacter sans changer la logique */
+@media (min-width: 901px){
+  body{padding:8px; overflow-x:hidden;}
+  header{margin-bottom:6px; padding-top:0;}
+  body > h1{font-size:18px; margin:0 0 2px 0; text-align:center; letter-spacing:2px;}
+  body > p{font-size:12px !important; margin:2px 0 4px 0; text-align:center;}
+  header h1{font-size:22px;}
+  header div[style*="font-size:20px"]{font-size:15px !important; margin-top:1px !important;}
+  header div[style*="font-size:30px"]{font-size:19px !important; margin-top:2px !important;}
+  .main{max-width:1100px; grid-template-columns:170px 1fr; gap:8px; align-items:start;}
+  .panel{padding:8px; border-radius:14px;}
+  #sacJetons{width:82px; height:82px; border-radius:18px;}
+  #sacJetons::after{width:30px; height:30px; top:48px; left:26px; font-size:12px;}
+  #pseudoInput{padding:6px !important; width:132px !important; font-size:12px;}
+  #playersInputs input{padding:4px !important; width:100px !important; font-size:11px;}
+  #btn1,#btn2,#btn3,#btn6{padding:4px 7px !important; font-size:12px;}
+  #modeDisplay{font-size:12px; margin-top:2px !important;}
+  #bag{height:48px !important; font-size:20px !important; border-radius:16px; margin-bottom:6px;}
+  .stat{padding:4px; margin:4px 0; font-size:12px;}
+  .stat strong{font-size:18px;}
+  .token{width:58px; height:58px; font-size:20px; border-width:5px; margin:6px auto;}
+  button{padding:9px; margin-top:5px; font-size:14px; border-radius:12px;}
+  .info{padding:5px 10px; margin-bottom:7px; font-size:13px; border-radius:14px;}
+  .cards{grid-template-columns:repeat(3,1fr) !important; gap:8px !important;}
+  .card{padding:7px; border-width:4px; border-radius:14px;}
+  .card h2{font-size:13px; padding:4px; margin-bottom:3px;}
+  .card .bonusText{font-size:11px; margin-bottom:3px;}
+  .grid{gap:4px;}
+  .cell{height:31px; font-size:12px; border-radius:9px;}
+}
+
+/* Téléphone : interface compacte, cartes visibles plus vite */
+@media (max-width: 768px){
+  html, body{width:100%; overflow-x:hidden;}
+  body{padding:6px;}
+  body > h1{font-size:17px; margin:0; text-align:center; letter-spacing:2px;}
+  body > p{font-size:11px !important; margin:2px 0 4px 0; text-align:center;}
+  header{padding-top:0; margin-bottom:4px;}
+  header h1{font-size:18px; letter-spacing:2px;}
+  header div[style*="color:var(--gold)"]{font-size:12px;}
+  header div[style*="font-size:20px"]{font-size:13px !important; margin-top:1px !important; letter-spacing:0 !important;}
+  header div[style*="font-size:30px"]{font-size:17px !important; margin-top:2px !important;}
+
+  .main{display:flex !important; flex-direction:column !important; gap:6px !important; max-width:100% !important;}
+  .main > .panel:first-child{
+    display:grid;
+   grid-template-columns:64px 1fr 60px 60px;
+    grid-template-areas:
+      "sac bag token token"
+      "last brand draw draw"
+      "players players actions actions";
+    gap:5px;
+    align-items:center;
+    padding:6px !important;
+    border-radius:14px;
+  }
+  .main > .panel:first-child > div:first-child{grid-area:sac; margin:0 !important; display:block !important;}
+  #sacJetons{width:58px; height:58px; border-radius:14px; border-width:2px;}
+  #sacJetons::after{width:24px; height:24px; top:32px; left:17px; font-size:10px;}
+
+  #bag{grid-area:bag; height:38px !important; font-size:15px !important; margin:0 !important; border-radius:18px;}
+  #token{grid-area:token; width:52px !important; height:52px !important; font-size:18px !important; border-width:5px; margin:0 auto !important;}
+  .main > .panel:first-child > div:nth-of-type(8){grid-area:brand; margin:0 !important; font-size:10px !important; line-height:1.1 !important;}
+  .main > .panel:first-child > div:nth-of-type(11){grid-area:last; font-size:12px; margin:0 !important;}
+  #draw{grid-area:draw; margin:0 !important; padding:8px 5px !important; font-size:13px !important; border-radius:12px;}
+  .actionRow{
+     grid-area:actions;
+     display:flex;
+     gap:6px;
+     align-items:center;
+     width:100%;
+   }
+   .actionRow #reset,
+   .actionRow #validateBtn{
+     flex:1 1 0;
+     width:auto !important;
+     min-width:0;
+     margin:0 !important;
+     padding:7px 5px !important;
+     font-size:11px !important;
+     border-radius:12px;
+   }
+
+  .main > .panel:first-child > div:nth-of-type(2),
+  .main > .panel:first-child > div:nth-of-type(3),
+  .main > .panel:first-child > div:nth-of-type(4),
+  .main > .panel:first-child > div:nth-of-type(5),
+  .main > .panel:first-child > .stat,
+  #bonusAlert,
+  #readyAlert{display:none !important;}
+
+  section > div[style*="JOUEUR"],
+  #playerName{font-size:12px !important;}
+  section > div[style*="display:inline-block"]{padding:4px 10px !important; margin-bottom:4px !important;}
+  .info{display:none !important;}
+
+  .cards{display:grid !important; grid-template-columns:1fr 1fr !important; gap:6px !important;}
+  .card{width:100%; padding:5px; border-width:3px; border-radius:12px; margin-bottom:0 !important;}
+  .card h2{font-size:12px; padding:3px; margin-bottom:2px; border-radius:6px;}
+  .card .bonusText{font-size:10px; margin-bottom:2px;}
+  .grid{gap:3px;}
+  .cell{height:26px !important; font-size:11px !important; border-radius:7px; box-shadow:0 2px 5px rgba(0,0,0,.20);}
+}
+
+@media (max-width: 390px){
+  .cell{height:24px !important; font-size:10px !important;}
+  .card .bonusText{font-size:9px;}
+  header div[style*="font-size:30px"]{font-size:15px !important;}
+}
+
+
+/* === MIXL V3 — ORDINATEUR COMPACT === */
+/* Objectif : réduire les cartes et le panneau joueurs, sans toucher au moteur */
+@media (min-width: 901px){
+  body{padding:6px;}
+  header{margin-bottom:3px; padding-top:0;}
+  body > h1{font-size:16px !important; margin:0 !important; line-height:1.05;}
+  body > p{font-size:11px !important; margin:0 0 2px 0 !important;}
+  header div[style*="color:var(--gold)"]{font-size:12px;}
+  header h1{font-size:18px !important; line-height:1.05;}
+  header div[style*="font-size:20px"]{font-size:13px !important; margin-top:0 !important; line-height:1.05 !important;}
+  header div[style*="font-size:30px"]{font-size:16px !important; margin-top:1px !important; line-height:1.05 !important;}
+
+  .main{max-width:1080px !important; grid-template-columns:150px 1fr !important; gap:6px !important; align-items:start;}
+  .panel{padding:6px !important; border-radius:12px !important;}
+
+  #sacJetons{width:72px !important; height:72px !important; border-radius:15px !important;}
+  #sacJetons::after{width:26px !important; height:26px !important; top:42px !important; left:23px !important; font-size:11px !important;}
+  #pseudoInput{padding:4px !important; width:118px !important; font-size:11px !important; border-radius:10px !important;}
+  #playersInputs{margin-bottom:3px !important; display:grid !important; grid-template-columns:1fr !important; gap:2px !important; justify-items:center !important;}
+  #playersInputs input{padding:3px !important; width:100px !important; font-size:10px !important; margin:1px !important; border-radius:8px !important;}
+  #btn1,#btn2,#btn3,#btn6{padding:3px 6px !important; font-size:11px !important; border-radius:8px !important;}
+  #modeDisplay{font-size:11px !important; margin-top:1px !important;}
+  #bag{height:36px !important; font-size:16px !important; border-radius:13px !important; margin-bottom:4px !important;}
+  .stat{padding:3px !important; margin:3px 0 !important; font-size:10px !important; line-height:1.05 !important;}
+  .stat strong{font-size:15px !important;}
+  .token{width:48px !important; height:48px !important; font-size:17px !important; border-width:5px !important; margin:4px auto !important;}
+  button{padding:7px !important; margin-top:4px !important; font-size:12px !important; border-radius:10px !important;}
+
+  section > div[style*="display:inline-block"]{padding:3px 9px !important; margin-bottom:4px !important; font-size:12px !important;}
+  .info{padding:4px 8px !important; margin-bottom:5px !important; font-size:11px !important; line-height:1.15 !important; border-radius:12px !important;}
+
+  .cards{grid-template-columns:repeat(3,1fr) !important; gap:6px !important;}
+  .card{padding:5px !important; border-width:3px !important; border-radius:12px !important; box-shadow:0 5px 12px rgba(0,0,0,.30) !important;}
+  .card h2{font-size:12px !important; padding:3px !important; margin-bottom:2px !important; border-radius:6px !important;}
+  .card .bonusText{font-size:9px !important; margin-bottom:2px !important; line-height:1.05 !important;}
+  .grid{gap:3px !important;}
+  .cell{height:25px !important; font-size:10px !important; border-radius:7px !important; box-shadow:0 2px 5px rgba(0,0,0,.18) !important;}
+}
+
+@media (min-width: 901px) and (max-height: 760px){
+  .cell{height:23px !important; font-size:9.5px !important;}
+  .card{padding:4px !important;}
+  .cards{gap:5px !important;}
+  .info{font-size:10px !important; padding:3px 8px !important;}
+}
+
+/* === MIXL V3.1 — LOGO + PSEUDOS COMPACTS === */
+@media (min-width: 901px){
+  /* suppression de la ligne blanche : déjà retirée dans le HTML */
+  #sacJetons::before{
+    background-size:contain !important;
+    background-repeat:no-repeat !important;
+    background-position:center !important;
+    opacity:1 !important;
+  }
+
+  /* Pseudos compacts : évite que la console s'allonge trop en 6 joueurs */
+  #playersInputs{
+    display:grid !important;
+    grid-template-columns:repeat(2, 1fr) !important;
+    gap:2px !important;
+    justify-items:center !important;
+    margin-bottom:3px !important;
+  }
+  #playersInputs input{
+    width:56px !important;
+    padding:3px 2px !important;
+    font-size:9px !important;
+    margin:0 !important;
+    border-radius:8px !important;
+  }
+}
+
+#mixlOnboarding{
+  position:fixed;
+  inset:0;
+  background:#081321;
+  color:white;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+#mixlOnboarding h1{
+  color:gold;
+  font-size:60px;
+  margin-bottom:20px;
+}
+
+#mixlOnboarding p{
+  font-size:22px;
+  margin-bottom:30px;
+}
+
+#mixlOnboarding button{
+  background:gold;
+  color:black;
+  border:none;
+  border-radius:12px;
+  padding:15px 30px;
+  font-size:20px;
+  font-weight:bold;
+  cursor:pointer;
+}
+/* === MODE SOLO : choix de carte === */
+#draw:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  filter:grayscale(.25);
+}
+.card.solo-choice{
+  outline:3px dashed rgba(255,215,0,.75);
+}
+.card.solo-selected{
+  grid-column:1 / -1;
+  order:-1;
+  outline:4px solid gold;
+  box-shadow:0 0 24px rgba(255,215,0,.85),0 12px 28px rgba(0,0,0,.45);
+  transform:none;
+}
+.card.solo-mini{
+  padding:3px !important;
+  border-width:2px !important;
+  opacity:.82;
+}
+.card.solo-mini h2{font-size:10px !important;padding:2px !important;margin-bottom:1px !important;}
+.card.solo-mini .bonusText{font-size:8px !important;margin-bottom:1px !important;}
+.card.solo-mini .grid{gap:2px !important;}
+.card.solo-mini .cell{height:18px !important;font-size:8px !important;border-radius:5px !important;}
+@media (max-width:768px){
+  .cards.solo-active{grid-template-columns:repeat(5,1fr) !important;}
+  .cards.solo-active .card.solo-selected{grid-column:1 / -1;}
+}
+
+
+/* === MIXL V3.2 — CÉLÉBRATIONS BONUS / MIXL === */
+#eventOverlay{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;background:rgba(2,8,18,.78);backdrop-filter:blur(4px);pointer-events:none}
+#eventOverlay.show{display:flex}
+#eventOverlay .eventBox{width:min(520px,88vw);padding:28px 22px;border-radius:24px;text-align:center;color:white;border:3px solid var(--gold);background:linear-gradient(145deg,#101c2d,#07111f);box-shadow:0 0 45px rgba(255,215,0,.72);animation:eventZoom .42s ease both}
+#eventOverlay.bonus .eventBox{border-color:var(--gold);box-shadow:0 0 55px rgba(255,215,0,.95)}
+#eventOverlay.mixl .eventBox{border-color:#00c853;box-shadow:0 0 70px rgba(0,200,83,.95)}
+#eventTitle{font-size:clamp(42px,10vw,78px);font-weight:900;letter-spacing:3px;margin-bottom:10px}
+#eventCard{font-size:clamp(22px,5vw,34px);font-weight:800}
+@keyframes eventZoom{0%{transform:scale(.55);opacity:0}70%{transform:scale(1.08);opacity:1}100%{transform:scale(1);opacity:1}}
+.card.event-flash{animation:eventCardFlash .9s ease 2}
+@keyframes eventCardFlash{0%,100%{filter:brightness(1);transform:scale(1)}50%{filter:brightness(1.55);transform:scale(1.035)}}
+#winText{white-space:pre-line;font-size:18px;line-height:1.45}
+
+
+/* === MIXL V3.3 — IDENTITÉ / MOBILE === */
+#mixlOnboarding{padding:18px;overflow:auto}
+#mixlOnboarding .onboarding-card{width:min(680px,94vw);background:linear-gradient(145deg,#101c2d,#07111f);border:1px solid rgba(255,215,0,.35);border-radius:26px;padding:28px 24px;text-align:center;box-shadow:0 0 45px rgba(255,215,0,.18),0 18px 50px rgba(0,0,0,.45)}
+#mixlOnboarding .onboarding-brand{color:var(--gold);font-weight:800;letter-spacing:2px;margin-bottom:8px}
+#mixlOnboarding h1{font-size:clamp(52px,12vw,86px);margin:0 0 8px;letter-spacing:5px}
+#mixlOnboarding h2{margin:0 0 20px;font-size:clamp(18px,4vw,26px)}
+.onboarding-modes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.onboarding-mode{background:rgba(255,255,255,.05);border:1px solid rgba(255,215,0,.22);border-radius:16px;padding:14px;text-align:left}
+.onboarding-mode strong{display:block;color:var(--gold);margin-bottom:6px;font-size:16px}
+.onboarding-mode span{display:block;font-size:14px;line-height:1.35}
+.onboarding-rules{display:grid;gap:8px;margin:18px 0;font-size:16px}
+.onboarding-rules div{background:rgba(255,215,0,.08);border-radius:12px;padding:9px 12px}
+.onboarding-tagline{margin-top:12px;font-size:13px;opacity:.75}
+@media(max-width:620px){#mixlOnboarding{padding:10px}#mixlOnboarding .onboarding-card{padding:20px 14px;border-radius:20px}.onboarding-modes{grid-template-columns:1fr}.onboarding-mode{text-align:center;padding:10px}.onboarding-rules{font-size:14px}#mixlOnboarding button{padding:12px 18px;font-size:17px}}
+#draw.choose-card-pulse{animation:chooseCardPulse 1.45s ease-in-out infinite;opacity:1!important;filter:none!important;color:#111!important;background:linear-gradient(145deg,#fff0a5,#d9a400)!important;box-shadow:0 0 12px rgba(255,215,0,.65),0 0 26px rgba(255,215,0,.38)!important}
+@keyframes chooseCardPulse{0%,100%{transform:scale(1);box-shadow:0 0 12px rgba(255,215,0,.55),0 0 24px rgba(255,215,0,.25)}50%{transform:scale(1.035);box-shadow:0 0 20px rgba(255,215,0,.95),0 0 38px rgba(255,215,0,.55)}}
+@media(max-width:768px){
+  .main > .panel:first-child > .stat:first-of-type{display:block!important;grid-column:1/-1;padding:5px 8px!important;margin:2px 0!important;font-size:11px!important}
+  .main > .panel:first-child > .stat:first-of-type strong{display:inline!important;font-size:15px!important;margin-left:5px}
+  .info.mobile-rules{display:block!important;font-size:11px!important;line-height:1.3!important;padding:5px 8px!important;margin:0 0 6px!important}
+}
+
+
+/* === MIXL V3.3 — TOKENS + FIN DE PARTIE === */
+#winText .result-title{font-size:24px;font-weight:900;margin-bottom:10px}
+#winText .result-stats{margin:14px 0;line-height:1.55;font-size:17px}
+#winText .result-message{margin-top:12px;font-weight:800}
+#winText .result-win{
+  background:linear-gradient(90deg,#e53935,#2980d9,#f4c430,#f28c28,#23a455,#9146c8);
+  -webkit-background-clip:test;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:#f4c430;
+}
+#winText .result-loss{color:#b3122f}
+.end-actions{display:flex;gap:10px;margin-top:14px}
+.end-actions button{flex:1;width:auto}
+#homeBtn{background:linear-gradient(145deg,#223451,#18263d);color:white}
+@media(max-width:768px){
+  .main > .panel:first-child > .stat:first-of-type{
+    display:block!important;grid-column:1/-1;padding:5px 8px!important;
+    margin:2px 0!important;font-size:11px!important
+  }
+  .main > .panel:first-child > .stat:first-of-type strong{
+    display:inline!important;font-size:15px!important;margin-left:4px
+  }
+}
+
+
+/* === M3.3-09 — MIXL FLOW === */
+.mixl-flow-token{position:fixed;z-index:12000;width:54px;height:54px;border-radius:50%;background:#fff;color:#111;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;border:6px solid var(--gold);box-shadow:0 0 22px rgba(255,215,0,.9),0 10px 24px rgba(0,0,0,.45);pointer-events:none;will-change:transform,opacity}
+.cell.flow-impact{animation:flowImpact .55s ease}
+@keyframes flowImpact{0%{transform:scale(.82);box-shadow:0 0 0 rgba(255,215,0,0)}45%{transform:scale(1.16);box-shadow:0 0 28px rgba(255,215,0,.95)}100%{transform:scale(1);box-shadow:0 0 10px rgba(255,215,0,.35)}}
+#sacJetons.flow-pulse{animation:sacFlowPulse .52s ease}
+@keyframes sacFlowPulse{0%{transform:scale(1) translateY(0)}35%{transform:scale(1.04) translateY(-2px) rotate(-1.5deg)}70%{transform:scale(1.01) translateY(1px) rotate(.8deg)}100%{transform:scale(1) translateY(0)}}
+
+
+/* === MIXL FLOW iPhone / Safari compatible === */
+.mixl-flow-token.ios-flight{
+  transition:
+    transform .93s cubic-bezier(.18,.62,.2,1),
+    opacity .18s ease;
+}
+
+
+.device-note{
+  margin:12px auto 4px;
+  max-width:520px;
+  font-size:13px;
+  line-height:1.4;
+  color:#d8c27a;
+  opacity:.92;
+  text-align:center;
+}
+@media (max-width:600px){
+  .device-note{
+    font-size:12px;
+    margin-top:10px;
+    padding:0 10px;
+  }
+}
+
+</style>
+
+</head>
+<body>
+  <div id="mixlOnboarding">
+  <div class="onboarding-card">
+    <div class="onboarding-brand">ALPHAZARD présente</div>
+    <h1><span class="m">M</span><span class="i">I</span><span class="x">X</span><span class="l">L</span></h1>
+    <h2>Le jeu de société de l'alphabet</h2>
+    <div class="onboarding-modes">
+      <div class="onboarding-mode"><strong>👤 SOLO</strong><span>Choisis une carte et tente de réaliser un MIXL avant les autres cartes.</span></div>
+      <div class="onboarding-mode"><strong>👥 MULTIJOUEUR</strong><span>Chaque joueur choisit une carte. Le premier à réaliser un MIXL gagne.</span></div>
+    </div>
+    <div class="onboarding-rules">
+      <div>⭐ 2 ligne horizontale = <b>BONUS</b></div>
+      <div>🏆 4 lignes sur une même carte = <b>MIXL</b></div>
+    </div>
+    
+<div class="device-note">
+  Sur téléphone : mode SOLO uniquement.<br>
+  Sur tablette et ordinateur : SOLO ou MULTIJOUEUR.
+</div>
+
+<button onclick="document.getElementById('mixlOnboarding').style.display='none'">COMMENCER</button>
+    <div class="onboarding-tagline">Simple à apprendre. Plaisant à rejouer.</div>
+  </div>
+</div>
+<header>
+<div style="color:var(--gold);font-weight:bold">ALPHAZARD</div>
+<h1><span class="m">M</span><span class="i">I</span><span class="x">X</span><span class="l">L</span></h1>
+<div style="color:#d68cff;text-shadow:0 0 8px #b84dff,0 0 18px #8e24aa;opacity:.88;font-size:20px;letter-spacing:1px;margin-top:4px;">
+<div style="font-size:30px;font-weight:bold;">✨ MIXL SOIRÉE ✨</div>
+<div style="font-size:16px;color:#e7d9f4;">Pioche. Complète. Valide. </div>
+</div>
+<div style="font-size:18px;font-weight:bold;margin-top:6px;">
+2 lignes horizontales = <span style="color:gold;">BONUS</span>
+</div>
+</header>
+<div class="main">
+<section class="panel">
+<div style="display:flex;gap:10px;justify-content:center;margin-bottom:12px;">
+
+<div id="sacJetons"></div>
+</div>
+<div style="text-align:center;margin-bottom:10px;">
+<input id="pseudoInput" placeholder="Ton pseudo"oninput="render()"
+style="padding:10px;border-radius:12px;border:none;text-align:center;font-weight:bold;width:160px;">
+</div>
+<div id="playersInputs" style="text-align:center;margin-bottom:8px;"></div>
+<div style="text-align:center;margin:10px 0;">
+  <label for="ownerSelect" style="color:gold;">
+    ARBITRE — Choisir un joueur :
+  </label>
+  <select id="ownerSelect" onchange="selectedOwner=this.value">
+    <option value="">Choisir un pseudo</option>
+  </select>
+</div>
+
+
+<div style="display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;">
+
+<button id="btn1" onclick="setPlayers(1)" style="width:auto;padding:5px 9px;border:none;border-radius:10px;background:#1a1f35;color:gold;font-weight:bold;cursor:pointer;">1J</button>
+
+<button id="btn2" onclick="setPlayers(2)" style="width:auto;padding:5px 9px;border:none;border-radius:10px;background:#1a1f35;color:gold;font-weight:bold;cursor:pointer;">2J</button>
+
+<button id="btn3" onclick="setPlayers(3)" style="width:auto;padding:5px 9px;border:none;border-radius:10px;background:#1a1f35;color:gold;font-weight:bold;cursor:pointer;">3J</button>
+
+<button id="btn6" onclick="setPlayers(6)" style="width:auto;padding:5px 9px;border:none;border-radius:10px;background:#1a1f35;color:gold;font-weight:bold;cursor:pointer;">6J</button>
+
+
+
+</div>
+<div id="modeDisplay" style="text-align:center;color;gold;font-weight;bold;margin-top:6px;">Mode : 1 joueur</div>
+<div id="bag" class="bag">🟡 TOKEN PRÊT</div>
+<div style="text-align:center;
+font-size:11px;
+opacity:.72;
+margin-top:6px;
+line-height:1.3;
+color:gold;">
+<span style="font-size:18px;font-weight:bold;">MIXL</span>
+<span style="font-size:10px;opacity:.7;">TOKENS™</span><br>
+by Justin Joris JOLY
+</div>
+<div class="stat">MIXL Tokens™ restants <strong id="remaining">120</strong></div>
+<div class="stat">Tirages <strong id="draws">0</strong></div>
+<div>Dernier jeton :</div>
+<div id="token" class="token">--</div>
+<div id="bonusAlert">BONUS !</div>
+<div id="readyAlert">MIXL prêt ! Valide ta victoire.</div>
+<button id="draw" onclick="startAutoDraw();this.disabled=true">LANCER LA SOIRÉE</button>
+<div class="actionRow">
+<button id="reset" onclick="resetGame()">REJOUER</button>
+<button id="validateBtn" onclick="validateMixl()">VICTOIRE</button>
+</div>
+</section>
+<section>
+<div style="text-align:center;font-weight:bold;color:gold;margin-bottom:8px;background:rgba(255,215,0,.12);
+box-shadow:0 0 12px rgba(255,215,0,.18);padding:6px 14px;border-radius:12px;border:1px solid rgba(255,215,0,.35);display:inline-block;margin-left:auto;margin-right:auto;"><span id="playerName" style="text-shadow:0 0 8px rgba(255,215,0,.65);">JOUEUR 1</span></div>
+
+
+<div class="panel info mobile-rules">
+COMMENT JOUER ?<br>
+2 lignes = BONUS<br>
+4 lignes sur une même carte = <span style="color:#00c853">MIXL VALIDÉ</span><br>
+Clique sur VALIDER MIXL pour confirmer ta victoire.
+</div>
+<div id="cards" class="cards"></div>
+</section>
+</div>
+
+<div id="eventOverlay" aria-live="assertive">
+  <div class="eventBox">
+    <div id="eventTitle"></div>
+    <div id="eventCard"></div>
+  </div>
+</div>
+
+<div id="modal" class="modal">
+<div class="box">
+<h2><span class="m">M</span><span class="i">I</span><span class="x">X</span><span class="l">L</span> !</h2>
+<div id="winText"></div>
+<div class="end-actions">
+<button onclick="resetGame()">REJOUER</button>
+<button id="homeBtn" onclick="goHome()">ACCUEIL</button>
+</div>
+</div>
+</div>
+<script>
+let selectedPlayers=1;
+
+function setPlayers(n){
+document.getElementById("modeDisplay").innerText =
+"Mode : "+n+" joueur"+(n>1?"s":"");
+selectedPlayers=n;
+selectedSoloCard=null;
+updatePlayerInputs();
+document.getElementById("btn1").style.boxShadow="none";
+document.getElementById("btn2").style.boxShadow="none";
+document.getElementById("btn3").style.boxShadow="none";
+document.getElementById("btn6").style.boxShadow="none";
+
+document.getElementById("btn"+n).style.boxShadow=
+"0 0 14px gold";
+
+[1,2,3,6].forEach(x=>{
+let btn=document.getElementById("btn"+x);
+if(btn){
+btn.style.background="#1a1f35";
+btn.style.color="gold";
+btn.style.boxShadow="none";
+}
+});
+
+function updatePlayerInputs(){
+let zone=document.getElementById("playersInputs");
+zone.innerHTML="";
+
+for(let i=2;i<=selectedPlayers;i++){
+zone.innerHTML += "<input id='pseudo"+i+"'oninput='updateOwnerMenu();render()'placeholder='Joueur "+i+"' style='margin:3px;padding:6px;border-radius:10px;border:none;text-align:center;font-weight:bold;width:120px;'>";
+}
+}
+
+
+let active=document.getElementById("btn"+n);
+if(active){
+active.style.background="linear-gradient(145deg,#ffe27a,#d9a400)";
+active.style.color="#111";
+active.style.boxShadow="0 0 14px rgba(255,215,0,.55)";
+}
+const menu = document.getElementById("ownerSelect");
+if (menu) {
+  menu.innerHTML = '<option value="">Choisir un pseudo</option>';
+
+  for (let i = 1; i <= selectedPlayers; i++) {
+    const input = document.getElementById(
+      i === 1 ? "pseudoInput" : "pseudo" + i
+    );
+
+    const pseudo = input?.value.trim() || "Joueur " + i;
+    menu.add(new Option(pseudo, pseudo));
+  }
+}
+updateOwnerMenu();
+render();
+}
+function updateOwnerMenu() {
+  const menu = document.getElementById("ownerSelect");
+  if (!menu) return;
+
+  const ancienChoix = menu.value;
+  menu.innerHTML = '<option value="">Choisir un pseudo</option>';
+
+  for (let i = 1; i <= selectedPlayers; i++) {
+    const input = document.getElementById(
+      i === 1 ? "pseudoInput" : "pseudo" + i
+    );
+
+    const pseudo = input?.value.trim() || "Joueur " + i;
+    menu.add(new Option(pseudo, pseudo));
+  }
+
+  if ([...menu.options].some(option => option.value === ancienChoix)) {
+    menu.value = ancienChoix;
+  }
+}
+let cardOwners = [null, null, null, null, null, null];
+let selectedOwner = null;
+function getPlayerName(ci){
+let player=Math.floor(ci/(6/selectedPlayers))+1;
+
+if(player===1){
+return document.getElementById("pseudoInput").value || "Joueur 1";
+}
+
+let input=document.getElementById("pseudo"+player);
+
+if(input && input.value.trim()!==""){
+return input.value;
+}
+
+return "Joueur "+player;
+}
+const consonnes=["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Z"];
+const voyelles=["A","E","I","O","U","Y"];
+const colors={A:"#e53935",E:"#1e88e5",I:"#fdd835",O:"#fb8c00",U:"#43a047",Y:"#8e24aa"};
+let bag=[],cards=[],drawn=0,gameOver=false,bonusShown={},readyCard=null,readyRows=[];
+let selectedSoloCard=null;
+let autoDrawTimer = null;
+function shuffle(a){let arr=[...a];for(let i=arr.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
+function vowel(m){return m.slice(-1)}
+function fullSet(){let s=[];consonnes.forEach(c=>voyelles.forEach(v=>s.push(c+v)));return shuffle(s)}
+function resetGame(){clearInterval(autoDrawTimer);selectedSoloCard=null;let set=fullSet();bag=[...set];set=[...set,...shuffle([...set])];cards=[];drawn=0;gameOver=false;bonusShown={};readyCard=null;readyRows=[];for(let i=0;i<12;i++){cards.push(set.slice(i*20,(i+1)*20).map(m=>({mix:m,marked:false,win:false})))}document.getElementById("modal").style.display="none";document.getElementById("bonusAlert").classList.remove("show");document.getElementById("readyAlert").classList.remove("show");document.getElementById("validateBtn").classList.remove("show");document.getElementById("token").innerText="--";document.getElementById("token").style.borderColor="#777";render()}
+function countCompleteLines(card){let count=0;let rows=[];for(let r=0;r<5;r++){let s=r*4;let line=[card[s],card[s+1],card[s+2],card[s+3]];if(line.every(c=>c.marked)){count++;rows.push(r)}}return {count:count,rows:rows}}
+function showBonus(ci){
+  let alert=document.getElementById("bonusAlert");
+  alert.innerText="BONUS ! Carte "+(ci+1);
+  alert.classList.remove("show");
+  void alert.offsetWidth;
+  alert.classList.add("show");
+  playBonus();
+  showEvent("bonus","⭐ BONUS ! ⭐","Carte "+(ci+1),1200,ci);
+  setTimeout(()=>alert.classList.remove("show"),1800);
+}
+function showReady(ci){
+  let alert=document.getElementById("readyAlert");
+  alert.innerText="MIXL prêt sur Carte "+(ci+1)+" !";
+  alert.classList.remove("show");
+  void alert.offsetWidth;
+  alert.classList.add("show");
+  playMixlReady();
+  showEvent("mixl","🏆 MIXL ! 🏆","Carte "+(ci+1),1800,ci);
+  document.getElementById("validateBtn").classList.add("show");
+}
+function selectSoloCard(ci){if(selectedPlayers!==1||drawn>0||gameOver)return;selectedSoloCard=ci;render()}
+function assignCard(ci) {
+  const menu = document.getElementById("ownerSelect");
+  if (!menu || !menu.value || drawn > 0 || gameOver) return;
+
+  cardOwners[ci] = menu.value;
+  render();
+}
+function render(){document.getElementById("remaining").innerText=bag.length;document.getElementById("draws").innerText=drawn;let out=document.getElementById("cards");let drawBtn=document.getElementById("draw");out.innerHTML="";out.classList.toggle("solo-active",selectedPlayers===1&&selectedSoloCard!==null);if(selectedPlayers===1&&selectedSoloCard===null){document.getElementById("modeDisplay").innerText="Mode Solo : choisis ta carte";drawBtn.disabled=true;drawBtn.innerText="CHOISIS TA CARTE";drawBtn.classList.add("choose-card-pulse")}else{document.getElementById("modeDisplay").innerText="Mode : "+selectedPlayers+" joueur"+(selectedPlayers>1?"s":"");drawBtn.disabled=false;drawBtn.innerText="TIRAGE AUTOMATIQUE";drawBtn.classList.remove("choose-card-pulse")}cards.forEach((card,ci)=>{let info=countCompleteLines(card);let state="";if(readyCard===ci)state=" ready";else if(info.count>=2)state=" bonus";let div=document.createElement("div");let soloClass="";if(selectedPlayers===1){if(selectedSoloCard===null)soloClass=" solo-choice";else if(selectedSoloCard===ci)soloClass=" solo-selected";else soloClass=" solo-mini"}div.className="card"+state+soloClass+(ci<6?" serie-bleue":" serie-violette");if(selectedPlayers===1&&drawn===0)div.onclick=()=>selectSoloCard(ci);if(selectedPlayers>1&&drawn===0)div.onclick=()=>assignCard(ci);let label="Lignes : "+info.count+" / 4";if(readyCard===ci)label+=" • MIXL prêt";else if(info.count>=2)label+=" • BONUS";let playerLine=selectedPlayers===1?"":"<div class='bonusText'>"+(cardOwners[ci] || "Non attribuée")+"</div>";div.innerHTML="<h2>Carte "+(ci+1)+"</h2>"+playerLine+"<div class='bonusText'>"+label+"</div><div class='grid'></div>";let grid=div.querySelector(".grid");card.forEach(cell=>{let el=document.createElement("div");el.className="cell"+(cell.marked?" marked":"")+(cell.win?" win":"");el.innerText=cell.mix;if(cell.marked){let v=vowel(cell.mix);el.style.background=colors[v];if(v==="I")el.style.color="#111"}grid.appendChild(el)});out.appendChild(div)})}
+const pseudoInput=document.getElementById("pseudoInput");
+
+if(localStorage.getItem("mixlPseudo")){
+pseudoInput.value=localStorage.getItem("mixlPseudo");
+}
+
+
+pseudoInput.addEventListener("input",()=>{
+localStorage.tem("mixlPseudo",pseudoInput.value);
+});
+
+function animateMixlFlow(tokenText,targetCardIndex,targetCellIndex,done){
+  const sac=document.getElementById("sacJetons");
+  const cardsDom=document.querySelectorAll("#cards .card");
+  const targetCard=cardsDom[targetCardIndex];
+  const targetCell=targetCard ? targetCard.querySelectorAll(".cell")[targetCellIndex] : null;
+  if(!sac||!targetCell){done();return;}
+
+  sac.classList.remove("flow-pulse");
+  void sac.offsetWidth;
+  sac.classList.add("flow-pulse");
+
+  const start=sac.getBoundingClientRect();
+  const end=targetCell.getBoundingClientRect();
+  const flyer=document.createElement("div");
+  flyer.className="mixl-flow-token";
+  flyer.innerText=tokenText;
+  flyer.style.borderColor=colors[vowel(tokenText)];
+  flyer.style.left=(start.left+start.width/2-27)+"px";
+  flyer.style.top=(start.top+start.height/2-27)+"px";
+  document.body.appendChild(flyer);
+
+  const dx=(end.left+end.width/2)-(start.left+start.width/2);
+  const dy=(end.top+end.height/2)-(start.top+start.height/2);
+  const arc=Math.max(-90,Math.min(-45,-Math.abs(dx)*0.12-45));
+
+  const finishFlow=()=>{
+    flyer.remove();
+    done();
+    requestAnimationFrame(()=>{
+      const newCard=document.querySelectorAll("#cards .card")[targetCardIndex];
+      const newCell=newCard ? newCard.querySelectorAll(".cell")[targetCellIndex] : null;
+      if(newCell){
+        newCell.classList.remove("flow-impact");
+        void newCell.offsetWidth;
+        newCell.classList.add("flow-impact");
+      }
+    });
+  };
+
+  if(typeof flyer.animate==="function"){
+    const animation=flyer.animate([
+      {transform:"translate(0,0) scale(.36) rotate(-6deg)",opacity:0},
+      {transform:"translate(4px,-4px) scale(.58) rotate(-2deg)",opacity:.55,offset:.16},
+      {transform:"translate(10px,-12px) scale(.82) rotate(8deg)",opacity:1,offset:.34},
+      {transform:`translate(${dx*.48}px,${dy*.48+arc}px) scale(1.08) rotate(150deg)`,opacity:1,offset:.66},
+      {transform:`translate(${dx}px,${dy}px) scale(.72) rotate(300deg)`,opacity:1}
+    ],{duration:930,easing:"cubic-bezier(.18,.62,.2,1)",fill:"forwards"});
+    animation.onfinish=finishFlow;
+  }else{
+    flyer.classList.add("ios-flight");
+    flyer.style.opacity="0";
+    flyer.style.transform="translate(0,0) scale(.36) rotate(-6deg)";
+    void flyer.offsetWidth;
+    setTimeout(()=>{
+      flyer.style.opacity="1";
+      flyer.style.transform=`translate(${dx}px,${dy}px) scale(.72) rotate(300deg)`;
+    },40);
+    setTimeout(finishFlow,980);
+  }
+}
+
+function drawToken(){
+  let pseudo=document.getElementById("pseudoInput").value;
+  if(pseudo)document.getElementById("playerName").innerText=pseudo;
+  if(selectedPlayers===1&&selectedSoloCard===null)return;
+  if(gameOver||readyCard!==null||bag.length===0)return;
+
+  let b=document.getElementById("bag");
+  playStart();
+
+  setTimeout(()=>{
+    b.classList.remove("shake");
+    void b.offsetWidth;
+    b.classList.add("shake");
+  },100);
+
+  setTimeout(()=>{
+    let idx=Math.floor(Math.random()*bag.length);
+    let t=bag.splice(idx,1)[0];
+    drawn++;
+
+    let tok=document.getElementById("token");
+    tok.classList.remove("pop");
+    void tok.offsetWidth;
+    tok.classList.add("pop");
+    tok.innerText=t;
+    tok.style.borderColor=colors[vowel(t)];
+
+    let targetCardIndex=-1;
+    let targetCellIndex=-1;
+    cards.forEach((card,ci)=>{
+      let cellIndex=card.findIndex(c=>c.mix===t);
+      if(cellIndex!==-1){
+        targetCardIndex=ci;
+        targetCellIndex=cellIndex;
+      }
+    });
+
+    animateMixlFlow(t,targetCardIndex,targetCellIndex,()=>{
+      if(targetCardIndex!==-1&&targetCellIndex!==-1){
+        cards.forEach(card => {
+  card.forEach(cell => {
+    if (cell.mix === t) cell.marked = true;
+  });
+});
+        setTimeout(playCrystal,80);
+      }
+      checkBonusAndReady();
+      render();
+    });
+  },380);
+}
+function startAutoDraw(){
+  clearInterval(autoDrawTimer);
+  autoDrawTimer = setInterval(() => {
+    if (!gameOver && readyCard === null && bag.length > 0) {
+      drawToken();
+    }
+  }, 5000);
+}
+function checkBonusAndReady(){for(let ci=0;ci<cards.length;ci++){let info=countCompleteLines(cards[ci]);if(info.count===2&&!bonusShown[ci]){bonusShown[ci]=true;showBonus(ci)}if(info.count>=4&&readyCard===null){readyCard=ci;readyRows=info.rows;showReady(ci);return}}}
+
+let eventTimer=null;
+function showEvent(type,title,cardText,duration,cardIndex){
+  const overlay=document.getElementById("eventOverlay");
+  const titleEl=document.getElementById("eventTitle");
+  const cardEl=document.getElementById("eventCard");
+  clearTimeout(eventTimer);
+  overlay.className="";
+  overlay.classList.add("show",type);
+  titleEl.innerText=title;
+  cardEl.innerText=cardText;
+  const cardEls=document.querySelectorAll("#cards .card");
+  if(cardEls[cardIndex]){
+    cardEls[cardIndex].classList.remove("event-flash");
+    void cardEls[cardIndex].offsetWidth;
+    cardEls[cardIndex].classList.add("event-flash");
+  }
+  eventTimer=setTimeout(()=>{overlay.className="";},duration);
+}
+
+let mixlAudioCtx=null;
+function getMixlAudioCtx(){
+  if(!mixlAudioCtx){
+    mixlAudioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  }
+  if(mixlAudioCtx.state==="suspended"){
+    mixlAudioCtx.resume().catch(()=>{});
+  }
+  return mixlAudioCtx;
+}
+
+function playBonus(){
+  const ctx=getMixlAudioCtx();
+  [659.25,880].forEach((freq,i)=>{
+    const o=ctx.createOscillator(); const g=ctx.createGain();
+    o.type="sine"; o.frequency.value=freq;
+    const start=ctx.currentTime+i*0.11;
+    g.gain.setValueAtTime(0.0001,start);
+    g.gain.exponentialRampToValueAtTime(0.22,start+0.02);
+    g.gain.exponentialRampToValueAtTime(0.001,start+0.25);
+    o.connect(g);g.connect(ctx.destination);o.start(start);o.stop(start+0.27);
+  });
+}
+function playMixlReady(){
+  const ctx=getMixlAudioCtx();
+  [392,523.25,659.25,783.99].forEach((freq,i)=>{
+    const o=ctx.createOscillator(); const g=ctx.createGain();
+    o.type="triangle"; o.frequency.value=freq;
+    const start=ctx.currentTime+i*0.10;
+    g.gain.setValueAtTime(0.0001,start);
+    g.gain.exponentialRampToValueAtTime(0.20,start+0.02);
+    g.gain.exponentialRampToValueAtTime(0.001,start+0.30);
+    o.connect(g);g.connect(ctx.destination);o.start(start);o.stop(start+0.32);
+  });
+}
+
+function playStart(){
+    let ctx = getMixlAudioCtx();
+    let o = ctx.createOscillator();
+    let g = ctx.createGain();
+
+    o.type = "triangle";
+    o.frequency.value = 320;
+
+    g.gain.setValueAtTime(0.10, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+
+    o.connect(g);
+    g.connect(ctx.destination);
+
+    o.start();
+    o.stop(ctx.currentTime + 0.18);
+}
+function playCrystal(){
+let ctx=getMixlAudioCtx();
+let o=ctx.createOscillator();
+let g=ctx.createGain();
+o.type="sine";
+o.frequency.value=880;
+g.gain.setValueAtTime(0.18,ctx.currentTime);
+g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.45);
+o.connect(g);
+g.connect(ctx.destination);
+o.start();
+o.stop(ctx.currentTime+0.45);
+}
+
+function playVictory(){
+let ctx=getMixlAudioCtx();
+let notes=[523.25,659.25,783.99,1046.5];
+notes.forEach((freq,i)=>{
+let o=ctx.createOscillator();
+let g=ctx.createGain();
+o.type="triangle";
+o.frequency.value=freq;
+g.gain.setValueAtTime(0.0001,ctx.currentTime+i*0.09);
+g.gain.exponentialRampToValueAtTime(0.18,ctx.currentTime+i*0.09+0.02);
+g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.09+0.22);
+o.connect(g);
+g.connect(ctx.destination);
+o.start(ctx.currentTime+i*0.09);
+o.stop(ctx.currentTime+i*0.09+0.24);
+});
+}
+
+function confetti(){let cols=["#e53935","#1e88e5","#fdd835","#fb8c00","#43a047","#8e24aa"];for(let i=0;i<90;i++){let c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.background=cols[Math.floor(Math.random()*cols.length)];c.style.animationDelay=(Math.random()*.8)+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),3500)}}
+function goHome(){document.getElementById("modal").style.display="none";document.getElementById("mixlOnboarding").style.display="flex";resetGame();}
+
+function validateMixl(){
+  if(readyCard===null||gameOver)return;
+  readyRows.forEach(r=>{let s=r*4;cards[readyCard][s].win=true;cards[readyCard][s+1].win=true;cards[readyCard][s+2].win=true;cards[readyCard][s+3].win=true;});
+  gameOver=true;
+  render();
+  playVictory();
+  confetti();
+  showEvent("mixl","🏆 MIXL ! 🏆","Carte "+(readyCard+1),1900,readyCard);
+
+  const usedTokens=drawn;
+  const remainingTokens=bag.length;
+  let html="";
+
+  if(selectedPlayers===1){
+    if(readyCard===selectedSoloCard){
+      html="<div class='result-title result-win'>🏆 MIXL RÉALISÉ !</div>"+
+      "<div>Carte "+(readyCard+1)+"</div>"+
+      "<div class='result-stats'>⭐  lignes complétées<br>🟡 "+usedTokens+" TOKENS utilisés<br>🎯 "+remainingTokens+" TOKENS restants</div>"+
+      "<div class='result-message result-win'>Bravo ! Tu avais choisi la bonne carte.</div>";
+    }else{
+      html="<div class='result-title result-loss'>🏆 La Carte "+(readyCard+1)+" réalise MIXL</div>"+
+      "<div class='result-stats'>⭐ 4 lignes complétées<br>🟡 "+usedTokens+" TOKENS utilisés<br>🎯 "+remainingTokens+" TOKENS restants</div>"+
+      "<div class='result-message result-loss'>Tu avais choisi la Carte "+(selectedSoloCard+1)+". Retente ta chance !</div>";
+    }
+  }else{
+    html="<div class='result-title result-win'>🏆 MIXL RÉALISÉ !</div>"+
+    "<div>"+getPlayerName(readyCard)+" remporte la partie.</div>"+
+    "<div class='result-stats'>⭐ 4 lignes complétées<br>🟡 "+usedTokens+" TOKENS utilisés<br>🎯 "+remainingTokens+" TOKENS restants</div>";
+  }
+
+  setTimeout(()=>{document.getElementById("winText").innerHTML=html;document.getElementById("modal").style.display="flex";},2000);
+}
+resetGame();
+</script>
+</body>
+</html>
